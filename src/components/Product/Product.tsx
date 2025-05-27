@@ -19,7 +19,8 @@ import Rate from '../Other/Rate'
 interface ProductProps {
     data: ProductType
     type: string
-    style: string
+    //this style was goving error but made it optional
+    style?: string
 }
 
 const Product: React.FC<ProductProps> = ({ data, type, style }) => {
