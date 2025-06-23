@@ -6,6 +6,7 @@ import * as Icon from "@phosphor-icons/react/dist/ssr";
 const Footer = () => {
     return (
         <>
+            <div>This is footer div</div>
             <div id="footer" className='footer'>
                 <div className="footer-main bg-surface">
                     <div className="container">
