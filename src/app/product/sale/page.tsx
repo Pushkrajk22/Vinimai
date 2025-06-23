@@ -1,34 +1,39 @@
 'use client'
-import React, { useState } from 'react'
+
+export const dynamic = 'force-dynamic';
+
+import React, { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link'
-import TopNavOne from '@/components/Header/TopNav/TopNavOne'
-import MenuOne from '@/components/Header/Menu/MenuOne'
-import BreadcrumbProduct from '@/components/Breadcrumb/BreadcrumbProduct'
+import TopNavOne from '@/components/Header/TopNav/TopNavOne';
+import MenuOne from '@/components/Header/Menu/MenuOne';
+import BreadcrumbProduct from '@/components/Breadcrumb/BreadcrumbProduct';
 import Sale from '@/components/Product/Detail/Sale';
-import Footer from '@/components/Footer/Footer'
-import { ProductType } from '@/type/ProductType'
-import productData from '@/data/Product.json'
+import Footer from '@/components/Footer/Footer';
+import productData from '@/data/Product.json';
 
-const ProductSale = () => {
-    const searchParams = useSearchParams()
-    let productId = searchParams.get('id')
-
-    if (productId === null) {
-        productId = '1'
-    }
+// ✅ This is the component that uses useSearchParams()
+const ProductSaleInner = () => {
+    const searchParams = useSearchParams();
+    const productId = searchParams.get('id') ?? '1';
 
     return (
         <>
             <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
-            <div id="header" className='relative w-full'>
+            <div id="header" className="relative w-full">
                 <MenuOne props="bg-white" />
-                <BreadcrumbProduct data={productData} productPage='sale' productId={productId} />
+                <BreadcrumbProduct data={productData} productPage="sale" productId={productId} />
             </div>
             <Sale data={productData} productId={productId} />
             <Footer />
         </>
-    )
-}
+    );
+};
 
-export default ProductSale
+// ✅ Suspense boundary wraps only the component using useSearchParams
+const ProductSale = () => (
+    <Suspense fallback={<div>Loading...</div>}>
+        <ProductSaleInner />
+    </Suspense>
+);
+
+export default ProductSale;

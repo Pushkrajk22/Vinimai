@@ -14,15 +14,24 @@ import Instagram from '@/components/Home1/Instagram'
 import Brand from '@/components/Home1/Brand'
 import Footer from '@/components/Footer/Footer'
 import ModalNewsletter from '@/components/Modal/ModalNewsletter'
+import TopNavThree from '@/components/Header/TopNav/TopNavThree'
+
 
 export default function Home() {
   return (
     <>
-      <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
+      {/* Top nav three is absolutely not needed and top nav one is irrelavant */}
+      {/* <TopNavThree props='style-one bg-white' slogan="New customers"/> */}
+      {/* <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" /> */}
+      {/* This is the navbar in homepage */}
       <div id="header" className='relative w-full'>
         <MenuOne props="bg-transparent" />
+      </div>
+      {/* This is the ad slider */}
+      <div className='relative w-full'>
         <SliderOne />
       </div>
+      
       <WhatNewOne data={productData} start={0} limit={4} />
       <Collection />
       <TabFeatures data={productData} start={0} limit={6} />
@@ -30,9 +39,14 @@ export default function Home() {
       <Benefit props="md:py-20 py-10" />
       <Testimonial data={testimonialData} limit={6} />
       <Instagram />
+      {/* brand are small images below instagram */}
       <Brand />
       <Footer />
+<<<<<<< Updated upstream
 {/*       <ModalNewsletter /> */}
+=======
+      {/* <ModalNewsletter /> */}
+>>>>>>> Stashed changes
     </>
   )
 }

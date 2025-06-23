@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation';
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
@@ -8,7 +8,7 @@ import CountdownTimer from '@/components/Product/Detail/CountdownTimer';
 import Footer from '@/components/Footer/Footer'
 import productData from '@/data/Product.json'
 
-const ProductCountdownTimer = () => {
+const ProductCountdownTimerInner = () => {
     const searchParams = useSearchParams()
     let productId = searchParams.get('id')
 
@@ -28,5 +28,11 @@ const ProductCountdownTimer = () => {
         </>
     )
 }
+
+const ProductCountdownTimer = () => (
+    <Suspense fallback={<div>Loading...</div>}>
+        <ProductCountdownTimerInner />
+    </Suspense>
+)
 
 export default ProductCountdownTimer

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
@@ -284,4 +284,10 @@ const Checkout = () => {
     )
 }
 
-export default Checkout
+export default function CheckoutPageWrapper() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Checkout />
+        </Suspense>
+    );
+}

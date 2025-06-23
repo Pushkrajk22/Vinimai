@@ -1,5 +1,9 @@
 'use client'
-import React, { useState } from 'react'
+
+//This tells Next.js to skip rendering this route during build or request time.
+export const dynamic = 'error';
+
+import React, { useState, Suspense } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -448,4 +452,12 @@ const BlogDetailTwo = () => {
     )
 }
 
-export default BlogDetailTwo
+export default function Page() {
+    return (
+        <Suspense>
+            <BlogDetailTwo />
+        </Suspense>
+    );
+}
+
+

@@ -84,7 +84,7 @@ const Footer = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="footer-bottom py-3 flex items-center justify-between gap-5 max-lg:justify-center max-lg:flex-col border-t border-line">
+                        {<div className="footer-bottom py-3 flex items-center justify-between gap-5 max-lg:justify-center max-lg:flex-col border-t border-line">
                             <div className="left flex items-center gap-8">
                                 <div className="copyright caption1 text-secondary">©2025 Vinimai. All Rights Reserved.</div>
                                 <div className="select-block flex items-center gap-5 max-md:hidden">
@@ -163,7 +163,7 @@ const Footer = () => {
                                     />
                                 </div> */}
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
             </div>

@@ -1,4 +1,13 @@
 'use client'
+
+//This tells Next.js to skip rendering this route during build or request time.
+export const dynamic = 'error';
+
+
+//added later to make as client component because of the use of useSearchParams
+//export const dynamic = 'force-dynamic';
+
+import { Suspense } from 'react';
 import React from 'react'
 import { useSearchParams } from 'next/navigation';
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
@@ -17,7 +26,8 @@ const ProductOutOfStock = () => {
     }
 
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
+
             <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-white" />
@@ -25,7 +35,7 @@ const ProductOutOfStock = () => {
             </div>
             <OutOfStock data={productData} productId={productId} />
             <Footer />
-        </>
+        </Suspense>
     )
 }
 

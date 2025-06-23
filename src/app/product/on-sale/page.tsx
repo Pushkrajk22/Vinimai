@@ -1,5 +1,7 @@
 'use client'
-import React from 'react'
+
+
+import React, { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation';
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
@@ -17,7 +19,7 @@ const ProductOnSale = () => {
     }
 
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
             <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-white" />
@@ -25,7 +27,7 @@ const ProductOnSale = () => {
             </div>
             <OnSale data={productData} productId={productId} />
             <Footer />
-        </>
+        </Suspense>
     )
 }
 

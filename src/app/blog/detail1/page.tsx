@@ -1,5 +1,13 @@
 'use client'
+
+
+//added later to make as client component because of the use of useSearchParams
+export const dynamic = 'force-dynamic';
+
+
+
 import React, { useState } from 'react'
+import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -32,7 +40,8 @@ const BlogDetailOne = () => {
     };
 
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
+
             <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-white" />
@@ -181,7 +190,7 @@ const BlogDetailOne = () => {
                 </div>
             </div>
             <Footer />
-        </>
+        </Suspense>
     )
 }
 

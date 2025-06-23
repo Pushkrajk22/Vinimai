@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation';
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
@@ -29,4 +29,10 @@ const ProductBoughtTogether = () => {
     )
 }
 
-export default ProductBoughtTogether
+const ProductBoughtTogetherPage = () => (
+    <Suspense>
+        <ProductBoughtTogether />
+    </Suspense>
+)
+
+export default ProductBoughtTogetherPage

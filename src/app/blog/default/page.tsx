@@ -1,4 +1,5 @@
 'use client'
+import { Suspense } from 'react';
 import React, { useState } from 'react'
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
@@ -216,4 +217,10 @@ const BlogDefault = () => {
     )
 }
 
-export default BlogDefault
+export default function BlogDefaultPage() {
+    return (
+        <Suspense>
+            <BlogDefault />
+        </Suspense>
+    );
+}

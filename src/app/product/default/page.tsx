@@ -1,5 +1,11 @@
 'use client'
+
+//This tells Next.js to skip rendering this route during build or request time.
+export const dynamic = 'error';
+
 import React, { useState } from 'react'
+import { Suspense } from 'react';
+
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link'
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
@@ -19,7 +25,8 @@ const ProductDefault = () => {
     }
 
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
+
             <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-white" />
@@ -27,7 +34,7 @@ const ProductDefault = () => {
             </div>
             <Default data={productData} productId={productId} />
             <Footer />
-        </>
+        </Suspense>
     )
 }
 

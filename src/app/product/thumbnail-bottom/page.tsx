@@ -1,4 +1,8 @@
 'use client'
+
+//added later to make as client component because of the use of useSearchParams
+export const dynamic = 'force-dynamic';
+
 import React, { useState } from 'react'
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link'

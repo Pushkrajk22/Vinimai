@@ -1,4 +1,10 @@
 'use client'
+
+//This tells Next.js to skip rendering this route during build or request time.
+export const dynamic = 'error';
+//added later to make as client component because of the use of useSearchParams
+//export const dynamic = 'force-dynamic';
+
 import React, { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'

@@ -41,6 +41,7 @@ const SliderOne = () => {
                                             alt='bg1-1'
                                             priority={true}
                                         />
+
                                     </div>
                                 </div>
                             </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation';
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
@@ -8,7 +8,7 @@ import ShopBreadCrumbImg from '@/components/Shop/ShopBreadCrumbImg';
 import productData from '@/data/Product.json'
 import Footer from '@/components/Footer/Footer'
 
-export default function BreadcrumbImg() {
+function BreadcrumbImgContent() {
     const searchParams = useSearchParams()
     const type = searchParams.get('type')
     const category = searchParams.get('category')
@@ -22,5 +22,13 @@ export default function BreadcrumbImg() {
             <ShopBreadCrumbImg data={productData} productPerPage={12} dataType={type} />
             <Footer />
         </>
+    )
+}
+
+export default function BreadcrumbImg() {
+    return (
+        <Suspense>
+            <BreadcrumbImgContent />
+        </Suspense>
     )
 }

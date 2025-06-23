@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation';
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
@@ -9,6 +9,14 @@ import productData from '@/data/Product.json'
 import Footer from '@/components/Footer/Footer'
 
 export default function FilterCanvasProductFive() {
+    return (
+        <Suspense>
+            <InnerFilterCanvasProductFive />
+        </Suspense>
+    )
+}
+
+function InnerFilterCanvasProductFive() {
     const searchParams = useSearchParams()
     const type = searchParams.get('type')
 
