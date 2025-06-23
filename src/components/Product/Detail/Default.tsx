@@ -270,8 +270,8 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                             </div>
                             <div className="list-action mt-6">
                                 <div className="choose-color">
-                                    <div className="text-title">Colors: <span className='text-title color'>{activeColor}</span></div>
-                                    <div className="list-color flex items-center gap-2 flex-wrap mt-3">
+                                    {/* <div className="text-title">Colors: <span className='text-title color'>{activeColor}</span></div> */}
+                                    {/* <div className="list-color flex items-center gap-2 flex-wrap mt-3">
                                         {productMain.variation.map((item, index) => (
                                             <div
                                                 className={`color-item w-12 h-12 rounded-xl duration-300 relative ${activeColor === item.color ? 'active' : ''}`}
@@ -293,17 +293,17 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                                 </div>
                                             </div>
                                         ))}
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div className="choose-size mt-5">
                                     <div className="heading flex items-center justify-between">
                                         <div className="text-title">Size: <span className='text-title size'>{activeSize}</span></div>
-                                        <div
+                                        {/* <div
                                             className="caption1 size-guide text-red underline cursor-pointer"
                                             onClick={handleOpenSizeGuide}
                                         >
                                             Size Guide
-                                        </div>
+                                        </div> */}
                                         <ModalSizeguide data={productMain} isOpen={openSizeGuide} onClose={handleCloseSizeGuide} />
                                     </div>
                                     <div className="list-size flex items-center gap-2 flex-wrap mt-3">
@@ -337,6 +337,9 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                 </div>
                                 <div className="button-block mt-5">
                                     <div className="button-main w-full text-center">Buy It Now</div>
+                                </div>
+                                <div className="button-block mt-5">
+                                    <div className="button-main w-full text-center">Rent It Now</div>
                                 </div>
                                 <div className="flex items-center lg:gap-20 gap-8 mt-5 pb-6 border-b border-line">
                                     <div className="compare flex items-center gap-3 cursor-pointer" onClick={(e) => { e.stopPropagation(); handleAddToCompare() }}>

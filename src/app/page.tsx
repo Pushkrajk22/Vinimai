@@ -42,11 +42,7 @@ export default function Home() {
       {/* brand are small images below instagram */}
       <Brand />
       <Footer />
-<<<<<<< Updated upstream
 {/*       <ModalNewsletter /> */}
-=======
-      {/* <ModalNewsletter /> */}
->>>>>>> Stashed changes
     </>
   )
 }

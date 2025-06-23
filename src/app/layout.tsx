@@ -16,14 +16,10 @@ const instrument = Instrument_Sans({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Vinimai',
-<<<<<<< Updated upstream
   description: 'Multipurpose eCommerce exchange platform',
-=======
-  description: 'Multipurpose exchange platform',
   icons: {
     icon: '/favicon.ico',
   },
->>>>>>> Stashed changes
 }
 
 
@@ -36,7 +32,7 @@ export default function RootLayout({
     <GlobalProvider>
       <html lang="en">
         <head>
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="src/app/favicon.ico" />
         </head>
         <body className={instrument.className}>
           {children}
