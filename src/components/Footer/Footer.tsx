@@ -88,14 +88,14 @@ const Footer = () => {
                             <div className="left flex items-center gap-8">
                                 <div className="copyright caption1 text-secondary">©2025 Vinimai. All Rights Reserved.</div>
                                 <div className="select-block flex items-center gap-5 max-md:hidden">
-                                    <div className="choose-language flex items-center gap-1.5">
+                                {/*<div className="choose-language flex items-center gap-1.5">
                                         <select name="language" id="chooseLanguageFooter" className='caption2 bg-transparent'>
                                             <option value="English">English</option>
                                             <option value="Espana">Hindi</option>
                                             <option value="France">Marathi</option>
                                         </select>
                                         <Icon.CaretDown size={12} color='#1F1F1F' />
-                                    </div>
+                                    </div> */}
 {/*                                     <div className="choose-currency flex items-center gap-1.5">
                                         <select name="currency" id="chooseCurrencyFooter" className='caption2 bg-transparent'>
                                             <option value="USD">USD</option>
