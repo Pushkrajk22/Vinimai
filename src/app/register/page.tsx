@@ -21,7 +21,10 @@ const Register = () => {
                             <div className="heading4">Register</div>
                             <form className="md:mt-7 mt-4">
                                 <div className="email ">
-                                    <input className="border-line px-4 pt-3 pb-3 w-full rounded-lg" id="username" type="email" placeholder="Username or email address *" required />
+                                    <input className="border-line px-4 pt-3 pb-3 w-full rounded-lg" id="username" type="email" placeholder="Email address *" required />
+                                </div>
+                                <div className="phone mt-5">
+                                    <input className="border-line px-4 pt-3 pb-3 w-full rounded-lg" id="phone" type="phone" placeholder="Phone Number *" required />
                                 </div>
                                 <div className="pass mt-5">
                                     <input className="border-line px-4 pt-3 pb-3 w-full rounded-lg" id="password" type="password" placeholder="Password *" required />
