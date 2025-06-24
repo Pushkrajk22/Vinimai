@@ -88,7 +88,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         >
                                             Demo
                                         </Link>
-                                        <div className="sub-menu py-3 px-5 -left-10 w-max absolute grid grid-cols-4 gap-5 bg-white rounded-b-xl">
+                                        {/* <div className="sub-menu py-3 px-5 -left-10 w-max absolute grid grid-cols-4 gap-5 bg-white rounded-b-xl">
                                             <ul>
                                                 <li>
                                                     <Link href="/" className={`link text-secondary duration-300 ${pathname === '/' ? 'active' : ''}`}>
@@ -212,13 +212,13 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                     </Link>
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </div> */}
                                     </li>
                                     <li className='h-full'>
                                         <Link href="#!" className='text-button-uppercase duration-300 h-full flex items-center justify-center'>
                                             Features
                                         </Link>
-                                        <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
+                                        {/* <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                                             <div className="container">
                                                 <div className="flex justify-between py-8">
                                                     <div className="nav-link basis-2/3 grid grid-cols-4 gap-y-8">
@@ -575,7 +575,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </li>
                                     <li className='h-full'>
                                         <Link
@@ -584,7 +584,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         >
                                             Shop
                                         </Link>
-                                        <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
+                                        {/* <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                                             <div className="container">
                                                 <div className="flex justify-between py-8">
                                                     <div className="nav-link basis-2/3 flex justify-between pr-12">
@@ -795,7 +795,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </li>
                                     <li className='h-full'>
                                         <Link
@@ -804,7 +804,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         >
                                             Product
                                         </Link>
-                                        <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
+                                        {/* <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                                             <div className="container">
                                                 <div className="nav-link w-full flex justify-between py-8">
                                                     <div className="nav-item">
@@ -1013,13 +1013,13 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </li>
                                     <li className='h-full relative'>
                                         <Link href="#!" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/blog') ? 'active' : ''}`}>
                                             Blog
                                         </Link>
-                                        <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
+                                        {/* <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
                                             <ul className='w-full'>
                                                 <li>
                                                     <Link href="/blog/default" className={`link text-secondary duration-300 ${pathname === '/blog/default' ? 'active' : ''}`}>
@@ -1047,7 +1047,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                     </Link>
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </div> */}
                                     </li>
                                     <li className='h-full relative'>
                                         <Link href="#!" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages') ? 'active' : ''}`}>
@@ -1093,14 +1093,29 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                             </ul>
                                         </div>
                                     </li>
+                                    <li className='h-full relative'>
+                                        <Link href="/pages/about" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/blog') ? 'active' : ''}`}>
+                                            About Us
+                                        </Link>
+                                    </li>
+                                    <li className='h-full relative'>
+                                        <Link href="/pages/contact" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages/contact') ? 'active' : ''}`}>
+                                            Contact Us
+                                        </Link>
+                                    </li>
+                                    <li className='h-full relative'>
+                                        <Link href="/pages/faqs" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages/faqs') ? 'active' : ''}`}>
+                                            FAQs
+                                        </Link>
+                                    </li>                                    
                                 </ul>
                             </div>
                         </div>
                         <div className="right flex gap-12">
-                            <div className="max-md:hidden search-icon flex items-center cursor-pointer relative">
+                            {/* <div className="max-md:hidden search-icon flex items-center cursor-pointer relative">
                                 <Icon.MagnifyingGlass size={24} color='black' onClick={openModalSearch} />
                                 <div className="line absolute bg-line w-px h-6 -right-6"></div>
-                            </div>
+                            </div> */}
                             <div className="list-action flex items-center gap-4">
                                 <div className="user-icon flex items-center justify-center cursor-pointer">
                                     <Icon.User size={24} color='black' onClick={handleLoginPopup} />

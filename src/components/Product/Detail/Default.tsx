@@ -336,10 +336,10 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                     <div onClick={handleAddToCart} className="button-main w-full text-center bg-white text-black border border-black">Add To Cart</div>
                                 </div>
                                 <div className="button-block mt-5">
-                                    <div className="button-main w-full text-center">Buy It Now      ${productMain.originPrice}</div>
+                                    <div className="button-main w-full text-center">Buy It Now</div>
                                 </div>
                                 <div className="button-block mt-5">
-                                    <div className="button-main w-full text-center">Rent It Now     ${productMain.originPrice}</div>
+                                    <div className="button-main w-full text-center">Rent It Now</div>
                                 </div>
                                 <div className="flex items-center lg:gap-20 gap-8 mt-5 pb-6 border-b border-line">
                                     <div className="compare flex items-center gap-3 cursor-pointer" onClick={(e) => { e.stopPropagation(); handleAddToCompare() }}>

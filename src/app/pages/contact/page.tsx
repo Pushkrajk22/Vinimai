@@ -2,7 +2,6 @@
 import React from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
-import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
 import Footer from '@/components/Footer/Footer'
@@ -10,7 +9,6 @@ import Footer from '@/components/Footer/Footer'
 const ContactUs = () => {
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
                 <Breadcrumb heading='Contact us' subHeading='Contact us' />
@@ -20,7 +18,7 @@ const ContactUs = () => {
                     <div className="flex justify-between max-lg:flex-col gap-y-10">
                         <div className="left lg:w-2/3 lg:pr-4">
                             <div className="heading3">Drop Us A Line</div>
-                            <div className="body1 text-secondary2 mt-3">Use the form below to get in touch with the sales team</div>
+                            <div className="body1 text-secondary2 mt-3">Use the form below to get in touch with us</div>
                             <form className="md:mt-6 mt-4">
                                 <div className='grid sm:grid-cols-2 grid-cols-1 gap-4 gap-y-5'>
                                     <div className="name ">

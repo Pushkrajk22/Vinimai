@@ -1,7 +1,6 @@
 'use client'
 import React from 'react'
 import Image from 'next/image';
-import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
 import Benefit from '@/components/Home1/Benefit'
@@ -13,7 +12,6 @@ import Footer from '@/components/Footer/Footer'
 const AboutUs = () => {
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
                 <Breadcrumb heading='About Us' subHeading='About Us' />
@@ -60,8 +58,8 @@ const AboutUs = () => {
                 </div>
             </div>
             <Benefit props="md:pt-20 pt-10" />
-            <Newsletter props="bg-green md:mt-20 mt-10" />
-            <Instagram />
+            {/* <Newsletter props="bg-green md:mt-20 mt-10" /> */}
+            {/* <Instagram /> */}
             <Brand />
             <Footer />
         </>

@@ -25,7 +25,7 @@ export default function Home() {
       {/* <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" /> */}
       {/* This is the navbar in homepage */}
       <div id="header" className='relative w-full'>
-        <MenuOne props="bg-transparent" />
+        <MenuOne props="bg-white" />
       </div>
       {/* This is the ad slider */}
       <div className='relative w-full'>
