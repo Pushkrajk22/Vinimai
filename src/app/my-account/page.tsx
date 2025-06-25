@@ -2,19 +2,76 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb'
 import Footer from '@/components/Footer/Footer'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { motion } from 'framer-motion'
+import axios from 'axios';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const MyAccount = () => {
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState<string | undefined>('dashboard')
     const [activeAddress, setActiveAddress] = useState<string | null>('billing')
     const [activeOrders, setActiveOrders] = useState<string | undefined>('all')
     const [openDetail, setOpenDetail] = useState<boolean | undefined>(false)
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmedNewPassword, setConfirmedNewPassword] = useState('');
+    const [error, setError] = useState('');
+    const [token, setToken] = useState<string | null>(null);
+    // const [showSuccess, setShowSuccess] = useState(true);
 
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem('token');
+        setToken(storedToken)
+        }, []);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (newPassword !== confirmedNewPassword) {
+            setError("Passwords do not match");
+            setTimeout(() => setError(''), 3000);
+            setConfirmedNewPassword('');
+            setNewPassword('');
+            setCurrentPassword('');
+            return;
+        }
+        try {
+            const response = await axios.post(
+                'https://vinimailoginmicroservice.onrender.com/api/loginService/changePassword',
+            // 'http://localhost:8080/api/loginService/changePassword',
+            {
+                old_password: currentPassword,
+                new_password: confirmedNewPassword,
+            },
+            {
+                headers: {
+                Authorization: `${token}`, // Attach JWT in Authorization header
+                'Content-Type': 'application/json',
+                },
+            }
+            );
+            console.log('Password changed successfully', response.data);
+            alert('Password changed successfully!');
+            // setShowSuccess(true);
+
+            // Clear form fields
+            setConfirmedNewPassword('');
+            setNewPassword('');
+            setCurrentPassword('');
+        } catch (err: any) {
+            console.error(err);
+            const errorMsg = err.response?.data?.message || 'Password change failed';
+            setError(errorMsg);
+            alert(errorMsg);    
+        }
+
+    };
+    
     const handleActiveAddress = (order: string) => {
         setActiveAddress(prevOrder => prevOrder === order ? null : order)
     }
@@ -25,7 +82,7 @@ const MyAccount = () => {
 
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
+
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
                 <Breadcrumb heading='My Account' subHeading='My Account' />
@@ -36,7 +93,7 @@ const MyAccount = () => {
                         <div className="left md:w-1/3 w-full xl:pr-[3.125rem] lg:pr-[28px] md:pr-[16px]">
                             <div className="user-infor bg-surface lg:px-7 px-4 lg:py-10 py-5 md:rounded-[20px] rounded-xl">
                                 <div className="heading flex flex-col items-center justify-center">
-                                    <div className="avatar">
+                                    {/* <div className="avatar">
                                         <Image
                                             src={'/images/avatar/1.png'}
                                             width={300}
@@ -44,7 +101,7 @@ const MyAccount = () => {
                                             alt='avatar'
                                             className='md:w-[140px] w-[120px] md:h-[140px] h-[120px] rounded-full'
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className="name heading6 mt-4 text-center">Tony Nguyen</div>
                                     <div className="mail heading6 font-normal normal-case text-secondary text-center mt-1">hi.avitex@gmail.com</div>
                                 </div>
@@ -53,19 +110,19 @@ const MyAccount = () => {
                                         <Icon.HouseLine size={20} />
                                         <strong className="heading6">Dashboard</strong>
                                     </Link>
-                                    <Link href={'#!'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')}>
+                                    {/* <Link href={'#!'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')}>
                                         <Icon.Package size={20} />
                                         <strong className="heading6">History Orders</strong>
-                                    </Link>
+                                    </Link> */}
                                     <Link href={'#!'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'address' ? 'active' : ''}`} onClick={() => setActiveTab('address')}>
                                         <Icon.Tag size={20} />
                                         <strong className="heading6">My Address</strong>
                                     </Link>
                                     <Link href={'#!'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'setting' ? 'active' : ''}`} onClick={() => setActiveTab('setting')}>
                                         <Icon.GearSix size={20} />
-                                        <strong className="heading6">Setting</strong>
+                                        <strong className="heading6">Settings</strong>
                                     </Link>
-                                    <Link href={'/login'} className="item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5">
+                                    <Link href={'#!'} className="item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5" onClick={(e) => {e.preventDefault();localStorage.removeItem('token');router.push('/login');}}>
                                         <Icon.SignOut size={20} />
                                         <strong className="heading6">Logout</strong>
                                     </Link>
@@ -74,7 +131,7 @@ const MyAccount = () => {
                         </div>
                         <div className="right md:w-2/3 w-full pl-2.5">
                             <div className={`tab text-content w-full ${activeTab === 'dashboard' ? 'block' : 'hidden'}`}>
-                                <div className="overview grid sm:grid-cols-3 gap-5">
+                                {/* <div className="overview grid sm:grid-cols-3 gap-5">
                                     <div className="item flex items-center justify-between p-5 border border-line rounded-lg box-shadow-xs">
                                         <div className="counter">
                                             <span className="text-secondary">Awaiting Pickup</span>
@@ -96,7 +153,7 @@ const MyAccount = () => {
                                         </div>
                                         <Icon.Package className='text-4xl' />
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="recent_order pt-5 px-5 pb-2 mt-7 border border-line rounded-xl">
                                     <h6 className="heading6">Recent Orders</h6>
                                     <div className="list overflow-x-auto w-full mt-5">
@@ -560,12 +617,12 @@ const MyAccount = () => {
                                 </form>
                             </div>
                             <div className={`tab text-content w-full p-7 border border-line rounded-xl ${activeTab === 'setting' ? 'block' : 'hidden'}`}>
-                                <form>
+                                <form onSubmit={handleSubmit}>
                                     <div className="heading5 pb-4">Information</div>
                                     <div className="upload_image col-span-full">
-                                        <label htmlFor="uploadImage">Upload Avatar: <span className="text-red">*</span></label>
+                                        {/* <label htmlFor="uploadImage">Upload Avatar: <span className="text-red">*</span></label> */}
                                         <div className="flex flex-wrap items-center gap-5 mt-3">
-                                            <div className="bg_img flex-shrink-0 relative w-[7.5rem] h-[7.5rem] rounded-lg overflow-hidden bg-surface">
+                                            {/* <div className="bg_img flex-shrink-0 relative w-[7.5rem] h-[7.5rem] rounded-lg overflow-hidden bg-surface">
                                                 <span className="ph ph-image text-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-secondary"></span>
                                                 <Image
                                                     src={'/images/avatar/1.png'}
@@ -574,15 +631,15 @@ const MyAccount = () => {
                                                     alt='avatar'
                                                     className="upload_img relative z-[1] w-full h-full object-cover"
                                                 />
-                                            </div>
-                                            <div>
+                                            </div> */}
+                                            {/* <div>
                                                 <strong className="text-button">Upload File:</strong>
                                                 <p className="caption1 text-secondary mt-1">JPG 120x120px</p>
                                                 <div className="upload_file flex items-center gap-3 w-[220px] mt-3 px-3 py-2 border border-line rounded">
                                                     <label htmlFor="uploadImage" className="caption2 py-1 px-3 rounded bg-line whitespace-nowrap cursor-pointer">Choose File</label>
                                                     <input type="file" name="uploadImage" id="uploadImage" accept="image/*" className="caption2 cursor-pointer" required />
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                     <div className='grid sm:grid-cols-2 gap-4 gap-y-5 mt-5'>
@@ -622,16 +679,37 @@ const MyAccount = () => {
                                     <div className="heading5 pb-4 lg:mt-10 mt-6">Change Password</div>
                                     <div className="pass">
                                         <label htmlFor="password" className='caption1'>Current password <span className='text-red'>*</span></label>
-                                        <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="password" type="password" placeholder="Password *" required />
+                                        <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="password" type="password" value={currentPassword} onChange={(e) => {setCurrentPassword(e.target.value);}} placeholder="Current Password *" required />
                                     </div>
                                     <div className="new-pass mt-5">
                                         <label htmlFor="newPassword" className='caption1'>New password <span className='text-red'>*</span></label>
-                                        <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="newPassword" type="password" placeholder="New Password *" required />
+                                        <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="newPassword" type="password" value={newPassword} onChange={(e) => {setNewPassword(e.target.value);}} placeholder="New Password *" required />
                                     </div>
                                     <div className="confirm-pass mt-5">
                                         <label htmlFor="confirmPassword" className='caption1'>Confirm new password <span className='text-red'>*</span></label>
-                                        <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="confirmPassword" type="password" placeholder="Confirm Password *" required />
+                                        <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="confirmPassword" type="password" value={confirmedNewPassword} onChange={(e) => {setConfirmedNewPassword(e.target.value);}} placeholder="Confirm Password *" required />
                                     </div>
+                                    {error && (
+                                      <div className="flex items-center border border-red-500 !text-red-500 px-4 py-2 mt-4 rounded-md text-sm">
+                                        <Icon.WarningCircle size={20} weight="bold" className="mr-2" color='red' />
+                                        <span>{error}</span>
+                                      </div>
+                                    )}
+
+                                    {/* {showSuccess && (<div style={{
+                                            position: 'fixed',
+                                            top: '20px',
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                            backgroundColor: '#4caf50',
+                                            color: 'white',
+                                            padding: '12px 24px',
+                                            borderRadius: '5px',
+                                            zIndex: 9999,
+                                            boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+                                            fontSize: '16px',
+                                        }}>✅ Password changed successfully!</div>)} */}
+
                                     <div className="block-button lg:mt-10 mt-6">
                                         <button className="button-main">Save Change</button>
                                     </div>
