@@ -21,8 +21,10 @@ const AboutUs = () => {
                     <div className="container">
                         <div className="text flex items-center justify-center">
                             <div className="content md:w-5/6 w-full">
-                                <div className="heading3 text-center">I{String.raw`'m`} obsessed with the dress Pippa Middleton wore to her brother{String.raw`'s`} wedding.</div>
-                                <div className="body1 text-center md:mt-7 mt-5">Kim Kardashian West needs no introduction. In the 14 years since she first graced our screens in Keeping Up With The Kardashians, she has built her KKW beauty empire, filmed her show, wrapped her show, become a billionaire, studied law, campaigned for the rights of death row inmates, travelled the world to attend events such as Paris Fashion Week, raised four children and launched her wildly successful shapewear brand SKIMS.</div>
+                                <div className="heading3 text-center">Welcome to Vinimai, where fashion is fun, affordable, and sustainable!</div>
+                                <div className="body1 text-center md:mt-7 mt-5">Why buy once when you can rent, resell, and refresh your style anytime you like Want to clear out your closet? Sell your gently used fashion items in minutes. Need a show-stopping outfit for a night? Rent it at a fraction of the price. Or simply shop from our latest collections to upgrade your wardrobe with ease.
+ 
+We believe shopping should be smart, exciting, and guilt-free. That’s why we created a space where fashion lovers can save money, reduce waste, and stay on-trend without compromise. Join us in reimagining the way of shopping. Your next favorite outfit is just a click away!.</div>
                             </div>
                         </div>
                         <div className="list-img grid sm:grid-cols-3 gap-[30px] md:pt-20 pt-10">
