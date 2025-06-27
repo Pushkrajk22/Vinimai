@@ -30,7 +30,7 @@ We believe shopping should be smart, exciting, and guilt-free. That’s why we c
                         <div className="list-img grid sm:grid-cols-3 gap-[30px] md:pt-20 pt-10">
                             <div className="bg-img">
                                 <Image
-                                    src={'/images/other/about-us1.png'}
+                                    src={'/images/about/about-us1.jpg'}
                                     width={2000}
                                     height={3000}
                                     alt='bg-img'
@@ -39,7 +39,7 @@ We believe shopping should be smart, exciting, and guilt-free. That’s why we c
                             </div>
                             <div className="bg-img">
                                 <Image
-                                    src={'/images/other/about-us2.png'}
+                                    src={'/images/about/about-us2.jpg'}
                                     width={2000}
                                     height={3000}
                                     alt='bg-img'
@@ -48,7 +48,7 @@ We believe shopping should be smart, exciting, and guilt-free. That’s why we c
                             </div>
                             <div className="bg-img">
                                 <Image
-                                    src={'/images/other/about-us3.png'}
+                                    src={'/images/about/about-us3.jpg'}
                                     width={2000}
                                     height={3000}
                                     alt='bg-img'
