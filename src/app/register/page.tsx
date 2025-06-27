@@ -16,7 +16,7 @@ const Register = () => {
     const [isTermsChecked, setIsTermsChecked] = useState(false);
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (password !== confirmPassword) {
             setError("Passwords do not match");
