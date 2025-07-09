@@ -2,7 +2,6 @@
 import React, { useState, Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb'
 import Footer from '@/components/Footer/Footer'
@@ -30,7 +29,6 @@ const Checkout = () => {
 
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
                 <Breadcrumb heading='Shopping cart' subHeading='Shopping cart' />
@@ -253,7 +251,7 @@ const Checkout = () => {
                                                             <span className='quantity'>{product.quantity}</span>
                                                             <span className='px-1'>x</span>
                                                             <span>
-                                                                ${product.price}.00
+                                                                ₹{product.price}.00
                                                             </span>
                                                         </div>
                                                     </div>
@@ -264,7 +262,7 @@ const Checkout = () => {
                                 </div>
                                 <div className="discount-block py-5 flex justify-between border-b border-line">
                                     <div className="text-title">Discounts</div>
-                                    <div className="text-title">-$<span className="discount">{discount}</span><span>.00</span></div>
+                                    <div className="text-title">-₹<span className="discount">{discount}</span><span>.00</span></div>
                                 </div>
                                 <div className="ship-block py-5 flex justify-between border-b border-line">
                                     <div className="text-title">Shipping</div>
@@ -272,7 +270,7 @@ const Checkout = () => {
                                 </div>
                                 <div className="total-cart-block pt-5 flex justify-between">
                                     <div className="heading5">Total</div>
-                                    <div className="heading5 total-cart">${totalCart - Number(discount) + Number(ship)}.00</div>
+                                    <div className="heading5 total-cart">₹{totalCart - Number(discount) + Number(ship)}.00</div>
                                 </div>
                             </div>
                         </div>

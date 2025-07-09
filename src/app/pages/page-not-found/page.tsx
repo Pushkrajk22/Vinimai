@@ -2,7 +2,6 @@
 import React from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
-import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Footer from '@/components/Footer/Footer'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
@@ -10,7 +9,6 @@ import * as Icon from "@phosphor-icons/react/dist/ssr";
 const PageNotFound = () => {
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-white" />
             </div>
@@ -18,7 +16,7 @@ const PageNotFound = () => {
                 <div className="container">
                     <div className="flex items-center justify-between max-sm:flex-col gap-y-8">
                         <Image
-                            src={'/images/other/404-img.png'}
+                            src={'/images/error/404-img.jpg'}
                             width={2000}
                             height={2000}
                             alt='bg-img'

@@ -17,12 +17,12 @@ const Footer = () => {
                                 <div className='flex gap-3 mt-3'>
                                     <div className="flex flex-col ">
                                         <span className="text-button">Mail:</span>
-                                        <span className="text-button mt-3">Phone:</span>
+                                        {/* <span className="text-button mt-3">Phone:</span> */}
                                         <span className="text-button mt-3">Address:</span>
                                     </div>
                                     <div className="flex flex-col ">
-                                        <span className=''>parthivgandhi4@gmail.com</span>
-                                        <span className='mt-3'>+91 93211 82959</span>
+                                        <span className=''>customercare@vinimai.com</span>
+                                        {/* <span className='mt-3'>+91 93211 82959</span> */}
                                         <span className='mt-3 pt-px'>Bhayander West, Mumbai</span>
                                     </div>
                                 </div>
