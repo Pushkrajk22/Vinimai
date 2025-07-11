@@ -61,8 +61,17 @@ const Login = () => {
                         <div className="left md:w-1/2 w-full lg:pr-[60px] md:pr-[40px] md:border-r border-line">
                             <div className="heading4">Login</div>
                             <form className="md:mt-7 mt-4" onSubmit={handleSubmit}>
+                                
                                 <div className="email ">
-                                    <input className="border-line px-4 pt-3 pb-3 w-full rounded-lg" id="username" type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email ID *" required />
+                                    <input 
+                                        className="border-line px-4 pt-3 pb-3 w-full rounded-lg" 
+                                        id="username" 
+                                        type="text" 
+                                        value={email} 
+                                        onChange={(e) => setEmail(e.target.value)} 
+                                        placeholder="Email ID *" 
+                                        required 
+                                    />
                                 </div>
                                 <div className="pass mt-5">
                                     <input className="border-line px-4 pt-3 pb-3 w-full rounded-lg" id="password" type="password"  value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password *" required />
