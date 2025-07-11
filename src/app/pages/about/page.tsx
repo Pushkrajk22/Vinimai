@@ -31,7 +31,7 @@ We believe shopping should be smart, exciting, and guilt-free. That’s why we c
                             <div className="bg-img">
                                 <Image
                                     
-                                    src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/aboutus/about-us1.jpg'}
+                                    src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/about-us/about-us1.jpg'}
                                     width={2000}
                                     height={3000}
                                     alt='bg-img'
@@ -41,7 +41,7 @@ We believe shopping should be smart, exciting, and guilt-free. That’s why we c
                             <div className="bg-img">
                                 <Image
                                     
-                                    src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/about-us2.jpg'}
+                                    src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/about-us/about-us2.jpg'}
                                     width={2000}
                                     height={3000}
                                     alt='bg-img'
@@ -50,7 +50,7 @@ We believe shopping should be smart, exciting, and guilt-free. That’s why we c
                             </div>
                             <div className="bg-img">
                                 <Image
-                                    src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/about-us3.jpg'}
+                                    src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/about-us/about-us3.jpg'}
                                     width={2000}
                                     height={3000}
                                     alt='bg-img'
