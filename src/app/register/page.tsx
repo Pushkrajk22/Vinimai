@@ -4,9 +4,12 @@ import Link from 'next/link'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb'
 import Footer from '@/components/Footer/Footer'
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+// import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from "./firebase-config";
+import dynamic from 'next/dynamic';
+const CheckCircle = dynamic(() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
+
 
 async function registerUser(email: string, password: string): Promise<string | null> {
   try {
@@ -25,6 +28,7 @@ async function registerUser(email: string, password: string): Promise<string | n
 
 
 const Register = () => {
+    // const CheckCircle = dynamic(() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
     const [sent, setSent] = useState(false);
     const [name, setName] = useState('');
     const [step, setStep] = useState("");
