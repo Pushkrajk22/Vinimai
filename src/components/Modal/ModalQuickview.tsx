@@ -297,7 +297,7 @@ const ModalQuickview = () => {
                                             <div className="list grid grid-cols-6">
                                                 <div className="item flex items-center justify-center lg:px-3 px-1">
                                                     <Image
-                                                        src={'/images/payment/Frame-0.png'}
+                                                        src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/Payment-Gateways/Frame-0.png'}
                                                         width={500}
                                                         height={450}
                                                         alt='payment'
@@ -306,7 +306,7 @@ const ModalQuickview = () => {
                                                 </div>
                                                 <div className="item flex items-center justify-center lg:px-3 px-1">
                                                     <Image
-                                                        src={'/images/payment/Frame-1.png'}
+                                                        src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/Payment-Gateways/Frame-1.png'}
                                                         width={500}
                                                         height={450}
                                                         alt='payment'
@@ -315,7 +315,7 @@ const ModalQuickview = () => {
                                                 </div>
                                                 <div className="item flex items-center justify-center lg:px-3 px-1">
                                                     <Image
-                                                        src={'/images/payment/Frame-2.png'}
+                                                        src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/Payment-Gateways/Frame-2.png'}
                                                         width={500}
                                                         height={450}
                                                         alt='payment'
@@ -324,7 +324,7 @@ const ModalQuickview = () => {
                                                 </div>
                                                 <div className="item flex items-center justify-center lg:px-3 px-1">
                                                     <Image
-                                                        src={'/images/payment/Frame-3.png'}
+                                                        src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/Payment-Gateways/Frame-3.png'}
                                                         width={500}
                                                         height={450}
                                                         alt='payment'
@@ -333,7 +333,7 @@ const ModalQuickview = () => {
                                                 </div>
                                                 <div className="item flex items-center justify-center lg:px-3 px-1">
                                                     <Image
-                                                        src={'/images/payment/Frame-4.png'}
+                                                        src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/Payment-Gateways/Frame-4.png'}
                                                         width={500}
                                                         height={450}
                                                         alt='payment'
@@ -342,7 +342,7 @@ const ModalQuickview = () => {
                                                 </div>
                                                 <div className="item flex items-center justify-center lg:px-3 px-1">
                                                     <Image
-                                                        src={'/images/payment/Frame-5.png'}
+                                                        src={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/Payment-Gateways/Frame-5.png'}
                                                         width={500}
                                                         height={450}
                                                         alt='payment'
