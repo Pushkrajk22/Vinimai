@@ -254,7 +254,7 @@ const Register = () => {
     {mailSent === "false" ? (
         <button
         type="button"
-        onClick={() => sendEmailVerificationLink(email, password, confirmPassword, setError)}
+        onClick={() => sendEmailVerificationLink()}
         className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
         style={{ minWidth: '100px' }} // fixed min width so it doesn’t shrink too small
         >
