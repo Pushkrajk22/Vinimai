@@ -7,6 +7,7 @@ import Footer from '@/components/Footer/Footer'
 // import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from "./firebase-config";
+import { reload } from 'firebase/auth';
 import dynamic from 'next/dynamic';
 const CheckCircle = dynamic(() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
 const WarningCircle = dynamic(() =>
@@ -43,7 +44,10 @@ const X = dynamic(() =>
 
 const Register = () => {
     // const CheckCircle = dynamic(() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
-    const [sent, setSent] = useState(false);
+    const [mailSent, setMailSent] = useState("false");
+    const [isMailVerified, setIsMailVerified] = useState(false);
+    const [otpSent, setOTPSent] = useState(false);
+    const [otpVerified, setOTPVerified] = useState(false);
     const [name, setName] = useState('');
     const [step, setStep] = useState("");
     const [otp, setOTP] = useState('');
@@ -60,25 +64,67 @@ const Register = () => {
         console.log("inside tempclick");
     };
 
-    const handleSendMailVerification = () => {
-        // Your send link logic here
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setError('Please enter a valid email address.');
-            setSuccess('');
+    const sendEmailVerificationLink = async () => {
+        setError(""); // Clear any existing errors
+        // Step 1: Validate password match
+        if (password !== confirmPassword) {
+            setError("Passwords do not match");
             return;
         }
-        setSuccess('Verification link sent!');
-        console.log("inside handleMailSendVerification");
-        setError('');
-        setSent(true);
+        if (password === '' || confirmPassword === '') {
+                setError("Please fill in both password fields");
+                return;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email === '' || !emailRegex.test(email)) {
+            setError("Please enter a valid email address");
+            return;
+        }
+
+        try {
+            // Step 2: Create user
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Step 3: Send verification email
+            await sendEmailVerification(user);
+
+            // 4. Success feedback
+            setMailSent("true");
+            setSuccess("Verification email sent. Please check your inbox.");
+            console.log("Email verification sent to:", email);
+        } catch (error: any) {
+            // Step 4: Handle Firebase errors
+            setError(error.message);
+            console.error("Error: ", error);
+        }
     };
 
-    const handleVerifyEmail = () => {
-        // Your verify email logic here
-        setSuccess('Email verified successfully!');
-        console.log("inside handleVerifyEmail");
-        setError('');
-    };
+    const verifyEmailFromLink = async () => {
+        try {
+            // Reload the user's auth state to get the latest info
+            if (auth.currentUser) {
+            await reload(auth.currentUser);
+
+            if (auth.currentUser.emailVerified) {
+                // setMailSent(true);
+                console.log("Email verified successfully!");
+                setSuccess("Email verified successfully!");
+                setIsMailVerified(true);
+                setMailSent("verified");
+            } else {
+                setError("Email not verified yet. Please check your inbox.");
+            }
+            } else {
+            setError("No authenticated user found.");
+            }
+        } catch (error:any) {
+            setError("Verification check failed: " + error.message);
+            console.error(error);
+        }
+        };
+
+    
     const handleSubmit = async (e: React.FormEvent) => {
         console.log("inside handleSubmit");
         e.preventDefault();
@@ -205,23 +251,32 @@ const Register = () => {
       value={email}
       onChange={(e) => setEmail(e.target.value)}
     />
-    {!sent ? (
+    {mailSent === "false" ? (
         <button
         type="button"
-        onClick={handleSendMailVerification}
+        onClick={() => sendEmailVerificationLink(email, password, confirmPassword, setError)}
         className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
         style={{ minWidth: '100px' }} // fixed min width so it doesn’t shrink too small
         >
         Get Link
         </button>
-        ) : (
+        ) : mailSent === "true"? (
         <button
         type="button"
-        onClick={handleVerifyEmail}
+        onClick={verifyEmailFromLink}
         className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
         style={{ minWidth: '100px' }} // fixed min width so it doesn’t shrink too small
         >
         Verify
+        </button>
+        ) : (
+        <button
+            type="button"
+            disabled
+            className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
+            style={{ minWidth: '100px' }}
+        >
+            Verified
         </button>
     )}
   </div>
@@ -238,6 +293,7 @@ const Register = () => {
       value={phone}
       onChange={(e) => setPhone(e.target.value)}
     />
+    {!otpSent? (
     <button
       // onClick={handleGetOTP}
       className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
@@ -245,6 +301,15 @@ const Register = () => {
     >
       Get OTP
     </button>
+    ) : (
+    <button
+      // onClick={handleResendOTP}
+      className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
+      style={{ minWidth: '100px' }}
+      >
+        Sent
+      </button>
+    )}
   </div>
 </div>
 
@@ -260,6 +325,7 @@ const Register = () => {
       value={otp}
       onChange={(e) => setOTP(e.target.value)}
     />
+    {!otpVerified ? (
     <button
       // onClick={handleVerifyOTP}
       className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
@@ -267,6 +333,15 @@ const Register = () => {
     >
       Verify
     </button>
+    ) : (
+    <button
+      disabled
+      className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
+      style={{ minWidth: '100px' }}
+    >
+      Verified
+    </button>
+    )}
   </div>
 </div>
   
