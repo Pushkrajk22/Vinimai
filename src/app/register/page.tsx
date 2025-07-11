@@ -66,18 +66,19 @@ const Register = () => {
 
     const sendEmailVerificationLink = async () => {
         setError(""); // Clear any existing errors
+        setSuccess(""); // Clear any existing success messages
         // Step 1: Validate password match
-        if (password !== confirmPassword) {
-            setError("Passwords do not match");
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email === '' || !emailRegex.test(email)) {
+            setError("Please enter a valid email address");
             return;
         }
         if (password === '' || confirmPassword === '') {
                 setError("Please fill in both password fields");
                 return;
         }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (email === '' || !emailRegex.test(email)) {
-            setError("Please enter a valid email address");
+        if (password !== confirmPassword) {
+            setError("Passwords do not match");
             return;
         }
 
