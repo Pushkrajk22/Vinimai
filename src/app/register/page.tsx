@@ -9,6 +9,14 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 import { auth } from "./firebase-config";
 import dynamic from 'next/dynamic';
 const CheckCircle = dynamic(() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
+const WarningCircle = dynamic(() =>
+  import('@phosphor-icons/react').then((mod) => mod.WarningCircle),
+  { ssr: false }
+);
+const CheckSquare = dynamic(() =>
+  import('@phosphor-icons/react').then((mod) => mod.CheckSquare),
+  { ssr: false }
+);
 
 
 async function registerUser(email: string, password: string): Promise<string | null> {
@@ -24,6 +32,12 @@ async function registerUser(email: string, password: string): Promise<string | n
     return error.message;
   }
 }
+
+const X = dynamic(() =>
+  import('@phosphor-icons/react').then((mod) => mod.X),
+  { ssr: false }
+);
+
 
 
 
@@ -117,11 +131,11 @@ const Register = () => {
                                     style={{ backgroundColor: 'rgba(219, 68, 68, 0.1)' }} // custom red with 10% opacity
                                 >
                                     <div className="flex items-center">
-                                    <Icon.WarningCircle size={20} weight="bold" className="mr-2 text-red" />
+                                    <WarningCircle size={20} weight="bold" className="mr-2 text-red" />
                                     <span>{error}</span>
                                     </div>
                                     <button onClick={() => setError("")} className="ml-4 hover:text-red-700">
-                                    <Icon.X size={18} weight="bold" />
+                                    <X size={18} weight="bold" />
                                     </button>
                                 </div>
                                 )}
@@ -132,11 +146,11 @@ const Register = () => {
                                     style={{ backgroundColor: 'rgba(61, 171, 37, 0.15)', borderColor: '#3DAB25'  }}
                                 >
                                     <div className="flex items-center">
-                                    <Icon.CheckCircle size={20} weight="bold" className="mr-2 text-success" />
+                                    <CheckCircle size={20} weight="bold" className="mr-2 text-success" />
                                     <span>{success}</span>
                                     </div>
                                     <button onClick={() => setSuccess("")} className="ml-4 hover:text-green-900">
-                                    <Icon.X size={18} weight="bold" />
+                                    <X size={18} weight="bold" />
                                     </button>
                                 </div>
                                 )}
@@ -269,7 +283,7 @@ const Register = () => {
                                                                 setIsTermsChecked(checked);   
                                                                 }}
                                         />
-                                        <Icon.CheckSquare size={20} weight='fill' className='icon-checkbox' />
+                                        <CheckSquare size={20} weight='fill' className='icon-checkbox' />
                                     </div>
                                     <label htmlFor='remember' className="pl-2 cursor-pointer text-secondary2">I agree to the
                                         <Link href={'https://test.io/terms-of-service'} className='text-black hover:underline pl-1'>Terms of User</Link>
