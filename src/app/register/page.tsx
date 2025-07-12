@@ -8,6 +8,8 @@ import Footer from '@/components/Footer/Footer'
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { reload } from 'firebase/auth';
+import { ConfirmationResult } from 'firebase/auth';
+import { signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
 import dynamic from 'next/dynamic';
 const CheckCircle = dynamic(() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
 const WarningCircle = dynamic(() =>
@@ -18,6 +20,16 @@ const CheckSquare = dynamic(() =>
   import('@phosphor-icons/react').then((mod) => mod.CheckSquare),
   { ssr: false }
 );
+// declare global {
+//   interface Window {
+//     recaptchaVerifier: any;
+//   }
+// }
+declare global {
+  interface Window {
+    recaptchaVerifier?: RecaptchaVerifier;
+  }
+}
 
 
 async function registerUser(email: string, password: string): Promise<string | null> {
@@ -48,6 +60,7 @@ const Register = () => {
     const [isMailVerified, setIsMailVerified] = useState(false);
     const [otpSent, setOTPSent] = useState(false);
     const [otpVerified, setOTPVerified] = useState(false);
+    const [otpConfirmationResult, setOTPConfirmationResult] = useState<ConfirmationResult | null>(null);
     const [name, setName] = useState('');
     const [step, setStep] = useState("");
     const [otp, setOTP] = useState('');
@@ -60,9 +73,7 @@ const Register = () => {
     const [error, setError] = useState('');
     const [isTermsChecked, setIsTermsChecked] = useState(true);
 
-    const tempClick = () => {
-        console.log("inside tempclick");
-    };
+
 
     const sendEmailVerificationLink = async () => {
         setError(""); // Clear any existing errors
@@ -122,6 +133,59 @@ const Register = () => {
         } catch (error:any) {
             setError("Verification check failed: " + error.message);
             console.error(error);
+        }
+        };
+
+    const sendOTP = async () => {
+        setError("");
+        setSuccess("");
+        if (!phone) {
+            setError("Phone number is required");
+            return;
+        }
+
+        try {
+                if (!window.recaptchaVerifier) {
+
+                window.recaptchaVerifier = new RecaptchaVerifier(
+                    auth,
+                    "recaptcha-container",
+                    {
+                        size: "invisible",
+                        callback: () => console.log("reCAPTCHA solved"),
+                    }
+                );
+                const result = await signInWithPhoneNumber(auth, `+91${phone}`, window.recaptchaVerifier);
+                setOTPConfirmationResult(result);
+                setOTPSent(true);
+                setSuccess("OTP sent successfully!");
+            }
+    }
+        catch (error:any) {
+            setError("Failed to send OTP: " + error.message);
+        }
+        };
+
+    const verifyOTP = async () => {
+        setError("");
+        setSuccess("");
+        if (!otp) {
+            setError("OTP is required");
+            return;
+        }
+
+        if (!otpConfirmationResult) {
+            setError("OTP session expired. Please resend.");
+            return;
+        }
+
+        try {
+            const result = await otpConfirmationResult.confirm(otp);
+            setOTPVerified(true);
+            setSuccess("Phone number verified!");
+            console.log("Verified user:", result.user);
+        } catch (error) {
+            setError("Invalid OTP. Try again.");
         }
         };
 
@@ -296,16 +360,18 @@ const Register = () => {
     />
     {!otpSent? (
     <button
-      // onClick={handleGetOTP}
+      type="button"
       className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
       style={{ minWidth: '100px' }}
+      onClick={sendOTP}
     >
       Get OTP
     </button>
     ) : (
     <button
       // onClick={handleResendOTP}
-      className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
+      type="button"
+      className="bg-success text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
       style={{ minWidth: '100px' }}
       >
         Sent
@@ -329,13 +395,16 @@ const Register = () => {
     {!otpVerified ? (
     <button
       // onClick={handleVerifyOTP}
+      type="button"
       className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
       style={{ minWidth: '100px' }}
+      onClick={verifyOTP}
     >
       Verify
     </button>
     ) : (
     <button
+      type="button"
       disabled
       className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
       style={{ minWidth: '100px' }}
@@ -345,6 +414,9 @@ const Register = () => {
     )}
   </div>
 </div>
+
+  <div id="recaptcha-container"></div>
+
   
 
                                 <div className='flex items-center mt-5'>

@@ -36,13 +36,11 @@ const Login = () => {
                 );
 
                 console.log('Login successful:', response.data);
-                alert("Login successful!");
                 localStorage.setItem('token', response.data.access_token);
                 router.push('/')
 
             } catch (err: any) {
                 setError(err.response?.data?.message || 'Login failed');
-                alert("Login Failed");
             } finally {
                 setLoading(false);
             }

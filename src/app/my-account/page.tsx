@@ -10,9 +10,18 @@ import { motion } from 'framer-motion'
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import ProtectedRoute from '@/components/ProtectedRoutes/ProtectedRoutes';
+import ErrorNotification from '@/components/AlertNotifications/ErrorNotification';
+
+type UserDetails = {
+  name: string;
+  email: string;
+  phone: string;
+};
 
 const MyAccount = () => {
     const router = useRouter();
+    const [user, setUser] = useState<UserDetails | null>(null);
     const [activeTab, setActiveTab] = useState<string | undefined>('dashboard')
     const [activeAddress, setActiveAddress] = useState<string | null>('billing')
     const [activeOrders, setActiveOrders] = useState<string | undefined>('all')
@@ -30,11 +39,28 @@ const MyAccount = () => {
         setToken(storedToken)
         }, []);
 
+    useEffect(() => {
+  if (!token) return;
+
+  fetch("http://localhost:8000/api/profile/getUserDetails", {
+    method: "GET",
+    headers: {
+      Authorization: token,
+      Accept: "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((data: UserDetails) => setUser(data))
+    .catch((err) => console.error("Failed to fetch user details", err));
+}, [token]);
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError('');
         if (newPassword !== confirmedNewPassword) {
             setError("Passwords do not match");
-            setTimeout(() => setError(''), 3000);
+            // setTimeout(() => setError(''), 3000);
             setConfirmedNewPassword('');
             setNewPassword('');
             setCurrentPassword('');
@@ -81,7 +107,8 @@ const MyAccount = () => {
     }
 
     return (
-        <>
+        <ProtectedRoute>
+
 
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
@@ -102,8 +129,8 @@ const MyAccount = () => {
                                             className='md:w-[140px] w-[120px] md:h-[140px] h-[120px] rounded-full'
                                         />
                                     </div> */}
-                                    <div className="name heading6 mt-4 text-center">Tony Nguyen</div>
-                                    <div className="mail heading6 font-normal normal-case text-secondary text-center mt-1">hi.avitex@gmail.com</div>
+                                    <div className="name heading6 mt-4 text-center">{user?.name}</div>
+                                    <div className="mail heading6 font-normal normal-case text-secondary text-center mt-1">{user?.email}</div>
                                 </div>
                                 <div className="menu-tab w-full max-w-none lg:mt-10 mt-6">
                                     <Link href={'#!'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>
@@ -120,7 +147,7 @@ const MyAccount = () => {
                                     </Link>
                                     <Link href={'#!'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'setting' ? 'active' : ''}`} onClick={() => setActiveTab('setting')}>
                                         <Icon.GearSix size={20} />
-                                        <strong className="heading6">Settings</strong>
+                                        <strong className="heading6">Profile</strong>
                                     </Link>
                                     <Link href={'#!'} className="item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5" onClick={(e) => {e.preventDefault();localStorage.removeItem('token');router.push('/login');}}>
                                         <Icon.SignOut size={20} />
@@ -518,7 +545,7 @@ const MyAccount = () => {
                                     <div className={`form_address ${activeAddress === 'billing' ? 'block' : 'hidden'}`}>
                                         <div className='grid sm:grid-cols-2 gap-4 gap-y-5 mt-5'>
                                             <div className="first-name">
-                                                <label htmlFor="billingFirstName" className='caption1 capitalize'>First Name <span className='text-red'>*</span></label>
+                                                <label htmlFor="billingFirstName" className='caption1 capitalize'>Name <span className='text-red'>*</span></label>
                                                 <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="billingFirstName" type="text" required />
                                             </div>
                                             <div className="last-name">
@@ -644,22 +671,22 @@ const MyAccount = () => {
                                     </div>
                                     <div className='grid sm:grid-cols-2 gap-4 gap-y-5 mt-5'>
                                         <div className="first-name">
-                                            <label htmlFor="firstName" className='caption1 capitalize'>First Name <span className='text-red'>*</span></label>
-                                            <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="firstName" type="text" defaultValue={'Tony'} placeholder='First name' required />
+                                            <label htmlFor="firstName" className='caption1 capitalize'>Name <span className='text-red'>*</span></label>
+                                            <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="firstName" type="text" value={user?.name || ""} placeholder='First name' required readOnly />
                                         </div>
-                                        <div className="last-name">
+                                        {/* <div className="last-name">
                                             <label htmlFor="lastName" className='caption1 capitalize'>Last Name <span className='text-red'>*</span></label>
                                             <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="lastName" type="text" defaultValue={'Nguyen'} placeholder='Last name' required />
-                                        </div>
+                                        </div> */}
                                         <div className="phone-number">
                                             <label htmlFor="phoneNumber" className='caption1 capitalize'>Phone Number <span className='text-red'>*</span></label>
-                                            <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="phoneNumber" type="text" defaultValue={'(+12) 345 678 910'} placeholder="Phone number" required />
+                                            <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="phoneNumber" type="text" value={user?.phone || ""} placeholder="Phone number" required readOnly />
                                         </div>
                                         <div className="email">
                                             <label htmlFor="email" className='caption1 capitalize'>Email Address <span className='text-red'>*</span></label>
-                                            <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="email" type="email" defaultValue={'hi.avitex@gmail.com'} placeholder="Email address" required />
+                                            <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="email" type="email" value={user?.email || ""} placeholder="Email address" required readOnly/>
                                         </div>
-                                        <div className="gender">
+                                        {/* <div className="gender">
                                             <label htmlFor="gender" className='caption1 capitalize'>Gender <span className='text-red'>*</span></label>
                                             <div className="select-block mt-2">
                                                 <select className="border border-line px-4 py-3 w-full rounded-lg" id="gender" name="gender" defaultValue={'default'}>
@@ -674,7 +701,7 @@ const MyAccount = () => {
                                         <div className="birth">
                                             <label htmlFor="birth" className='caption1'>Day of Birth <span className='text-red'>*</span></label>
                                             <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="birth" type="date" placeholder="Day of Birth" required />
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className="heading5 pb-4 lg:mt-10 mt-6">Change Password</div>
                                     <div className="pass">
@@ -689,11 +716,8 @@ const MyAccount = () => {
                                         <label htmlFor="confirmPassword" className='caption1'>Confirm new password <span className='text-red'>*</span></label>
                                         <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="confirmPassword" type="password" value={confirmedNewPassword} onChange={(e) => {setConfirmedNewPassword(e.target.value);}} placeholder="Confirm Password *" required />
                                     </div>
-                                    {error && (
-                                      <div className="flex items-center border border-red-500 !text-red-500 px-4 py-2 mt-4 rounded-md text-sm">
-                                        <Icon.WarningCircle size={20} weight="bold" className="mr-2" color='red' />
-                                        <span>{error}</span>
-                                      </div>
+                                    {error && (                        
+                                      <ErrorNotification error={error} setError={setError} />
                                     )}
 
                                     {/* {showSuccess && (<div style={{
@@ -820,7 +844,8 @@ const MyAccount = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </ProtectedRoute>
+
     )
 }
 
