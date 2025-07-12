@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ThreeCircles } from 'react-loader-spinner';
 
 type Props = {
   children: React.ReactNode;
@@ -39,7 +40,25 @@ export default function ProtectedRoute({ children }: Props) {
     validateToken();
   }, [router]);
 
-  if (isValid === null) return <p></p>;
-
+if (isValid === null) {
+  return (
+    <div style={{
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100vh',
+}}>
+      <ThreeCircles
+        visible={true}
+        height="100"
+        width="100"
+        color="#4fa94d"
+        ariaLabel="three-circles-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+      />
+    </div>
+  );
+}
   return isValid ? <>{children}</> : null;
 }
