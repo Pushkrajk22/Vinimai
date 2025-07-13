@@ -11,6 +11,8 @@ import { reload } from 'firebase/auth';
 import { ConfirmationResult } from 'firebase/auth';
 import { signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
 import dynamic from 'next/dynamic';
+import SuccessAlert from '@/components/AlertNotifications/SuccessNotification';
+import ErrorNotification from '@/components/AlertNotifications/ErrorNotification'
 const CheckCircle = dynamic(() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
 const WarningCircle = dynamic(() =>
   import('@phosphor-icons/react').then((mod) => mod.WarningCircle),
@@ -237,33 +239,11 @@ const Register = () => {
                             {/* Display error/success components */}
 
                                 {error && (
-                                <div
-                                    className="flex items-center justify-between border px-4 py-2 mt-4 rounded-md text-sm text-red border-red"
-                                    style={{ backgroundColor: 'rgba(219, 68, 68, 0.1)' }} // custom red with 10% opacity
-                                >
-                                    <div className="flex items-center">
-                                    <WarningCircle size={20} weight="bold" className="mr-2 text-red" />
-                                    <span>{error}</span>
-                                    </div>
-                                    <button onClick={() => setError("")} className="ml-4 hover:text-red-700">
-                                    <X size={18} weight="bold" />
-                                    </button>
-                                </div>
+                                    <ErrorNotification error={error} setError={setError} />
                                 )}
 
                                 {success && (
-                                <div
-                                    className="flex items-center justify-between border px-4 py-2 mt-4 rounded-md text-sm shadow-sm text-success"
-                                    style={{ backgroundColor: 'rgba(61, 171, 37, 0.15)', borderColor: '#3DAB25'  }}
-                                >
-                                    <div className="flex items-center">
-                                    <CheckCircle size={20} weight="bold" className="mr-2 text-success" />
-                                    <span>{success}</span>
-                                    </div>
-                                    <button onClick={() => setSuccess("")} className="ml-4 hover:text-green-900">
-                                    <X size={18} weight="bold" />
-                                    </button>
-                                </div>
+                                    <SuccessAlert success={success} setSuccess={setSuccess} />
                                 )}
 
                             <form className="md:mt-7 mt-4" onSubmit={handleSubmit}>
@@ -338,7 +318,7 @@ const Register = () => {
         <button
             type="button"
             disabled
-            className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
+            className="bg-success text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
             style={{ minWidth: '100px' }}
         >
             Verified
@@ -406,7 +386,7 @@ const Register = () => {
     <button
       type="button"
       disabled
-      className="bg-black text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
+      className="bg-success text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
       style={{ minWidth: '100px' }}
     >
       Verified
