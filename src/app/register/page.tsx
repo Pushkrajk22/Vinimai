@@ -1,6 +1,9 @@
 'use client'
 import React, { useState } from 'react'
+import axios from 'axios';
 import Link from 'next/link'
+import { Check, CheckFat, Checks } from '@phosphor-icons/react';
+import { useRouter } from 'next/router';
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb'
 import Footer from '@/components/Footer/Footer'
@@ -84,14 +87,30 @@ const Register = () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (email === '' || !emailRegex.test(email)) {
             setError("Please enter a valid email address");
+            setSuccess("");
             return;
         }
         if (password === '' || confirmPassword === '') {
                 setError("Please fill in both password fields");
+                setSuccess("");
                 return;
         }
         if (password !== confirmPassword) {
             setError("Passwords do not match");
+            setSuccess("");
+            return;
+        }
+        // Check if user is already registered with same email
+        try {
+            const { data } = await axios.get('http://localhost:8000/api/loginService/checkEmailExists', { params: { email } });
+            if (data.exists) {
+                setError("Email is already registered");
+                setSuccess("");
+                return;
+            }
+        } catch {
+            setError("Error checking email availability");
+            setSuccess("");
             return;
         }
 
@@ -106,11 +125,14 @@ const Register = () => {
             // 4. Success feedback
             setMailSent("true");
             setSuccess("Verification email sent. Please check your inbox.");
+            setError("");
             console.log("Email verification sent to:", email);
         } catch (error: any) {
             // Step 4: Handle Firebase errors
             setError(error.message);
+            setSuccess("");
             console.error("Error: ", error);
+            return;
         }
     };
 
@@ -121,19 +143,21 @@ const Register = () => {
             await reload(auth.currentUser);
 
             if (auth.currentUser.emailVerified) {
-                // setMailSent(true);
-                console.log("Email verified successfully!");
                 setSuccess("Email verified successfully!");
+                setError("");
                 setIsMailVerified(true);
                 setMailSent("verified");
             } else {
                 setError("Email not verified yet. Please check your inbox.");
+                setSuccess("");
             }
             } else {
             setError("No authenticated user found.");
+            setSuccess("");
             }
         } catch (error:any) {
             setError("Verification check failed: " + error.message);
+            setSuccess("");
             console.error(error);
         }
         };
@@ -141,8 +165,22 @@ const Register = () => {
     const sendOTP = async () => {
         setError("");
         setSuccess("");
-        if (!phone) {
-            setError("Phone number is required");
+        if (!/^\d{10}$/.test(phone)) {
+            setError("Please enter a valid 10-digit phone number");
+            setSuccess("");
+            return;
+        }
+        // Check if user is already registered with same email
+        try {
+            const { data } = await axios.get('http://localhost:8000/api/loginService/checkPhoneExists', { params: { phone } });
+            if (data.exists) {
+                setError("Phone Number is already registered");
+                setSuccess("");
+                return;
+            }
+        } catch {
+            setError("Error checking Phone Number availability");
+            setSuccess("");
             return;
         }
 
@@ -161,10 +199,12 @@ const Register = () => {
                 setOTPConfirmationResult(result);
                 setOTPSent(true);
                 setSuccess("OTP sent successfully!");
+                setError("");
             }
     }
         catch (error:any) {
             setError("Failed to send OTP: " + error.message);
+            setSuccess("");
         }
         };
 
@@ -173,11 +213,13 @@ const Register = () => {
         setSuccess("");
         if (!otp) {
             setError("OTP is required");
+            setSuccess("");
             return;
         }
 
         if (!otpConfirmationResult) {
             setError("OTP session expired. Please resend.");
+            setSuccess("");
             return;
         }
 
@@ -185,40 +227,69 @@ const Register = () => {
             const result = await otpConfirmationResult.confirm(otp);
             setOTPVerified(true);
             setSuccess("Phone number verified!");
+            setError("");
             console.log("Verified user:", result.user);
         } catch (error) {
             setError("Invalid OTP. Try again.");
+            setSuccess("");
         }
         };
 
     
     const handleSubmit = async (e: React.FormEvent) => {
-        console.log("inside handleSubmit");
         e.preventDefault();
         setError('');
         setSuccess('');
 
-        // if (password !== confirmPassword) {
-        //     setError("Passwords do not match");
-        //     setTimeout(() => setError(''), 3000);
-        //     setPassword('');
-        //     setConfirmPassword('');
-        //     return;
-        // }
+        if (password !== confirmPassword) {
+            setError("Passwords do not match");
+            setTimeout(() => setError(''), 3000);
+            setPassword('');
+            setConfirmPassword('');
+            return;
+        }
         
-        // if (!isTermsChecked) {
-        //     setError("You must agree to the terms to register.");
-        //     setTimeout(() => setError(''), 3000);
-        //     return;
-        // }
+        if (!isTermsChecked) {
+            setError("You must agree to the terms to register.");
+            setTimeout(() => setError(''), 3000);
+            return;
+        }
 
-        // const errMsg = await registerUser(email, password);
-        // if (errMsg) {
-        // setError(errMsg);
-        // } else {
-        // setSuccess("Verification email sent. Please check your inbox.");
-        // setTimeout(() => setSuccess(''), 3000);
-        // }
+        if (!isMailVerified) {
+            setError("Please verify your email before proceeding.");
+            setSuccess("");
+        }
+        if (!otpVerified) {
+            setError("Please verify your phone number before proceeding.");
+            setSuccess("");
+        }
+
+        try {
+            const response = await axios.post('http://localhost:8000/api/loginService/register', {
+                name,
+                email,
+                phone: `+91${phone}`,
+                password
+            }, {
+                headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+                }
+            });
+            setSuccess('Registration successful!');
+            setError("");
+            const router = useRouter();
+            router.push('/login');
+
+            } catch (err:any) {
+                const apiMessage = err.response?.data?.message || err.response?.data?.detail;
+                if (apiMessage) {
+                    setError(apiMessage);
+                } else {
+                    setError('An unexpected error occurred.');
+                }
+                setSuccess("");
+            }
     };
 
 
@@ -321,7 +392,7 @@ const Register = () => {
             className="bg-success text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
             style={{ minWidth: '100px' }}
         >
-            Verified
+            Verified  <Checks size={20} weight="bold" className='inline-block' />
         </button>
     )}
   </div>
@@ -354,7 +425,7 @@ const Register = () => {
       className="bg-success text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
       style={{ minWidth: '100px' }}
       >
-        Sent
+        Sent  <Checks size={20} weight="bold" className='inline-block' />
       </button>
     )}
   </div>
@@ -389,7 +460,7 @@ const Register = () => {
       className="bg-success text-white px-5 py-3 rounded-lg text-sm hover:bg-green-600 transition flex-shrink-0 whitespace-nowrap"
       style={{ minWidth: '100px' }}
     >
-      Verified
+      Verified  <Checks size={20} weight="bold" className='inline-block' />
     </button>
     )}
   </div>
