@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoutes/ProtectedRoutes';
 import ErrorNotification from '@/components/AlertNotifications/ErrorNotification';
+import SuccessAlert from '@/components/AlertNotifications/SuccessNotification'
 
 type UserDetails = {
   name: string;
@@ -22,7 +23,7 @@ type UserDetails = {
 const MyAccount = () => {
     const router = useRouter();
     const [user, setUser] = useState<UserDetails | null>(null);
-    const [activeTab, setActiveTab] = useState<string | undefined>('dashboard')
+    const [activeTab, setActiveTab] = useState<string | undefined>('') //dashboard
     const [activeAddress, setActiveAddress] = useState<string | null>('billing')
     const [activeOrders, setActiveOrders] = useState<string | undefined>('all')
     const [openDetail, setOpenDetail] = useState<boolean | undefined>(false)
@@ -31,35 +32,145 @@ const MyAccount = () => {
     const [confirmedNewPassword, setConfirmedNewPassword] = useState('');
     const [error, setError] = useState('');
     const [token, setToken] = useState<string | null>(null);
-    // const [showSuccess, setShowSuccess] = useState(true);
+    const [success, setSuccess] = useState("");
+
+    //Form Variables for address
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [company, setCompany] = useState('');
+    const [country, setCountry] = useState('');
+    const [streetAddress, setStreetAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [postalCode, setPostalCode] = useState('');
+    const [shippingPhone, setShippingPhone] = useState('');
+    const [shippingEmail, setShippingEmail] = useState('');
+
 
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         setToken(storedToken)
+
         }, []);
 
     useEffect(() => {
-  if (!token) return;
+        if (!token) return;
 
-  fetch("http://localhost:8000/api/profile/getUserDetails", {
-    method: "GET",
-    headers: {
-      Authorization: token,
-      Accept: "application/json",
-    },
-  })
-    .then((res) => res.json())
-    .then((data: UserDetails) => setUser(data))
-    .catch((err) => console.error("Failed to fetch user details", err));
-}, [token]);
+        fetch("http://localhost:8000/api/profile/getUserDetails", {
+            method: "GET",
+            headers: {
+            Authorization: token,
+            Accept: "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data: UserDetails) => setUser(data))
+            .catch((err) => console.error("Failed to fetch user details", err));
+        }, [token]);
 
+        useEffect(() => {
+
+                fetchAddress();
+        }, []);
+
+        const fetchAddress = async () => {
+            console.log('Fetching address details...');
+            const storedToken = localStorage.getItem('token');
+            setToken(storedToken)
+            console.log('storedToken:', storedToken);
+            console.log('token:', token);
+            try {
+                const response = await axios.get('http://localhost:8000/api/profile/getAddress', {
+                    headers: {
+                        'Authorization': storedToken || token, // Use storedToken if available
+                        'Accept': 'application/json',
+                    },
+                });
+
+                const data = response.data;
+
+                if (data) {
+                    setFirstName(data.first_name || '');
+                    setLastName(data.last_name || '');
+                    setCompany(data.company_name || '');
+                    setCountry(data.country || '');
+                    setStreetAddress(data.street_address || '');
+                    setCity(data.city || '');
+                    setState(data.state || '');
+                    setPostalCode(data.postal_code || '');
+                    setShippingPhone(data.phone || '');
+                    setShippingEmail(data.shipping_email || '');
+                }
+            } catch (error:any) {
+                console.error('Error fetching address:', error);
+                setError(`Failed to fetch address details: ${error.message}`);
+            }
+        };
+
+
+    const handleSubmitAddress = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // Basic required field validation
+        if (
+            !firstName ||
+            !lastName ||
+            !country ||
+            !streetAddress ||
+            !city ||
+            !state ||
+            !postalCode ||
+            !shippingPhone ||
+            !shippingEmail
+        ) {
+            setError('Please fill in all required fields.');
+            return;
+        }
+
+        const payload = {
+            userid: user.email,
+            first_name: firstName,
+            last_name: lastName,
+            company_name: company,
+            country: country,
+            street_address: streetAddress,
+            city: city,
+            state: state,
+            postal_code: postalCode,
+            phone: shippingPhone,
+            shipping_email: shippingEmail
+        };
+
+        try {
+            const response = await axios.put(
+                'http://localhost:8000/api/profile/addOrUpdateAddress',
+                payload,
+                {
+                    headers: {
+                        'Authorization': token || localStorage.getItem('token'), // Use token from state or localStorage
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }
+            );
+
+            setSuccess('Address updated successfully!');
+            setError(''); // Clear any previous errors
+            console.log('API response:', response.data);
+        } catch (error: any) {
+            console.error('Error updating address:', error);
+            setSuccess(''); // Clear any previous success messages
+            setError(`Failed to update address: ${error?.response?.data?.message || error.message}`);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
         if (newPassword !== confirmedNewPassword) {
             setError("Passwords do not match");
+            setSuccess('');
             // setTimeout(() => setError(''), 3000);
             setConfirmedNewPassword('');
             setNewPassword('');
@@ -82,7 +193,7 @@ const MyAccount = () => {
             }
             );
             console.log('Password changed successfully', response.data);
-            alert('Password changed successfully!');
+            setSuccess('Password changed successfully!');
             // setShowSuccess(true);
 
             // Clear form fields
@@ -92,8 +203,8 @@ const MyAccount = () => {
         } catch (err: any) {
             console.error(err);
             const errorMsg = err.response?.data?.message || 'Password change failed';
-            setError(errorMsg);
-            alert(errorMsg);    
+            setError(`Error Occured: ${errorMsg}`);
+            setSuccess('');
         }
 
     };
@@ -532,9 +643,17 @@ const MyAccount = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={`tab_address text-content w-full p-7 border border-line rounded-xl ${activeTab === 'address' ? 'block' : 'hidden'}`}>
-                                <form>
-                                    <button
+
+                            <div className={`tab_address text-content w-full p-7 border border-line rounded-xl ${activeTab === '' ? 'block' : 'hidden'}`}>
+                                {error && (
+                                    <ErrorNotification error={error} setError={setError} />
+                                )}
+
+                                {success && (
+                                    <SuccessAlert success={success} setSuccess={setSuccess} />
+                                )}
+                                <form onSubmit={handleSubmitAddress}>
+                                    {/* <button
                                         type='button'
                                         className={`tab_btn flex items-center justify-between w-full pb-1.5 border-b border-line ${activeAddress === 'billing' ? 'active' : ''}`}
                                         onClick={() => handleActiveAddress('billing')}
@@ -585,7 +704,7 @@ const MyAccount = () => {
                                                 <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="billingEmail" type="email" required />
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <button
                                         type='button'
                                         className={`tab_btn flex items-center justify-between w-full mt-10 pb-1.5 border-b border-line ${activeAddress === 'shipping' ? 'active' : ''}`}
@@ -594,47 +713,48 @@ const MyAccount = () => {
                                         <strong className="heading6">Shipping address</strong>
                                         <Icon.CaretDown className='text-2xl ic_down duration-300' />
                                     </button>
-                                    <div className={`form_address ${activeAddress === 'shipping' ? 'block' : 'hidden'}`}>
+                                    {/* <div className={`form_address ${activeAddress === 'shipping' ? 'block' : 'hidden'}`}> */}
+                                    <div>
                                         <div className='grid sm:grid-cols-2 gap-4 gap-y-5 mt-5'>
                                             <div className="first-name">
                                                 <label htmlFor="shippingFirstName" className='caption1 capitalize'>First Name <span className='text-red'>*</span></label>
-                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingFirstName" type="text" required />
+                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingFirstName" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
                                             </div>
                                             <div className="last-name">
                                                 <label htmlFor="shippingLastName" className='caption1 capitalize'>Last Name <span className='text-red'>*</span></label>
-                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingLastName" type="text" required />
+                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingLastName" type="text" value={lastName} onChange={(e)=> setLastName(e.target.value)} required/>
                                             </div>
                                             <div className="company">
                                                 <label htmlFor="shippingCompany" className='caption1 capitalize'>Company name (optional)</label>
-                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingCompany" type="text" required />
+                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingCompany" type="text" value={company} onChange={(e)=> setCompany(e.target.value)}  required />
                                             </div>
                                             <div className="country">
                                                 <label htmlFor="shippingCountry" className='caption1 capitalize'>Country / Region <span className='text-red'>*</span></label>
-                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingCountry" type="text" required />
+                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingCountry" type="text" value={country} onChange={(e)=> setCountry(e.target.value)}  required />
                                             </div>
                                             <div className="street">
                                                 <label htmlFor="shippingStreet" className='caption1 capitalize'>street address <span className='text-red'>*</span></label>
-                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingStreet" type="text" required />
+                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingStreet" type="text"  value={streetAddress} onChange={(e)=> setStreetAddress(e.target.value)}  required />
                                             </div>
                                             <div className="city">
                                                 <label htmlFor="shippingCity" className='caption1 capitalize'>Town / city <span className='text-red'>*</span></label>
-                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingCity" type="text" required />
+                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingCity" type="text" value={city} onChange={(e)=> setCity(e.target.value)}  required />
                                             </div>
                                             <div className="state">
                                                 <label htmlFor="shippingState" className='caption1 capitalize'>state <span className='text-red'>*</span></label>
-                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingState" type="text" required />
+                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingState" type="text" value={state} onChange={(e)=> setState(e.target.value)}  required />
                                             </div>
                                             <div className="zip">
                                                 <label htmlFor="shippingZip" className='caption1 capitalize'>ZIP <span className='text-red'>*</span></label>
-                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingZip" type="text" required />
+                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingZip" type="text" value={postalCode} onChange={(e)=> setPostalCode(e.target.value)}  required />
                                             </div>
                                             <div className="phone">
                                                 <label htmlFor="shippingPhone" className='caption1 capitalize'>Phone <span className='text-red'>*</span></label>
-                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingPhone" type="text" required />
+                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingPhone" type="text"  value={shippingPhone} onChange={(e)=> setShippingPhone(e.target.value)}  required />
                                             </div>
                                             <div className="email">
                                                 <label htmlFor="shippingEmail" className='caption1 capitalize'>Email <span className='text-red'>*</span></label>
-                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingEmail" type="email" required />
+                                                <input className="border-line mt-2 px-4 py-3 w-full rounded-lg" id="shippingEmail" type="email"  value={shippingEmail} onChange={(e)=> setShippingEmail(e.target.value)}  required />
                                             </div>
                                         </div>
                                     </div>
