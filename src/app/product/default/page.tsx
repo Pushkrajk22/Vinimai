@@ -14,6 +14,7 @@ import Default from '@/components/Product/Detail/Default';
 import Footer from '@/components/Footer/Footer'
 import { ProductType } from '@/type/ProductType'
 import productData from '@/data/Product.json'
+import Breadcrumb from '@/components/Breadcrumb/Breadcrumb';
 
 const ProductDefault = () => {
     const searchParams = useSearchParams()
@@ -29,6 +30,8 @@ const ProductDefault = () => {
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-white" />
                 <BreadcrumbProduct data={productData} productPage='default' productId={productId} />
+                {/* <Breadcrumb heading='Product' subHeading={productId} /> */}
+
             </div>
             <Default data={productData} productId={productId} />
             <Footer />

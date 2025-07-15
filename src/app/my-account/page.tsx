@@ -23,7 +23,7 @@ type UserDetails = {
 const MyAccount = () => {
     const router = useRouter();
     const [user, setUser] = useState<UserDetails | null>(null);
-    const [activeTab, setActiveTab] = useState<string | undefined>('') //dashboard
+    const [activeTab, setActiveTab] = useState<string | undefined>('dashboard') //dashboard
     const [activeAddress, setActiveAddress] = useState<string | null>('billing')
     const [activeOrders, setActiveOrders] = useState<string | undefined>('all')
     const [openDetail, setOpenDetail] = useState<boolean | undefined>(false)
@@ -75,11 +75,8 @@ const MyAccount = () => {
         }, []);
 
         const fetchAddress = async () => {
-            console.log('Fetching address details...');
             const storedToken = localStorage.getItem('token');
             setToken(storedToken)
-            console.log('storedToken:', storedToken);
-            console.log('token:', token);
             try {
                 const response = await axios.get('http://localhost:8000/api/profile/getAddress', {
                     headers: {
@@ -157,7 +154,6 @@ const MyAccount = () => {
 
             setSuccess('Address updated successfully!');
             setError(''); // Clear any previous errors
-            console.log('API response:', response.data);
         } catch (error: any) {
             console.error('Error updating address:', error);
             setSuccess(''); // Clear any previous success messages
@@ -192,7 +188,6 @@ const MyAccount = () => {
                 },
             }
             );
-            console.log('Password changed successfully', response.data);
             setSuccess('Password changed successfully!');
             // setShowSuccess(true);
 
@@ -644,7 +639,7 @@ const MyAccount = () => {
                                 </div>
                             </div>
 
-                            <div className={`tab_address text-content w-full p-7 border border-line rounded-xl ${activeTab === '' ? 'block' : 'hidden'}`}>
+                            <div className={`tab_address text-content w-full p-7 border border-line rounded-xl ${activeTab === 'address' ? 'block' : 'hidden'}`}>
                                 {error && (
                                     <ErrorNotification error={error} setError={setError} />
                                 )}

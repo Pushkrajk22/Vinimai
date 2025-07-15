@@ -5,7 +5,6 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation';
-import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import ShopFilterOptions from '@/components/Shop/ShopFilterOptions'
 import productData from '@/data/Product.json'
@@ -18,7 +17,6 @@ export default function FilterOptions() {
 
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
             </div>

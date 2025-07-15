@@ -219,8 +219,8 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                         >
                                             <Image
                                                 src={item}
-                                                width={1000}
-                                                height={1000}
+                                                width={100}
+                                                height={100}
                                                 alt='prd-img'
                                                 className='w-full aspect-[3/4] object-cover rounded-xl'
                                                 onClick={(e) => {
@@ -258,9 +258,9 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                 <span className='caption1 text-secondary'>(1.234 reviews)</span>
                             </div> */}
                             <div className="flex items-center gap-3 flex-wrap mt-5 pb-6 border-b border-line">
-                                <div className="product-price heading5">${productMain.price}.00</div>
+                                <div className="product-price heading5">₹{productMain.price}.00</div>
                                 <div className='w-px h-4 bg-line'></div>
-                                <div className="product-origin-price font-normal text-secondary2"><del>${productMain.originPrice}.00</del></div>
+                                <div className="product-origin-price font-normal text-secondary2"><del>₹{productMain.originPrice}.00</del></div>
                                 {productMain.originPrice && (
                                     <div className="product-sale caption2 font-semibold bg-green px-3 py-0.5 inline-block rounded-full">
                                         -{percentSale}%
@@ -296,17 +296,18 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                     </div> */}
                                 </div>
                                 <div className="choose-size mt-5">
-                                    <div className="heading flex items-center justify-between">
-                                        <div className="text-title">Size: <span className='text-title size'>{activeSize}</span></div>
+                                    <div className="heading flex items-center ">
+                                        <div className="text-title">Size:  <span className='text-title size'>{activeSize}</span></div>
+                                        <div className='text-left'>This is size description aisfdab fuwgfyuwrt8hc3trgregrb987ty98ryufde8biu</div>
                                         {/* <div
                                             className="caption1 size-guide text-red underline cursor-pointer"
                                             onClick={handleOpenSizeGuide}
                                         >
                                             Size Guide
                                         </div> */}
-                                        <ModalSizeguide data={productMain} isOpen={openSizeGuide} onClose={handleCloseSizeGuide} />
+                                        {/* <ModalSizeguide data={productMain} isOpen={openSizeGuide} onClose={handleCloseSizeGuide} /> */}
                                     </div>
-                                    <div className="list-size flex items-center gap-2 flex-wrap mt-3">
+                                    {/* <div className="list-size flex items-center gap-2 flex-wrap mt-3">
                                         {productMain.sizes.map((item, index) => (
                                             <div
                                                 className={`size-item ${item === 'freesize' ? 'px-3 py-2' : 'w-12 h-12'} flex items-center justify-center text-button rounded-full bg-white border border-line ${activeSize === item ? 'active' : ''}`}
@@ -316,11 +317,11 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                                 {item}
                                             </div>
                                         ))}
-                                    </div>
+                                    </div> */}
                                 </div>
-                                <div className="text-title mt-5">Quantity:</div>
+                                {/* <div className="text-title mt-5">Quantity:</div> */}
                                 <div className="choose-quantity flex items-center lg:justify-between gap-5 gap-y-3 mt-3">
-                                    <div className="quantity-block md:p-3 max-md:py-1.5 max-md:px-3 flex items-center justify-between rounded-lg border border-line sm:w-[180px] w-[120px] flex-shrink-0">
+                                    {/* <div className="quantity-block md:p-3 max-md:py-1.5 max-md:px-3 flex items-center justify-between rounded-lg border border-line sm:w-[180px] w-[120px] flex-shrink-0">
                                         <Icon.Minus
                                             size={20}
                                             onClick={handleDecreaseQuantity}
@@ -332,22 +333,22 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                             onClick={handleIncreaseQuantity}
                                             className='cursor-pointer'
                                         />
-                                    </div>
+                                    </div> */}
                                     <div onClick={handleAddToCart} className="button-main w-full text-center bg-white text-black border border-black">Add To Cart</div>
                                 </div>
                                 <div className="button-block mt-5">
-                                    <div className="button-main w-full text-center">Buy It Now</div>
+                                    <div className="button-main w-full text-center">Buy Now</div>
                                 </div>
-                                <div className="button-block mt-5">
+                                {/* <div className="button-block mt-5">
                                     <div className="button-main w-full text-center">Rent It Now</div>
-                                </div>
+                                </div> */}
                                 <div className="flex items-center lg:gap-20 gap-8 mt-5 pb-6 border-b border-line">
-                                    <div className="compare flex items-center gap-3 cursor-pointer" onClick={(e) => { e.stopPropagation(); handleAddToCompare() }}>
+                                    {/* <div className="compare flex items-center gap-3 cursor-pointer" onClick={(e) => { e.stopPropagation(); handleAddToCompare() }}>
                                         <div className="compare-btn md:w-12 md:h-12 w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white">
                                             <Icon.ArrowsCounterClockwise className='heading6' />
                                         </div>
                                         <span>Compare</span>
-                                    </div>
+                                    </div> */}
                                     <div className="share flex items-center gap-3 cursor-pointer">
                                         <div className="share-btn md:w-12 md:h-12 w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white">
                                             <Icon.ShareNetwork weight='fill' className='heading6' />
@@ -360,10 +361,6 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                         <div className="flex items-center gap-1">
                                             <Icon.ArrowClockwise className='body1' />
                                             <div className="text-title">Delivery & Return</div>
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            <Icon.Question className='body1' />
-                                            <div className="text-title">Ask A Question</div>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-1 mt-3">
@@ -386,6 +383,10 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                     <div className="flex items-center gap-1 mt-3">
                                         <div className="text-title">Tag:</div>
                                         <div className="text-secondary">{productMain.type}</div>
+                                    </div>
+                                    <div className="flex items-center gap-1 mt-3 cursor-pointer">
+                                            <Icon.Question className='body1' />
+                                            <div className="text-title">Ask A Question</div>
                                     </div>
                                 </div>
                                 <div className="list-payment mt-7">

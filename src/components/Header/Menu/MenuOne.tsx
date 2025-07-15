@@ -14,6 +14,7 @@ import { useModalWishlistContext } from '@/context/ModalWishlistContext';
 import { useModalSearchContext } from '@/context/ModalSearchContext';
 import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 interface Props {
     props: string;
@@ -67,6 +68,38 @@ const MenuOne: React.FC<Props> = ({ props }) => {
         router.push(`/shop/breadcrumb1?type=${type}`);
     };
 
+
+    const handleLoginDashboard = async () => {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                router.push('/login'); // No token → redirect to login
+                return;
+            }
+
+            try {
+                const response = await axios.get(
+                'http://localhost:8000/api/loginService/checkToken',
+                {
+                    params: { token },
+                    headers: {Accept: 'application/json', },
+                }
+                );
+
+                const { isValid } = response.data;
+
+                if (isValid) {
+                router.push('/my-account'); // Valid token → go to dashboard
+                } else {
+                router.push('/login'); // Invalid token → go to login
+                }
+            } catch (error) {
+                console.error('Token validation error:', error);
+                router.push('/login'); // On error → go to login
+            }
+        };
+
+
     return (
         <>
             <div className={`header-menu style-one ${fixedHeader ? 'fixed' : 'absolute'} top-0 left-0 right-0 w-full md:h-[74px] h-[56px] ${props}`}>
@@ -81,13 +114,13 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                             </Link>
                             <div className="menu-main h-full max-lg:hidden">
                                 <ul className='flex items-center gap-8 h-full'>
-                                    <li className='h-full relative'>
-                                        <Link
+                                    {/* <li className='h-full relative'> */}
+                                        {/* <Link
                                             href="#!"
                                             className={`text-button-uppercase duration-300 h-full flex items-center justify-center gap-1 ${pathname === '/' ? 'active' : ''}`}
                                         >
                                             Demo
-                                        </Link>
+                                        </Link> */}
                                         {/* <div className="sub-menu py-3 px-5 -left-10 w-max absolute grid grid-cols-4 gap-5 bg-white rounded-b-xl">
                                             <ul>
                                                 <li>
@@ -213,11 +246,11 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                 </li>
                                             </ul>
                                         </div> */}
-                                    </li>
-                                    <li className='h-full'>
-                                        <Link href="#!" className='text-button-uppercase duration-300 h-full flex items-center justify-center'>
+                                    {/* </li> */}
+                                    {/* <li className='h-full'> */}
+                                        {/* <Link href="#!" className='text-button-uppercase duration-300 h-full flex items-center justify-center'>
                                             Features
-                                        </Link>
+                                        </Link> */}
                                         {/* <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                                             <div className="container">
                                                 <div className="flex justify-between py-8">
@@ -576,10 +609,10 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                 </div>
                                             </div>
                                         </div> */}
-                                    </li>
+                                    {/* </li> */}
                                     <li className='h-full'>
                                         <Link
-                                            href="#!"
+                                            href="/shop/filter-options"
                                             className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/shop/') ? 'active' : ''}`}
                                         >
                                             Shop
@@ -797,13 +830,13 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                             </div>
                                         </div> */}
                                     </li>
-                                    <li className='h-full'>
-                                        <Link
+                                    {/* <li className='h-full'> */}
+                                        {/* <Link
                                             href="#!"
                                             className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/product/') ? 'active' : ''}`}
                                         >
                                             Product
-                                        </Link>
+                                        </Link> */}
                                         {/* <div className="mega-menu absolute top-[74px] left-0 bg-white w-screen">
                                             <div className="container">
                                                 <div className="nav-link w-full flex justify-between py-8">
@@ -1014,11 +1047,11 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                 </div>
                                             </div>
                                         </div> */}
-                                    </li>
-                                    <li className='h-full relative'>
-                                        <Link href="#!" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/blog') ? 'active' : ''}`}>
+                                    {/* </li> */}
+                                    {/* <li className='h-full relative'> */}
+                                        {/* <Link href="#!" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/blog') ? 'active' : ''}`}>
                                             Blog
-                                        </Link>
+                                        </Link> */}
                                         {/* <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
                                             <ul className='w-full'>
                                                 <li>
@@ -1048,7 +1081,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                 </li>
                                             </ul>
                                         </div> */}
-                                    </li>
+                                    {/* </li>  */}
                                     <li className='h-full relative'>
                                         <Link href="#!" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages') ? 'active' : ''}`}>
                                             Pages
@@ -1107,7 +1140,12 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         <Link href="/pages/faqs" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages/faqs') ? 'active' : ''}`}>
                                             FAQs
                                         </Link>
-                                    </li>                                    
+                                    </li>  
+                                    <li className='h-full relative'>
+                                        <Link href="/product/default" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages/coming-soon') ? 'active' : ''}`}>
+                                            Product Details
+                                        </Link>   
+                                    </li>                               
                                 </ul>
                             </div>
                         </div>
@@ -1118,8 +1156,8 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                             </div> */}
                             <div className="list-action flex items-center gap-4">
                                 <div className="user-icon flex items-center justify-center cursor-pointer">
-                                    <Icon.User size={24} color='black' onClick={handleLoginPopup} />
-                                    <div
+                                    <Icon.User size={24} color='black' onClick={handleLoginDashboard} />
+                                    {/* <div
                                         className={`login-popup absolute top-[74px] w-[320px] p-7 rounded-xl bg-white box-shadow-sm 
                                             ${openLoginPopup ? 'open' : ''}`}
                                     >
@@ -1130,7 +1168,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         <Link href={'/my-account'} className="button-main bg-white text-black border border-black w-full text-center">Dashboard</Link>
                                         <div className="bottom mt-4 pt-4 border-t border-line"></div>
                                         <Link href={'#!'} className='body1 hover:underline'>Support</Link>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div className="max-md:hidden wishlist-icon flex items-center cursor-pointer" onClick={openModalWishlist}>
                                     <Icon.Heart size={24} color='black' />
