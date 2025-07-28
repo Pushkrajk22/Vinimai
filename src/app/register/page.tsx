@@ -185,7 +185,7 @@ const Register = () => {
         }
 
         try {
-                if (!window.recaptchaVerifier) {
+                if (typeof window !== 'undefined' && !window.recaptchaVerifier) {
 
                 window.recaptchaVerifier = new RecaptchaVerifier(
                     auth,
@@ -258,10 +258,12 @@ const Register = () => {
         if (!isMailVerified) {
             setError("Please verify your email before proceeding.");
             setSuccess("");
+            return;
         }
         if (!otpVerified) {
             setError("Please verify your phone number before proceeding.");
             setSuccess("");
+            return;
         }
 
         try {
@@ -478,8 +480,7 @@ const Register = () => {
                                             checked={isTermsChecked}
                                             onChange={(e) => {setIsTermsChecked(e.target.checked); 
                                                                 const checked = e.target.checked;   
-                                                                setIsTermsChecked(checked);   
-                                                                }}
+                                                              }}
                                         />
                                         <CheckSquare size={20} weight='fill' className='icon-checkbox' />
                                     </div>
