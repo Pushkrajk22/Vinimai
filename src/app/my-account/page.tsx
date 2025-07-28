@@ -126,7 +126,7 @@ const MyAccount = () => {
         }
 
         const payload = {
-            userid: user.email,
+            userid: user!.email,
             first_name: firstName,
             last_name: lastName,
             company_name: company,
