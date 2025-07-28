@@ -1,4 +1,6 @@
-'use client'
+'use client';
+export const dynamic = 'force-dynamic';
+
 import React, { useState } from 'react'
 import axios from 'axios';
 import Link from 'next/link'
@@ -13,15 +15,15 @@ import { auth } from "./firebase-config";
 import { reload } from 'firebase/auth';
 import { ConfirmationResult } from 'firebase/auth';
 import { signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
-import dynamic from 'next/dynamic';
+import nextDynamic  from 'next/dynamic';
 import SuccessAlert from '@/components/AlertNotifications/SuccessNotification';
 import ErrorNotification from '@/components/AlertNotifications/ErrorNotification'
-const CheckCircle = dynamic(() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
-const WarningCircle = dynamic(() =>
+const CheckCircle = nextDynamic (() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
+const WarningCircle = nextDynamic (() =>
   import('@phosphor-icons/react').then((mod) => mod.WarningCircle),
   { ssr: false }
 );
-const CheckSquare = dynamic(() =>
+const CheckSquare = nextDynamic (() =>
   import('@phosphor-icons/react').then((mod) => mod.CheckSquare),
   { ssr: false }
 );
@@ -51,7 +53,7 @@ async function registerUser(email: string, password: string): Promise<string | n
   }
 }
 
-const X = dynamic(() =>
+const X = nextDynamic (() =>
   import('@phosphor-icons/react').then((mod) => mod.X),
   { ssr: false }
 );
@@ -60,7 +62,7 @@ const X = dynamic(() =>
 
 
 const Register = () => {
-    // const CheckCircle = dynamic(() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
+    // const CheckCircle = nextDynamic (() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
     const [mailSent, setMailSent] = useState("false");
     const [isMailVerified, setIsMailVerified] = useState(false);
     const [otpSent, setOTPSent] = useState(false);
