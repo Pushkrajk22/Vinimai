@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import Link from 'next/link'
 import { Check, CheckFat, Checks } from '@phosphor-icons/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb'
 import Footer from '@/components/Footer/Footer'
