@@ -49,8 +49,8 @@ const Footer = () => {
                                         <div className="text-button-uppercase pb-3">Customer Services</div>
                                         <Link className='caption1 has-line-before duration-300 w-fit' href={'/pages/faqs'}>Orders FAQs</Link>
                                         <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/pages/faqs'}>Shipping</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/pages/faqs'}>Privacy Policy</Link>
-                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'/order-tracking'}>Return & Refund</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/main/Policies/Vinimai%20Privacy%20Policy.pdf'}>Privacy Policy</Link>
+                                        <Link className='caption1 has-line-before duration-300 w-fit pt-2' href={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/main/Policies/Vinimai%20Return%20Policy.pdf'}>Return & Refund Policy</Link>
                                     </div>
                                 </div>
                                 <div className="newsletter basis-1/3 pl-7 max-md:basis-full max-md:pl-0">

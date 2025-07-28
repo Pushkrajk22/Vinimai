@@ -485,7 +485,7 @@ const Register = () => {
                                         <CheckSquare size={20} weight='fill' className='icon-checkbox' />
                                     </div>
                                     <label htmlFor='remember' className="pl-2 cursor-pointer text-secondary2">I agree to the
-                                        <Link href={'https://test.io/terms-of-service'} className='text-black hover:underline pl-1'>Terms of User</Link>
+                                        <Link href={'https://raw.githubusercontent.com/vinimai1/VinimaiImages/main/Policies/Vinimai%20Privacy%20Policy.pdf'} className='text-black hover:underline pl-1'>Terms of User</Link>
                                     </label>
                                 </div>
 

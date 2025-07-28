@@ -15,6 +15,7 @@ import { useModalSearchContext } from '@/context/ModalSearchContext';
 import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { text } from 'stream/consumers';
 
 interface Props {
     props: string;
@@ -103,6 +104,8 @@ const MenuOne: React.FC<Props> = ({ props }) => {
     return (
         <>
             <div className={`header-menu style-one ${fixedHeader ? 'fixed' : 'absolute'} top-0 left-0 right-0 w-full md:h-[74px] h-[56px] ${props}`}>
+            {/* <div className={`header-menu style-one ${fixedHeader ? 'fixed' : 'absolute'} top-0 left-0 right-0 w-full md:h-[74px] h-[56px] ${props}`} style={{ color: '#fff' }} > */}
+
                 <div className="container mx-auto h-full">
                     <div className="header-main flex justify-between h-full">
                         <div className="menu-mobile-icon lg:hidden flex items-center" onClick={handleMenuMobile}>
@@ -112,6 +115,19 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                             <Link href={'/'} className='flex items-center max-lg:absolute max-lg:left-1/2 max-lg:-translate-x-1/2'>
                                 <div className="heading4">Vinimai</div>
                             </Link>
+
+{/* <Link href={'/'} className="flex items-center max-lg:absolute max-lg:left-1/2 max-lg:-translate-x-1/2">
+  <img
+    src="https://raw.githubusercontent.com/vinimai1/VinimaiImages/refs/heads/main/logo.jpg"
+    alt="Vinimai Logo"
+    style={{
+      height: '40px',
+      width: '120px',
+      objectFit: 'cover'
+    }}
+  />
+</Link> */}
+
                             <div className="menu-main h-full max-lg:hidden">
                                 <ul className='flex items-center gap-8 h-full'>
                                     {/* <li className='h-full relative'> */}
