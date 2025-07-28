@@ -235,7 +235,7 @@ const Register = () => {
         }
         };
 
-    
+    const router = useRouter();
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
@@ -278,7 +278,6 @@ const Register = () => {
             });
             setSuccess('Registration successful!');
             setError("");
-            const router = useRouter();
             router.push('/login');
 
             } catch (err:any) {
