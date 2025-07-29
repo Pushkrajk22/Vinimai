@@ -13,12 +13,15 @@ import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoutes/ProtectedRoutes';
 import ErrorNotification from '@/components/AlertNotifications/ErrorNotification';
 import SuccessAlert from '@/components/AlertNotifications/SuccessNotification'
+import { ThreeCircles } from 'react-loader-spinner'
+
 
 type UserDetails = {
   name: string;
   email: string;
   phone: string;
 };
+
 
 const MyAccount = () => {
     const router = useRouter();
@@ -33,6 +36,9 @@ const MyAccount = () => {
     const [error, setError] = useState('');
     const [token, setToken] = useState<string | null>(null);
     const [success, setSuccess] = useState("");
+    //ORDER RELATED VARIABLES
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     //Form Variables for address
     const [firstName, setFirstName] = useState('');
@@ -45,8 +51,31 @@ const MyAccount = () => {
     const [postalCode, setPostalCode] = useState('');
     const [shippingPhone, setShippingPhone] = useState('');
     const [shippingEmail, setShippingEmail] = useState('');
+    
+    useEffect(() => {
+        const fetchOrders = async () => {
+            // const token = localStorage.getItem('auth_token');
+            // if (!token) return setError('Auth token not found'), setLoading(false);
 
+            try {
+                const res = await axios.get('http://localhost:8000/api/orders/getMyOrders', {
+                headers: {
+                    Authorization: token || localStorage.getItem('token'),
+                    Accept: 'application/json',
+                },
+                });
+                setOrders(res.data.data || []);
+            } catch (err: any) {
+                setError(err.message || 'Failed to fetch orders');
+            } finally {
+                setLoading(false);
+                setError("Manual Error")
+            }
+            };
 
+            fetchOrders();
+        }, 
+    []);
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -212,6 +241,23 @@ const MyAccount = () => {
         setActiveOrders(order)
     }
 
+    if (loading) return     <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}>
+          <ThreeCircles
+            visible={true}
+            height="100"
+            width="100"
+            color="#4fa94d"
+            ariaLabel="three-circles-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        </div>
+   
     return (
         <ProtectedRoute>
 
@@ -290,124 +336,49 @@ const MyAccount = () => {
                                 <div className="recent_order pt-5 px-5 pb-2 mt-7 border border-line rounded-xl">
                                     <h6 className="heading6">Recent Orders</h6>
                                     <div className="list overflow-x-auto w-full mt-5">
-                                        <table className="w-full max-[1400px]:w-[700px] max-md:w-[700px]">
+                                        <table className="w-full max-[1400px]:w-[700px] max-md:w-[700px] border-collapse">
                                             <thead className="border-b border-line">
                                                 <tr>
-                                                    <th scope="col" className="pb-3 text-left text-sm font-bold uppercase text-secondary whitespace-nowrap">Order</th>
                                                     <th scope="col" className="pb-3 text-left text-sm font-bold uppercase text-secondary whitespace-nowrap">Products</th>
-                                                    <th scope="col" className="pb-3 text-left text-sm font-bold uppercase text-secondary whitespace-nowrap">Pricing</th>
-                                                    <th scope="col" className="pb-3 text-right text-sm font-bold uppercase text-secondary whitespace-nowrap">Status</th>
+                                                    <th scope="col" className="pb-3 text-left text-sm font-bold uppercase text-secondary whitespace-nowrap">Price</th>
+                                                    <th scope="col" className="pb-3 text-centre text-sm font-bold uppercase text-secondary whitespace-nowrap">Status</th>
+                                                    <th scope="col" className="pb-3 text-centre text-sm font-bold uppercase text-secondary whitespace-nowrap">Ordered On</th>
+                                                    <th scope="col" className="pb-3 text-centre text-sm font-bold uppercase text-secondary whitespace-nowrap">Order ID</th>
                                                 </tr>
                                             </thead>
+                                                  {/* Show error message */}
+                                            {orders.length===0 && (
+                                                <div className="text-red-500 text-left font-medium mb-4">
+                                                    No orders found.
+                                                </div>
+                                            )}
                                             <tbody>
-                                                <tr className="item duration-300 border-b border-line">
-                                                    <th scope="row" className="py-3 text-left">
-                                                        <strong className="text-title">54312452</strong>
-                                                    </th>
-                                                    <td className="py-3">
-                                                        <Link href={'/product/default'} className="product flex items-center gap-3">
-                                                            <Image src={'/images/product/1000x1000.png'} width={400} height={400} alt='Contrasting sweatshirt' className="flex-shrink-0 w-12 h-12 rounded" />
-                                                            <div className="info flex flex-col">
-                                                                <strong className="product_name text-button">Contrasting sweatshirt</strong>
-                                                                <span className="product_tag caption1 text-secondary">Women, Clothing</span>
-                                                            </div>
-                                                        </Link>
+                                                {orders.map((order: any) => (
+                                                    <tr  key={order.order_id} className="item duration-300 border-b border-line">
+                                                        <td className="py-4">
+                                                            <Link href={'/product/default'} className="product flex items-center gap-5">
+                                                                <Image src={'/images/product/1000x1000.png'} width={400} height={400} alt='Contrasting sweatshirt' className="flex-shrink-0 w-12 h-12 rounded" />
+                                                                <div className="info flex flex-col">
+                                                                    <strong className="product_name text-button">{order.product_name}</strong>
+                                                                    {/* <span className="product_tag caption1 text-secondary">Women, Clothing</span> */}
+                                                                </div>
+                                                            </Link>
+                                                            
+                                                        </td>
+                                                    <td className="py-3 price text right">₹{order.total_price}</td>
+                                                    <td className="py-3 text-left">
+                                                        <span className="tag px-3 py-1.5 rounded-full bg-opacity-10 bg-yellow text-yellow caption1 font-semibold">{order.order_status}</span>
                                                     </td>
-                                                    <td className="py-3 price">$45.00</td>
+
+                                                    <td className="py-3 date text right">{order.created_at.slice(0,10)}</td>
+
                                                     <td className="py-3 text-right">
-                                                        <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-yellow text-yellow caption1 font-semibold">Pending</span>
+                                                        <th scope="row" className="py-3 text-left">
+                                                                <strong className="text-title text">{order.order_id}</strong>
+                                                        </th>
                                                     </td>
                                                 </tr>
-                                                <tr className="item duration-300 border-b border-line">
-                                                    <th scope="row" className="py-3 text-left">
-                                                        <strong className="text-title">54312452</strong>
-                                                    </th>
-                                                    <td className="py-3">
-                                                        <Link href={'/product/default'} className="product flex items-center gap-3">
-                                                            <Image src={'/images/product/1000x1000.png'} width={400} height={400} alt='Faux-leather trousers' className="flex-shrink-0 w-12 h-12 rounded" />
-                                                            <div className="info flex flex-col">
-                                                                <strong className="product_name text-button">Faux-leather trousers</strong>
-                                                                <span className="product_tag caption1 text-secondary">Women, Clothing</span>
-                                                            </div>
-                                                        </Link>
-                                                    </td>
-                                                    <td className="py-3 price">$45.00</td>
-                                                    <td className="py-3 text-right">
-                                                        <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-purple text-purple caption1 font-semibold">Delivery</span>
-                                                    </td>
-                                                </tr>
-                                                <tr className="item duration-300 border-b border-line">
-                                                    <th scope="row" className="py-3 text-left">
-                                                        <strong className="text-title">54312452</strong>
-                                                    </th>
-                                                    <td className="py-3">
-                                                        <Link href={'/product/default'} className="product flex items-center gap-3">
-                                                            <Image src={'/images/product/1000x1000.png'} width={400} height={400} alt='V-neck knitted top' className="flex-shrink-0 w-12 h-12 rounded" />
-                                                            <div className="info flex flex-col">
-                                                                <strong className="product_name text-button">V-neck knitted top</strong>
-                                                                <span className="product_tag caption1 text-secondary">Women, Clothing</span>
-                                                            </div>
-                                                        </Link>
-                                                    </td>
-                                                    <td className="py-3 price">$45.00</td>
-                                                    <td className="py-3 text-right">
-                                                        <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-success text-success caption1 font-semibold">Completed</span>
-                                                    </td>
-                                                </tr>
-                                                <tr className="item duration-300 border-b border-line">
-                                                    <th scope="row" className="py-3 text-left">
-                                                        <strong className="text-title">54312452</strong>
-                                                    </th>
-                                                    <td className="py-3">
-                                                        <Link href={'/product/default'} className="product flex items-center gap-3">
-                                                            <Image src={'/images/product/1000x1000.png'} width={400} height={400} alt='Contrasting sweatshirt' className="flex-shrink-0 w-12 h-12 rounded" />
-                                                            <div className="info flex flex-col">
-                                                                <strong className="product_name text-button">Contrasting sweatshirt</strong>
-                                                                <span className="product_tag caption1 text-secondary">Women, Clothing</span>
-                                                            </div>
-                                                        </Link>
-                                                    </td>
-                                                    <td className="py-3 price">$45.00</td>
-                                                    <td className="py-3 text-right">
-                                                        <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-yellow text-yellow caption1 font-semibold">Pending</span>
-                                                    </td>
-                                                </tr>
-                                                <tr className="item duration-300 border-b border-line">
-                                                    <th scope="row" className="py-3 text-left">
-                                                        <strong className="text-title">54312452</strong>
-                                                    </th>
-                                                    <td className="py-3">
-                                                        <Link href={'/product/default'} className="product flex items-center gap-3">
-                                                            <Image src={'/images/product/1000x1000.png'} width={400} height={400} alt='Faux-leather trousers' className="flex-shrink-0 w-12 h-12 rounded" />
-                                                            <div className="info flex flex-col">
-                                                                <strong className="product_name text-button">Faux-leather trousers</strong>
-                                                                <span className="product_tag caption1 text-secondary">Women, Clothing</span>
-                                                            </div>
-                                                        </Link>
-                                                    </td>
-                                                    <td className="py-3 price">$45.00</td>
-                                                    <td className="py-3 text-right">
-                                                        <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-purple text-purple caption1 font-semibold">Delivery</span>
-                                                    </td>
-                                                </tr>
-                                                <tr className="item duration-300">
-                                                    <th scope="row" className="py-3 text-left">
-                                                        <strong className="text-title">54312452</strong>
-                                                    </th>
-                                                    <td className="py-3">
-                                                        <Link href={'/product/default'} className="product flex items-center gap-3">
-                                                            <Image src={'/images/product/1000x1000.png'} width={400} height={400} alt='V-neck knitted top' className="flex-shrink-0 w-12 h-12 rounded" />
-                                                            <div className="info flex flex-col">
-                                                                <strong className="product_name text-button">V-neck knitted top</strong>
-                                                                <span className="product_tag caption1 text-secondary">Women, Clothing</span>
-                                                            </div>
-                                                        </Link>
-                                                    </td>
-                                                    <td className="py-3 price">$45.00</td>
-                                                    <td className="py-3 text-right">
-                                                        <span className="tag px-4 py-1.5 rounded-full bg-opacity-10 bg-red text-red caption1 font-semibold">Canceled</span>
-                                                    </td>
-                                                </tr>
+                                                 ))}
                                             </tbody>
                                         </table>
                                     </div>

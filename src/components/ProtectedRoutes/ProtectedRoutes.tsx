@@ -43,11 +43,11 @@ export default function ProtectedRoute({ children }: Props) {
 if (isValid === null) {
   return (
     <div style={{
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '100vh',
-}}>
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+    }}>
       <ThreeCircles
         visible={true}
         height="100"

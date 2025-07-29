@@ -205,8 +205,8 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
                                     <div className='text-secondary2 capitalize'>{type === undefined ? 'Shop' : type}</div>
                                 </div>
                             </div>
-                            <div className="list-tab flex flex-wrap items-center justify-center gap-y-5 gap-8 lg:mt-[70px] mt-12 overflow-hidden">
-                                {['t-shirt', 'dress', 'top', 'swimwear', 'shirt'].map((item, index) => (
+                            {/* <div className="list-tab flex flex-wrap items-center justify-center gap-y-5 gap-8 lg:mt-[70px] mt-12 overflow-hidden">
+                                {['t-shirt', 'dress', 'top', 'swimwear', 'shirt', 'land'].map((item, index) => (
                                     <div
                                         key={index}
                                         className={`tab-item text-button-uppercase cursor-pointer has-line-before line-2px ${type === item ? 'active' : ''}`}
@@ -215,7 +215,7 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
                                         {item}
                                     </div>
                                 ))}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -261,7 +261,7 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="check-sale flex items-center gap-2 cursor-pointer">
+                                {/* <div className="check-sale flex items-center gap-2 cursor-pointer">
                                     <input
                                         type="checkbox"
                                         name="filterSale"
@@ -270,10 +270,10 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
                                         onChange={handleShowOnlySale}
                                     />
                                     <label htmlFor="filter-sale" className='cation1 cursor-pointer'>Show only products on sale</label>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="right flex items-center flex-wrap gap-y-3 gap-5">
-                                <div className="select-block filter-type relative">
+                                {/* <div className="select-block filter-type relative">
                                     <select
                                         className='caption1 py-2 pl-3 md:pr-12 pr-8 rounded-lg border border-line capitalize'
                                         name="select-type"
@@ -292,8 +292,8 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
                                         ))}
                                     </select>
                                     <Icon.CaretDown size={12} className='absolute top-1/2 -translate-y-1/2 md:right-4 right-2' />
-                                </div>
-                                <div className="select-block filter-size relative">
+                                </div> */}
+                                {/* <div className="select-block filter-size relative">
                                     <select
                                         className='caption1 py-2 pl-3 md:pr-12 pr-8 rounded-lg border border-line capitalize'
                                         name="select-size"
@@ -312,8 +312,8 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
                                         ))}
                                     </select>
                                     <Icon.CaretDown size={12} className='absolute top-1/2 -translate-y-1/2 md:right-4 right-2' />
-                                </div>
-                                <div className="select-block filter-color relative">
+                                </div> */}
+                                {/* <div className="select-block filter-color relative">
                                     <select
                                         className='caption1 py-2 pl-3 md:pr-12 pr-8 rounded-lg border border-line capitalize'
                                         name="select-color"
@@ -332,8 +332,8 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
                                         ))}
                                     </select>
                                     <Icon.CaretDown size={12} className='absolute top-1/2 -translate-y-1/2 md:right-4 right-2' />
-                                </div>
-                                <div className="select-block filter-brand relative">
+                                </div> */}
+                                {/* <div className="select-block filter-brand relative">
                                     <select
                                         className='caption1 py-2 pl-3 md:pr-12 pr-8 rounded-lg border border-line capitalize'
                                         name="select-brand"
@@ -352,8 +352,8 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
                                         ))}
                                     </select>
                                     <Icon.CaretDown size={12} className='absolute top-1/2 -translate-y-1/2 md:right-4 right-2' />
-                                </div>
-                                <div className="select-block relative">
+                                </div> */}
+                                {/* <div className="select-block relative">
                                     <select
                                         id="select-filter"
                                         name="select-filter"
@@ -368,7 +368,7 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
                                         <option value="priceLowToHigh">Price Low To High</option>
                                     </select>
                                     <Icon.CaretDown size={12} className='absolute top-1/2 -translate-y-1/2 md:right-4 right-2' />
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
