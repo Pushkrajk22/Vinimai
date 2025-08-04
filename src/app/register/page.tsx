@@ -235,7 +235,7 @@ const Register = () => {
             setError("Invalid OTP. Try again.");
             setSuccess("");
         }
-        };
+    };
 
     const router = useRouter();
     const handleSubmit = async (e: React.FormEvent) => {

@@ -198,7 +198,7 @@ const Product: React.FC<ProductProps> = ({ data, type, style }) => {
                                     </>
                                 )}
                             </div>
-                            {data.sale && (
+                            {/* {data.sale && (
                                 <>
                                     <Marquee className='banner-sale-auto bg-black absolute bottom-0 left-0 w-full py-1.5'>
                                         <div className={`caption2 font-semibold uppercase text-white px-2.5`}>Hot Sale {percentSale}% OFF</div>
@@ -213,7 +213,7 @@ const Product: React.FC<ProductProps> = ({ data, type, style }) => {
                                         <Icon.Lightning weight='fill' className='text-red' />
                                     </Marquee>
                                 </>
-                            )}
+                            )} */}
                             {style === 'style-2' || style === 'style-4' ? (
                                 <div className="list-size-block flex items-center justify-center gap-4 absolute bottom-0 left-0 w-full h-8">
                                     {data.sizes.map((item, index) => (

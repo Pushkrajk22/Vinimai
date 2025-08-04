@@ -69,7 +69,7 @@ const MyAccount = () => {
                 setError(err.message || 'Failed to fetch orders');
             } finally {
                 setLoading(false);
-                setError("Manual Error")
+                setError("")
             }
             };
 

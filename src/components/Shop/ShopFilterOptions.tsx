@@ -70,39 +70,42 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
 
 
     // Filter product data by dataType
-    let filteredData = data.filter(product => {
-        let isShowOnlySaleMatched = true;
-        if (showOnlySale) {
-            isShowOnlySaleMatched = product.sale
-        }
+    // let filteredData = data.filter(product => {
+    //     let isShowOnlySaleMatched = true;
+    //     if (showOnlySale) {
+    //         isShowOnlySaleMatched = product.sale
+    //     }
 
-        let isTypeMatched = true;
-        if (type) {
-            isTypeMatched = product.type === type;
-        }
+    //     let isTypeMatched = true;
+    //     if (type) {
+    //         isTypeMatched = product.type === type;
+    //     }
 
-        let isSizeMatched = true;
-        if (size) {
-            isSizeMatched = product.sizes.includes(size)
-        }
+    //     let isSizeMatched = true;
+    //     if (size) {
+    //         isSizeMatched = product.sizes.includes(size)
+    //     }
 
-        let isPriceRangeMatched = true;
-        if (priceRange.min !== 0 || priceRange.max !== 100) {
-            isPriceRangeMatched = product.price >= priceRange.min && product.price <= priceRange.max;
-        }
+    //     let isPriceRangeMatched = true;
+    //     if (priceRange.min !== 0 || priceRange.max !== 100) {
+    //         isPriceRangeMatched = product.price >= priceRange.min && product.price <= priceRange.max;
+    //     }
 
-        let isColorMatched = true;
-        if (color) {
-            isColorMatched = product.variation.some(item => item.color === color)
-        }
+    //     let isColorMatched = true;
+    //     if (color) {
+    //         isColorMatched = product.variation.some(item => item.color === color)
+    //     }
 
-        let isBrandMatched = true;
-        if (brand) {
-            isBrandMatched = product.brand === brand;
-        }
+    //     let isBrandMatched = true;
+    //     if (brand) {
+    //         isBrandMatched = product.brand === brand;
+    //     }
 
-        return isShowOnlySaleMatched && isTypeMatched && isSizeMatched && isColorMatched && isBrandMatched && isPriceRangeMatched && product.category === 'fashion'
-    })
+    //     return isShowOnlySaleMatched && isTypeMatched && isSizeMatched && isColorMatched && isBrandMatched && isPriceRangeMatched && product.category === 'fashion'
+    // })
+
+    let filteredData = data; // no filtering, pass all products through
+
 
     // Create a copy array filtered to sort
     let sortedData = [...filteredData];
