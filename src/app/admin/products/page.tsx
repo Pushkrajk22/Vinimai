@@ -30,56 +30,56 @@ const AdminOrdersPage = () => {
 
         <div className="overflow-x-auto">
             <table className="w-full text-sm text-secondary border-separate border-spacing-0 rounded-lg overflow-hidden shadow-md">
-        <thead className="bg-surface text-xs font-semibold uppercase tracking-wide text-black">
-            <tr>
-            <th className="px-6 py-4 text-left">Customer</th>
-            <th className="px-6 py-4 text-right">Total</th>
-            <th className="px-6 py-4 text-left">Date</th>
-            <th className="px-6 py-4 text-center">Status</th>
-            <th className="px-6 py-4 text-left">Order ID</th>
-            </tr>
-        </thead>
-        <tbody>
-            {paginatedData.map((order, idx) => (
-            <tr
-                key={order.id}
-                className={`${idx % 2 === 0 ? "bg-surface" : "bg-white"} hover:bg-surface2 transition-colors`}
-            >
-                {/* Customer */}
-                <td className="px-6 py-4 font-medium text-black">{order.customer}</td>
+                <thead className="bg-surface text-xs font-semibold uppercase tracking-wide text-black">
+                    <tr>
+                    <th className="px-6 py-4 text-left">Customer</th>
+                    <th className="px-6 py-4 text-right">Total</th>
+                    <th className="px-6 py-4 text-left">Date</th>
+                    <th className="px-6 py-4 text-center">Status</th>
+                    <th className="px-6 py-4 text-left">Order ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {paginatedData.map((order, idx) => (
+                    <tr
+                        key={order.id}
+                        className={`${idx % 2 === 0 ? "bg-surface" : "bg-white"} hover:bg-surface2 transition-colors`}
+                    >
+                        {/* Customer */}
+                        <td className="px-6 py-4 font-medium text-black">{order.customer}</td>
 
-                {/* Total */}
-                <td className="px-6 py-4 text-right font-semibold text-black">
-                {order.total}
-                </td>
+                        {/* Total */}
+                        <td className="px-6 py-4 text-right font-semibold text-black">
+                        {order.total}
+                        </td>
 
-                {/* Date */}
-                <td className="px-6 py-4 text-secondary2">
-                {new Date(order.date).toLocaleDateString()}
-                </td>
+                        {/* Date */}
+                        <td className="px-6 py-4 text-secondary2">
+                        {new Date(order.date).toLocaleDateString()}
+                        </td>
 
-                {/* Status */}
-                <td className="px-6 py-4 text-center">
-                <span
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium bg-white border-2 ${
-                    order.status === "Completed"
-                        ? "text-success border-success"
-                        : order.status === "Pending"
-                        ? "text-yellow border-yellow"
-                        : "text-red border-red"
-                    }`}
-                >
-                    {order.status}
-                </span>
-                </td>
+                        {/* Status */}
+                        <td className="px-6 py-4 text-center">
+                        <span
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium bg-white border-2 ${
+                            order.status === "Completed"
+                                ? "text-success border-success"
+                                : order.status === "Pending"
+                                ? "text-yellow border-yellow"
+                                : "text-red border-red"
+                            }`}
+                        >
+                            {order.status}
+                        </span>
+                        </td>
 
-                {/* Long Order ID */}
-                <td className="px-6 py-4 font-mono text-secondary2 break-all text-xs">
-                C71b9fb3-Ab14-4097-B6ea-Ee187459cb94{order.id}
-                </td>
-            </tr>
-            ))}
-        </tbody>
+                        {/* Long Order ID */}
+                        <td className="px-6 py-4 font-mono text-secondary2 break-all text-xs">
+                        C71b9fb3-Ab14-4097-B6ea-Ee187459cb94{order.id}
+                        </td>
+                    </tr>
+                    ))}
+                </tbody>
             </table>
         </div>
 
