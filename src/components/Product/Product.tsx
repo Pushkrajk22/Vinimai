@@ -341,6 +341,7 @@ const Product: React.FC<ProductProps> = ({ data, type, style }) => {
                                             <div className="tag-action bg-black text-white caption2 px-1.5 py-0.5 rounded-sm">Quick View</div>
                                             <Icon.Eye size={20} />
                                         </div>
+                                        
                                         {style === 'style-5' && data.action !== 'add to cart' && (
                                             <div
                                                 className={`quick-shop-block absolute left-5 right-5 bg-white p-5 rounded-[20px] ${openQuickShop ? 'open' : ''}`}

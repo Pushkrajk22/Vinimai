@@ -38,3 +38,4 @@ next-env.d.ts
 #package json
 package.json
 
+run_commands.bat

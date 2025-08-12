@@ -301,7 +301,15 @@ const MyAccount = () => {
                                         <Icon.GearSix size={20} />
                                         <strong className="heading6">Profile</strong>
                                     </Link>
-                                    <Link href={'#!'} className="item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5" onClick={(e) => {e.preventDefault();localStorage.removeItem('token');router.push('/login');}}>
+                                    <Link href={'#!'} className="item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5" 
+                                                                                    onClick={(e) => {
+                                                e.preventDefault();
+                                                const confirmLogout = window.confirm("Logging out? Don't forget to come back!");
+                                                if (confirmLogout) {
+                                                    localStorage.removeItem('token');
+                                                    router.push('/login');
+                                                }
+                                            }}>
                                         <Icon.SignOut size={20} />
                                         <strong className="heading6">Logout</strong>
                                     </Link>
@@ -725,7 +733,7 @@ const MyAccount = () => {
                                         </div>
                                     </div>
                                     <div className="block-button lg:mt-10 mt-6">
-                                        <button className="button-main">Update Address</button>
+                                        <button className="button-main">Update Details</button>
                                     </div>
                                 </form>
                             </div>

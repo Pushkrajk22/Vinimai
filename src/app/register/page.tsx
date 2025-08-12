@@ -190,11 +190,15 @@ const Register = () => {
                 if (typeof window !== 'undefined' && !window.recaptchaVerifier) {
 
                 window.recaptchaVerifier = new RecaptchaVerifier(
-                    auth,
+                    auth, 
                     "recaptcha-container",
                     {
                         size: "invisible",
-                        callback: () => console.log("reCAPTCHA solved"),
+                        
+                        callback: (response: any) => {
+                            console.log("reCAPTCHA solved");
+                            // verifyOTP();
+                        }
                     }
                 );
                 const result = await signInWithPhoneNumber(auth, `+91${phone}`, window.recaptchaVerifier);
@@ -327,7 +331,7 @@ const Register = () => {
                                         <input 
                                             className="border border-line px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-success flex-grow min-w-0" 
                                             id="name" 
-                                            type="test" 
+                                            type="text" 
                                             placeholder="Full Name *" 
                                             required
                                             value={name}
@@ -492,7 +496,11 @@ const Register = () => {
                                 </div>
 
                                 <div className="block-button md:mt-7 mt-4">
-                                    <button className="button-main">Register</button>
+                                    <button 
+                                        id="register-button" 
+                                        className="button-main">
+                                            Register
+                                    </button>
                                 </div>
                             </form>
                             
