@@ -1,106 +1,206 @@
-"use client";
-import React, { useState } from "react";
-import * as Icon from "@phosphor-icons/react/dist/ssr";
+'use client'
 
-const AdminOrdersPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+import React, { useState, useEffect } from 'react'
+import {
+  DataTable,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableHeader,
+  TableBody,
+  TableCell,
+  Loading,
+  InlineNotification,
+  Button,
+  Tag
+} from '@carbon/react'
 
-  // Dummy static data
-  const orders = Array.from({ length: 22 }, (_, i) => ({
-    id: 100 + i,
-    customer: `Customer ${i + 1}`,
-    total: `₹${(i + 1) * 500}`,
-    status: ["Pending", "Completed", "Canceled"][i % 3],
-    date: `2025-08-${(i % 30) + 1}`,
-  }));
+const OrdersPage = () => {
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  const totalPages = Math.ceil(orders.length / itemsPerPage);
-  const paginatedData = orders.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // Define table headers
+  const headers = [
+    { key: 'product_id', header: 'Product ID' },
+    { key: 'name', header: 'Product Name' },
+    { key: 'category', header: 'Category' },
+    { key: 'original_price', header: 'Original Price' },
+    { key: 'discounted_price', header: 'Discounted Price' },
+    { key: 'size', header: 'Size' },
+    { key: 'quantity', header: 'Quantity' },
+    { key: 'status', header: 'Status' }
+  ]
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true)
+      
+      // Get token from localStorage
+      const token = localStorage.getItem('token')
+      
+      if (!token) {
+        throw new Error('No authentication token found')
+      }
+
+      const response = await fetch('http://localhost:8000/api/products/getAllProducts', {
+        method: 'GET',
+        headers: {
+          'accept': 'application/json',
+          // 'Authorization': `${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      console.log('API Response:', data)
+
+      // Transform data for the table
+      const transformedData = data.products?.map((product, index) => ({
+        id: `${index}`,
+        product_id: product.product_id || 'N/A',
+        name: product.name || 'Unknown Product',
+        category: product.category || 'N/A',
+        original_price: `$${product.original_price || 0}`,
+        discounted_price: `$${product.discounted_price || 0}`,
+        size: product.size || 'N/A',
+        quantity: product.quantity || 0,
+        status: product.discounted_price < product.original_price ? 'On Sale' : 'Regular'
+      })) || []
+
+      setProducts(transformedData)
+    } catch (err) {
+      console.error('Error fetching products:', err)
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleRefresh = () => {
+    fetchProducts()
+  }
+
+  if (loading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '400px' 
+      }}>
+        <Loading description="Loading products..." withOverlay={false} />
+      </div>
+    )
+  }
 
   return (
-    <div className="w-full p-7 border border-line rounded-xl bg-white">
-      <h6 className="heading6 mb-4 flex items-center gap-2">
-        <Icon.Package size={20} />
-        All Orders
-      </h6>
-
-        <div className="overflow-x-auto">
-            <table className="w-full text-sm text-secondary border-separate border-spacing-0 rounded-lg overflow-hidden shadow-md">
-                <thead className="bg-surface text-xs font-semibold uppercase tracking-wide text-black">
-                    <tr>
-                    <th className="px-6 py-4 text-left">Customer</th>
-                    <th className="px-6 py-4 text-right">Total</th>
-                    <th className="px-6 py-4 text-left">Date</th>
-                    <th className="px-6 py-4 text-center">Status</th>
-                    <th className="px-6 py-4 text-left">Order ID</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {paginatedData.map((order, idx) => (
-                    <tr
-                        key={order.id}
-                        className={`${idx % 2 === 0 ? "bg-surface" : "bg-white"} hover:bg-surface2 transition-colors`}
-                    >
-                        {/* Customer */}
-                        <td className="px-6 py-4 font-medium text-black">{order.customer}</td>
-
-                        {/* Total */}
-                        <td className="px-6 py-4 text-right font-semibold text-black">
-                        {order.total}
-                        </td>
-
-                        {/* Date */}
-                        <td className="px-6 py-4 text-secondary2">
-                        {new Date(order.date).toLocaleDateString()}
-                        </td>
-
-                        {/* Status */}
-                        <td className="px-6 py-4 text-center">
-                        <span
-                            className={`px-3 py-1.5 rounded-full text-xs font-medium bg-white border-2 ${
-                            order.status === "Completed"
-                                ? "text-success border-success"
-                                : order.status === "Pending"
-                                ? "text-yellow border-yellow"
-                                : "text-red border-red"
-                            }`}
-                        >
-                            {order.status}
-                        </span>
-                        </td>
-
-                        {/* Long Order ID */}
-                        <td className="px-6 py-4 font-mono text-secondary2 break-all text-xs">
-                        C71b9fb3-Ab14-4097-B6ea-Ee187459cb94{order.id}
-                        </td>
-                    </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-
-      {/* Numbered Pagination */}
-      <div className="flex items-center justify-center gap-2 p-4 border-t border-line">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentPage(i + 1)}
-            className={`px-3 py-1 rounded border ${
-              currentPage === i + 1
-                ? "bg-black text-white"
-                : "bg-white hover:bg-gray-100"
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
+    <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ marginBottom: '2rem' }}>
+        <h1 style={{ 
+          fontSize: '2rem', 
+          fontWeight: '400', 
+          marginBottom: '1rem',
+          color: '#161616'
+        }}>
+          Products Overview
+        </h1>
+        <p style={{ 
+          fontSize: '1rem', 
+          color: '#525252', 
+          marginBottom: '1.5rem' 
+        }}>
+          Manage and view all your products in one place
+        </p>
+        
+        <Button 
+          kind="primary" 
+          onClick={handleRefresh}
+          style={{ marginBottom: '1rem' }}
+        >
+          Refresh Data
+        </Button>
       </div>
-    </div>
-  );
-};
 
-export default AdminOrdersPage;
+      {error && (
+        <div style={{ marginBottom: '1rem' }}>
+          <InlineNotification
+            kind="error"
+            title="Error"
+            subtitle={error}
+            onCloseButtonClick={() => setError(null)}
+          />
+        </div>
+      )}
+
+      {products.length === 0 && !error ? (
+        <InlineNotification
+          kind="info"
+          title="No Products"
+          subtitle="No products found in the system"
+          hideCloseButton
+        />
+      ) : (
+        <DataTable
+          rows={products}
+          headers={headers}
+          render={({ rows, headers, getHeaderProps, getRowProps, getTableProps }) => (
+            <TableContainer
+              title="Products Data"
+              description="Complete list of all products with their details"
+            >
+              <Table {...getTableProps()} size="md">
+                <TableHead>
+                  <TableRow>
+                    {headers.map((header) => (
+                      <TableHeader {...getHeaderProps({ header })} key={header.key}>
+                        {header.header}
+                      </TableHeader>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <TableRow {...getRowProps({ row })} key={row.id}>
+                      {row.cells.map((cell) => (
+                        <TableCell key={cell.id}>
+                          {cell.info.header === 'status' ? (
+                            <Tag
+                              type={cell.value === 'On Sale' ? 'red' : 'cool-gray'}
+                              size="sm"
+                            >
+                              {cell.value}
+                            </Tag>
+                          ) : (
+                            cell.value
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        />
+      )}
+
+      {products.length > 0 && (
+        <div style={{ marginTop: '1rem', color: '#525252', fontSize: '0.875rem' }}>
+          Showing {products.length} products
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default OrdersPage

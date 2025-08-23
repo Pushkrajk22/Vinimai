@@ -298,7 +298,7 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                 <div className="choose-size mt-5">
                                     <div className="heading flex items-center ">
                                         <div className="text-title">Size:  <span className='text-title size'>{activeSize}</span></div>
-                                        <div className='text-left'>This is size description aisfdab fuwgfyuwrt8hc3trgregrb987ty98ryufde8biu</div>
+                                        <div className='text-left'>{productMain.sizes}</div>
                                         {/* <div
                                             className="caption1 size-guide text-red underline cursor-pointer"
                                             onClick={handleOpenSizeGuide}
@@ -349,11 +349,15 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                         </div>
                                         <span>Compare</span>
                                     </div> */}
-                                    <div className="share flex items-center gap-3 cursor-pointer">
+                                    <div className="share flex items-center gap-3 cursor-pointer" onClick={() => {
+                                        navigator.clipboard.writeText(window.location.href)
+                                        .then(() => alert("🔗 Link copied to clipboard!"))
+                                        .catch(err => alert("❌ Failed to copy link"));
+                                    }}>
                                         <div className="share-btn md:w-12 md:h-12 w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white">
                                             <Icon.ShareNetwork weight='fill' className='heading6' />
                                         </div>
-                                        <span>Share Products</span>
+                                        <span>Share Product</span>
                                     </div>
                                 </div>
                                 <div className="more-infor mt-6">
@@ -370,11 +374,11 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                     </div>
                                     <div className="flex items-center gap-1 mt-3">
                                         <Icon.SealCheck className='body1' />
-                                        <div className="text-title">Vinimai Verfied</div>
+                                        <div className="text-title"> Vinimai Verified{productMain.isVinimaiVerified}</div>
                                     </div>
                                     <div className="flex items-center gap-1 mt-3">
-                                        <div className="text-title">SKU:</div>
-                                        <div className="text-secondary">53453412</div>
+                                        <div className="text-title">Product Id:</div>
+                                        <div className="text-secondary">{productMain.id}</div>
                                     </div>
                                     <div className="flex items-center gap-1 mt-3">
                                         <div className="text-title">Categories:</div>

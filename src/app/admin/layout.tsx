@@ -68,7 +68,7 @@
                                     <div className="menu-tab w-full max-w-none lg:mt-10 mt-6">
                                         <Link href={'/admin/products'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
                                         {/* <Link href={'/products'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}> */}
-                                            <Icon.HouseLine size={20} />
+                                            <Icon.Storefront size={20} />
                                             <strong className="heading6">All Products</strong>
                                         </Link>
                                         {/* <Link href={'/admin/users'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')}>
@@ -77,19 +77,24 @@
                                         </Link> */}
                                         <Link href={'/admin/orders'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
                                         {/* <Link href={'#!'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'address' ? 'active' : ''}`} onClick={() => setActiveTab('address')}> */}
-                                            <Icon.Tag size={20} />
+                                            <Icon.ShoppingBag size={20} />
                                             <strong className="heading6">All Orders</strong>
                                         </Link>
                                         <Link href={'/admin/users'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
                                         {/* <Link href={'/admin/product'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'setting' ? 'active' : ''}`} onClick={() => setActiveTab('setting')}> */}
-                                            <Icon.GearSix size={20} />
+                                            <Icon.User size={20} />
                                             <strong className="heading6">All Users</strong>
                                         </Link>
                                         {/* <Link href={'/admin/settings'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}> */}
                                         <Link href={'/admin/productRequests'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
-                                            <Icon.GearSix size={20} />
+                                            <Icon.GitPullRequest size={20} />
                                             <strong className="heading6">Product Requests</strong>
                                         </Link>
+                                        <Link href={'/admin/addProducts'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
+                                            <Icon.PlusSquare size={20} />
+                                            <strong className="heading6">Add Product</strong>
+                                        </Link>
+
 
                                         {/* {Array.from({ length: 10 }).map((_, index) => ( */}
                                             <Link href={'#!'} className="item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5" 

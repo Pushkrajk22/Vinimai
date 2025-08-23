@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@carbon/react": "^1.89.0",
     "@chakra-ui/react": "^3.21.0",
     "@emotion/react": "^11.14.0",
     "@phosphor-icons/react": "^2.0.14",

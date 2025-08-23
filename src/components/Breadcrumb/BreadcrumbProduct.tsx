@@ -17,7 +17,6 @@ const BreadcrumbProduct: React.FC<Props> = ({ data, productPage, productId }) =>
     const router = useRouter()
 
     const handleDetailProduct = (productId: string | number | null) => {
-        // Chuyển hướng đến trang shop với category được chọn
         router.push(`/product/${productPage}?id=${productId}`);
     };
 
