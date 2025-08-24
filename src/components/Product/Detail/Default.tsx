@@ -349,13 +349,21 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                         </div>
                                         <span>Compare</span>
                                     </div> */}
+                                    {/* Make offer */}
+                                    <div className="share flex items-center gap-3 cursor-pointer">
+                                        <div className="share-btn md:w-12 md:h-12 w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white">
+                                            <Icon.Money weight='fill' className='heading4' />
+                                        </div>
+                                        <span>Make Offer</span>
+                                    </div>
+
                                     <div className="share flex items-center gap-3 cursor-pointer" onClick={() => {
                                         navigator.clipboard.writeText(window.location.href)
                                         .then(() => alert("🔗 Link copied to clipboard!"))
                                         .catch(err => alert("❌ Failed to copy link"));
                                     }}>
                                         <div className="share-btn md:w-12 md:h-12 w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white">
-                                            <Icon.ShareNetwork weight='fill' className='heading6' />
+                                            <Icon.ShareNetwork weight='fill' className='heading4' />
                                         </div>
                                         <span>Share Product</span>
                                     </div>

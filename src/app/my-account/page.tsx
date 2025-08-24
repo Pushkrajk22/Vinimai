@@ -301,6 +301,12 @@ const MyAccount = () => {
                                         <Icon.GearSix size={20} />
                                         <strong className="heading6">Profile</strong>
                                     </Link>
+
+                                    <Link href={'/my-account/sellProduct'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
+                                            <Icon.PlusSquare size={20} />
+                                            <strong className="heading6">Add Product</strong>
+                                    </Link>
+
                                     <Link href={'#!'} className="item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5" 
                                                                                     onClick={(e) => {
                                                 e.preventDefault();
