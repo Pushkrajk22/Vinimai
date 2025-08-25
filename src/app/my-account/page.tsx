@@ -297,11 +297,18 @@ const MyAccount = () => {
                                         <Icon.Tag size={20} />
                                         <strong className="heading6">My Address</strong>
                                     </Link>
+                                    <Link href={'my-account/bankDetails'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}>
+                                        <Icon.Bank size={20} />
+                                        <strong className="heading6">Bank Account</strong>
+                                    </Link>
                                     <Link href={'#!'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'setting' ? 'active' : ''}`} onClick={() => setActiveTab('setting')}>
                                         <Icon.GearSix size={20} />
                                         <strong className="heading6">Profile</strong>
                                     </Link>
-
+                                    <Link href={'/my-account/offers'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
+                                            <Icon.PlusSquare size={20} />
+                                            <strong className="heading6">Offers Received</strong>
+                                    </Link>
                                     <Link href={'/my-account/sellProduct'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
                                             <Icon.PlusSquare size={20} />
                                             <strong className="heading6">Add Product</strong>
