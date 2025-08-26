@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CheckCircle, X } from "@phosphor-icons/react";
 
 interface SuccessAlertProps {
@@ -7,11 +7,21 @@ interface SuccessAlertProps {
 }
 
 const SuccessAlert: React.FC<SuccessAlertProps> = ({ success, setSuccess }) => {
+  // auto-hide after 4 seconds
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess("");
+      }, 4000);
+      return () => clearTimeout(timer); // cleanup if unmounted or success changes
+    }
+  }, [success, setSuccess]);
+
   if (!success) return null;
 
   return (
     <div
-      className="flex items-center justify-between border px-4 py-2 mt-4 rounded-md text-sm shadow-sm text-success"
+      className="flex items-center justify-between border px-4 py-2 mt-4 mb-4 rounded-md text-sm shadow-sm text-success"
       style={{ backgroundColor: "rgba(61, 171, 37, 0.15)", borderColor: "#3DAB25" }}
     >
       <div className="flex items-center">

@@ -7,6 +7,10 @@ import ProtectedRoute from '@/components/ProtectedRoutes/ProtectedRoutes'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb'
 import Footer from '@/components/Footer/Footer'
+import SuccessAlert from '@/components/AlertNotifications/SuccessNotification'
+import ErrorNotification from '@/components/AlertNotifications/ErrorNotification'
+import { ThreeCircles } from 'react-loader-spinner'
+
 
 interface BankAccountFormData {
     account_holder_name: string
@@ -17,16 +21,15 @@ interface BankAccountFormData {
     branch_name: string
     account_type: string
     upi_id?: string
-    phone_number: string
-    is_primary_account: boolean
-    is_verified: boolean
+    registered_phone: string
+    user_email: string
 }
 
 export default function BankAccountPage() {
     const [token, setToken] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
-    
+    const [success, setSuccess] = useState("")
+    const [error, setError] = useState("")
     const [formData, setFormData] = useState<BankAccountFormData>({
         account_holder_name: '',
         bank_name: '',
@@ -36,10 +39,45 @@ export default function BankAccountPage() {
         branch_name: '',
         account_type: 'savings',
         upi_id: '',
-        phone_number: '',
-        is_primary_account: true,
-        is_verified: false
+        registered_phone: '',
+        user_email: 'abc@test.com'
     })
+
+    useEffect(() => {
+        fetchBankDetails();
+    }, []);
+
+
+    const fetchBankDetails = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No token found");
+            return;
+        }
+
+        try {
+            const response = await axios.get(
+            "http://localhost:8000/api/bankDetailsService/getBankDetails",
+            {
+                headers: {
+                "accept": "application/json",
+                "Authorization": token
+                }
+            }
+            );
+
+            // ✅ Update formData
+            setFormData(prev => ({
+            ...prev,
+            ...response.data,   // API response overrides defaults
+            user_email: prev.user_email // keep default email if API doesn’t return it
+            }));
+
+        } catch (error: any) {
+            console.error("Error fetching bank details:", error.response?.data || error.message);
+        }
+    };
+
 
     // Load token from localStorage on mount
     useEffect(() => {
@@ -69,27 +107,27 @@ export default function BankAccountPage() {
     const validateForm = () => {
         // Check if account numbers match
         if (formData.account_number !== formData.confirm_account_number) {
-            setMessage({ type: 'error', text: 'Account numbers do not match' })
+            setError('Account numbers do not match')
             return false
         }
 
         // Validate IFSC code format (basic validation)
-        const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/
-        if (!ifscRegex.test(formData.ifsc_code)) {
-            setMessage({ type: 'error', text: 'Invalid IFSC code format' })
-            return false
-        }
+        // const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/
+        // if (!ifscRegex.test(formData.ifsc_code)) {
+        //     setError('Invalid IFSC code format')
+        //     return false
+        // }
 
         // Validate phone number
         const phoneRegex = /^[6-9]\d{9}$/
-        if (!phoneRegex.test(formData.phone_number)) {
-            setMessage({ type: 'error', text: 'Invalid phone number format' })
+        if (!phoneRegex.test(formData.registered_phone)) {
+            setError('Invalid phone number format')
             return false
         }
 
         // Validate account number length
         if (formData.account_number.length < 8 || formData.account_number.length > 18) {
-            setMessage({ type: 'error', text: 'Account number should be between 8-18 digits' })
+            setError('Account number should be between 8-18 digits')
             return false
         }
 
@@ -99,8 +137,12 @@ export default function BankAccountPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         
+        if (!formData.account_holder_name || !formData.bank_name || !formData.account_number || !formData.confirm_account_number || !formData.ifsc_code || !formData.branch_name || !formData.account_type || !formData.registered_phone) {
+            setError('Please fill in all required fields')
+            return
+        }
         if (!token) {
-            setMessage({ type: 'error', text: 'No authentication token found. Please log in again.' })
+            setError('No authentication token found. Please log in again.')
             return
         }
 
@@ -109,12 +151,13 @@ export default function BankAccountPage() {
         }
 
         setIsLoading(true)
-        setMessage(null)
+        setSuccess("")
+        const { confirm_account_number, ...payload } = formData
 
         try {
-            const response = await axios.post(
-                'http://localhost:8000/api/users/addBankAccount',
-                formData,
+            const response = await axios.put(
+                'http://localhost:8000/api/bankDetailsService/addOrUpdateBankDetails',
+                payload,
                 {
                     headers: {
                         'Authorization': token || localStorage.getItem('token'),
@@ -124,27 +167,12 @@ export default function BankAccountPage() {
                 }
             )
 
-            setMessage({ type: 'success', text: 'Bank account details added successfully!' })
-            
-            // Reset form
-            setFormData({
-                account_holder_name: '',
-                bank_name: '',
-                account_number: '',
-                confirm_account_number: '',
-                ifsc_code: '',
-                branch_name: '',
-                account_type: 'savings',
-                upi_id: '',
-                phone_number: '',
-                is_primary_account: true,
-                is_verified: false
-            })
+            setSuccess(response.data.message || 'Bank account details added successfully')
 
         } catch (error: any) {
             console.error('Failed to add bank account:', error)
             const errorMessage = error.response?.data?.message || error.message || 'Failed to add bank account details'
-            setMessage({ type: 'error', text: errorMessage })
+            setError(errorMessage)
         } finally {
             setIsLoading(false)
         }
@@ -152,30 +180,9 @@ export default function BankAccountPage() {
 
     return (
         <ProtectedRoute>
-            <div id="header" className='relative w-full'>
-                <MenuOne props="bg-transparent" />
-                <Breadcrumb heading='Bank Account Details' subHeading='Add Bank Account' />
-            </div>
-
+            {error && (<ErrorNotification error={error} setError={setError} />)}
+            {success && (<SuccessAlert success={success} setSuccess={setSuccess} /> )}
             <div className="bank-account-page">
-                {/* Success/Error Messages */}
-                {message && (
-                    <div className={`message-alert p-4 rounded-lg mb-6 ${
-                        message.type === 'success' 
-                            ? 'bg-green-100 text-green-700 border border-green-200' 
-                            : 'bg-red-100 text-red-700 border border-red-200'
-                    }`}>
-                        <div className="flex items-center gap-2">
-                            {message.type === 'success' ? (
-                                <Icon.CheckCircle size={20} />
-                            ) : (
-                                <Icon.XCircle size={20} />
-                            )}
-                            <span>{message.text}</span>
-                        </div>
-                    </div>
-                )}
-
                 <form onSubmit={handleSubmit} className="bank-form bg-surface lg:px-7 px-4 lg:py-10 py-5 md:rounded-[20px] rounded-xl">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {/* Account Holder Name */}
@@ -300,8 +307,8 @@ export default function BankAccountPage() {
                             </label>
                             <input
                                 type="tel"
-                                name="phone_number"
-                                value={formData.phone_number}
+                                name="registered_phone"
+                                value={formData.registered_phone}
                                 onChange={handleInputChange}
                                 className="w-full px-4 py-3 border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="Enter 10-digit phone number"
@@ -327,26 +334,17 @@ export default function BankAccountPage() {
 
                     {/* Checkboxes */}
                     <div className="form-group mt-6 space-y-3">
-                        <label className="flex items-center gap-3">
-                            <input
-                                type="checkbox"
-                                name="is_primary_account"
-                                checked={formData.is_primary_account}
-                                onChange={handleInputChange}
-                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                            />
-                            <span className="text-sm font-medium">Set as Primary Account</span>
-                        </label>
 
                         <div className="bg-blue-50 p-4 rounded-lg">
                             <div className="flex items-start gap-2">
                                 <Icon.Info size={20} className="text-blue-600 mt-0.5" />
                                 <div className="text-sm text-blue-700">
-                                    <p className="font-medium mb-1">Security Notice:</p>
+                                    <p className="font-medium mb-1">Notice:</p>
                                     <ul className="list-disc list-inside space-y-1 text-xs">
-                                        <li>Your bank details will be encrypted and stored securely</li>
-                                        <li>We'll verify your account details before processing payments</li>
                                         <li>This information will only be used for payment processing</li>
+                                        <li>Please ensure all details are accurate to avoid payment delays</li>
+                                        <li>We recommed adding UPI ID for faster transactions.</li>
+                                        <li>If UPI ID is present, all the transactions will be done through that ID</li>
                                     </ul>
                                 </div>
                             </div>
@@ -375,7 +373,6 @@ export default function BankAccountPage() {
                     </div>
                 </form>
             </div>
-            <Footer />
         </ProtectedRoute>
     )
 }

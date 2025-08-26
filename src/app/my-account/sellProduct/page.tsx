@@ -143,12 +143,6 @@ export default function AddProductPage() {
 
     return (
         <ProtectedRoute>
-        
-        
-            <div id="header" className='relative w-full'>
-                    <MenuOne props="bg-transparent" />
-                    <Breadcrumb heading='Sell a Product' subHeading='Sell Prouct' />
-            </div>
         <div className="add-product-page">
             {/* <div className="heading flex items-center justify-between mb-8">
                 <h1 className="heading4">Add New Product</h1>
@@ -373,7 +367,6 @@ export default function AddProductPage() {
                 </div>
             </form>
         </div>
-        <Footer />
         </ProtectedRoute>
     )
 }   

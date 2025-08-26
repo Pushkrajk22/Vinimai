@@ -18,6 +18,7 @@ import { signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
 import nextDynamic  from 'next/dynamic';
 import SuccessAlert from '@/components/AlertNotifications/SuccessNotification';
 import ErrorNotification from '@/components/AlertNotifications/ErrorNotification'
+import { ThreeCircles } from 'react-loader-spinner';
 const CheckCircle = nextDynamic (() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
 const WarningCircle = nextDynamic (() =>
   import('@phosphor-icons/react').then((mod) => mod.WarningCircle),
@@ -74,7 +75,7 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [success, setSuccess] = useState('');
-
+    const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
@@ -246,7 +247,7 @@ const Register = () => {
         e.preventDefault();
         setError('');
         setSuccess('');
-
+        setLoading(true);
         if (password !== confirmPassword) {
             setError("Passwords do not match");
             setTimeout(() => setError(''), 3000);
@@ -286,6 +287,7 @@ const Register = () => {
             });
             setSuccess('Registration successful!');
             setError("");
+            setLoading(false);
             router.push('/login');
 
             } catch (err:any) {
@@ -499,7 +501,17 @@ const Register = () => {
                                     <button 
                                         id="register-button" 
                                         className="button-main">
-                                            Register
+                                            {loading ? (
+                                                <ThreeCircles
+                                                height="24"
+                                                width="24"
+                                                color="#ffffff"  // or button text color
+                                                ariaLabel="loading"
+                                                visible={true}
+                                                />
+                                            ) : (
+                                                'Register'
+                                            )}
                                     </button>
                                 </div>
                             </form>
@@ -510,7 +522,9 @@ const Register = () => {
                                 <div className="heading4">Already have an account?</div>
                                 <div className="mt-2 text-secondary">Welcome back. Sign in to access your personalized experience, saved preferences, and more. We{String.raw`'re`} thrilled to have you with us again!</div>
                                 <div className="block-button md:mt-7 mt-4">
-                                    <Link href={'/login'} className="button-main">Login</Link>
+                                    <Link href={'/login'} className="button-main">
+                                        Login
+                                    </Link>
                                 </div>
                             </div>
                         </div>

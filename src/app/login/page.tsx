@@ -7,6 +7,7 @@ import Footer from '@/components/Footer/Footer'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { ThreeCircles } from 'react-loader-spinner'
 
 
 const Login = () => {
@@ -89,7 +90,19 @@ const Login = () => {
                                     <Link href={'/forgot-password'} className='font-semibold hover:underline'>Forgot Your Password?</Link>
                                 </div>
                                 <div className="block-button md:mt-7 mt-4">
-                                    <button className="button-main">Login</button>
+                                    <button className="button-main">
+                                        {loading ? (
+                                            <ThreeCircles
+                                            height="24"
+                                            width="24"
+                                            color="#ffffff"  // or button text color
+                                            ariaLabel="loading"
+                                            visible={true}
+                                            />
+                                        ) : (
+                                            'Login'
+                                        )}
+                                    </button>
                                 </div>
                             </form>
                         </div>
