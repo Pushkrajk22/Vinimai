@@ -219,7 +219,7 @@ export default function AddProductPage() {
                     </div>
 
                     {/* Discounted Price */}
-                    <div className="form-group">
+                    {/* <div className="form-group">
                         <label className="block text-sm font-medium mb-2">
                             Discounted Price
                         </label>
@@ -233,7 +233,7 @@ export default function AddProductPage() {
                             min="0"
                             step="0.01"
                         />
-                    </div>
+                    </div> */}
 
                     {/* Tag */}
                     <div className="form-group">
@@ -257,7 +257,7 @@ export default function AddProductPage() {
                             value={formData.size}
                             onChange={handleInputChange}
                             className="w-full px-4 py-3 border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter size (e.g., S, M, L, XL)"
+                            placeholder="Please describe the size of the product"
                         />
                     </div>
                 </div>
@@ -298,7 +298,7 @@ export default function AddProductPage() {
                         <input
                             type="url"
                             value={imageUrl}
-                            onChange={(e) => setImageUrl(e.target.value)}
+                            onChange={(e) => {setImageUrl(e.target.value)}}
                             className="flex-1 px-4 py-3 border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter image URL"
                         />
@@ -332,7 +332,7 @@ export default function AddProductPage() {
                 </div>
 
                 {/* Vinimai Verified */}
-                <div className="form-group mt-6">
+                {/* <div className="form-group mt-6">
                     <label className="flex items-center gap-3">
                         <input
                             type="checkbox"
@@ -343,7 +343,7 @@ export default function AddProductPage() {
                         />
                         <span className="text-sm font-medium">Vinimai Verified Product</span>
                     </label>
-                </div>
+                </div> */}
 
                 {/* Submit Button */}
                 <div className="form-actions mt-8">

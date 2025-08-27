@@ -10,39 +10,62 @@ import Footer from '@/components/Footer/Footer'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import { useCart } from '@/context/CartContext'
 import { countdownTime } from '@/store/countdownTime'
+import axios from 'axios'
+import ProtectedRoute from '@/components/ProtectedRoutes/ProtectedRoutes'
 
 const Cart = () => {
-    const [timeLeft, setTimeLeft] = useState(countdownTime());
     const router = useRouter()
+    const [cartItems, setCartItems] = useState<any[]>([]);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft(countdownTime());
-        }, 1000);
+//
+const fetchCart = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
 
-        return () => clearInterval(timer);
-    }, []);
+      const res = await axios.get("http://localhost:8000/api/cart/getCartItems", {
+        headers: {
+          accept: "application/json",
+          Authorization: token,
+        },
+      });
 
-    const { cartState, updateCart, removeFromCart } = useCart();
+      setCartItems(res.data.cart_items || []);
+      console.log("Cart items:", res.data);
+    } catch (err) {
+      console.error("Error fetching cart:", err);
+    }
+  };
 
-    const handleQuantityChange = (productId: string, newQuantity: number) => {
-        // Tìm sản phẩm trong giỏ hàng
-        const itemToUpdate = cartState.cartArray.find((item) => item.id === productId);
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
-        // Kiểm tra xem sản phẩm có tồn tại không
-        if (itemToUpdate) {
-            // Truyền giá trị hiện tại của selectedSize và selectedColor
-            updateCart(productId, newQuantity, itemToUpdate.selectedSize, itemToUpdate.selectedColor);
-        }
-    };
+  const removeFromCart = async (itemId: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
 
+      await axios.delete(`http://localhost:8000/api/cart/removeFromCart/${itemId}`, {
+        headers: {
+          accept: "application/json",
+          Authorization: token,
+        },
+      });
+
+      // refresh cart
+      fetchCart();
+    } catch (err) {
+      console.error("Error removing item:", err);
+    }
+  };
+
+//
     let moneyForFreeship = 150;
     let [totalCart, setTotalCart] = useState<number>(0)
     let [discountCart, setDiscountCart] = useState<number>(0)
     let [shipCart, setShipCart] = useState<number>(30)
     let [applyCode, setApplyCode] = useState<number>(0)
-
-    cartState.cartArray.map(item => totalCart += item.price * item.quantity)
 
     const handleApplyCode = (minValue: number, discount: number) => {
         if (totalCart > minValue) {
@@ -62,16 +85,13 @@ const Cart = () => {
         shipCart = 30
     }
 
-    if (cartState.cartArray.length === 0) {
-        shipCart = 0
-    }
-
     const redirectToCheckout = () => {
         router.push(`/checkout?discount=${discountCart}&ship=${shipCart}`)
     }
 
+
     return (
-        <>
+        <ProtectedRoute>
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
                 <Breadcrumb heading='Shopping cart' subHeading='Shopping cart' />
@@ -80,104 +100,255 @@ const Cart = () => {
                 <div className="container">
                     <div className="content-main flex justify-between max-xl:flex-col gap-y-8">
                         <div className="xl:w-2/3 xl:pr-3 w-full">
-                            {/* <div className="time bg-green py-3 px-5 flex items-center rounded-lg"> */}
-                                {/* <div className="heding5">🔥</div> */}
-                                {/* <div className="caption1 pl-2">Your cart will expire in */}
-                                    {/* <span className="min text-red text-button fw-700"> {timeLeft.minutes}:{timeLeft.seconds < 10 ? `0${timeLeft.seconds}` : timeLeft.seconds}</span> */}
-                                    {/* <span> minutes! Please checkout now before your items sell out!</span> */}
-                                {/* </div> */}
-                            {/* </div> */}
-                            {/* <div className="heading banner mt-5"> */}
-                                {/* <div className="text">Buy
-                                    <span className="text-button"> $<span className="more-price">{moneyForFreeship - totalCart > 0 ? (<>{moneyForFreeship - totalCart}</>) : (0)}</span>.00 </span>
-                                    <span>more to get </span>
-                                    <span className="text-button">freeship</span>
-                                </div> */}
-                                {/* <div className="tow-bar-block mt-4">
-                                    <div
-                                        className="progress-line"
-                                        style={{ width: totalCart <= moneyForFreeship ? `${(totalCart / moneyForFreeship) * 100}%` : `100%` }}
-                                    ></div>
-                                </div> */}
-                            {/* </div> */}
+                          {/* <>
                             <div className="list-product w-full sm:mt-7 mt-5">
                                 <div className='w-full'>
-                                    <div className="heading bg-surface bora-4 pt-4 pb-4">
-                                        <div className="flex">
-                                            <div className="w-1/2">
-                                                <div className="text-button text-center">Products</div>
-                                            </div>
-                                            <div className="w-1/12">
-                                                <div className="text-button text-center">Price</div>
-                                            </div>
-                                            <div className="w-1/6">
-                                                <div className="text-button text-center">Quantity</div>
-                                            </div>
-                                            <div className="w-1/6">
-                                                <div className="text-button text-center">Total Price</div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div className="list-product-main w-full mt-3">
-                                        {cartState.cartArray.length < 1 ? (
+                                        {cartItems.length < 1 ? (
                                             <p className='text-button pt-3'>No product in cart</p>
                                         ) : (
-                                            cartState.cartArray.map((product) => (
-                                                <div className="item flex md:mt-7 md:pb-7 mt-5 pb-5 border-b border-line w-full" key={product.id}>
+                                            cartItems.map((item) => (
+                                                <div className="item flex md:mt-7 md:pb-7 mt-5 pb-5 border-b border-line w-full" key={item.id}>
                                                     <div className="w-1/2">
                                                         <div className="flex items-center gap-6">
                                                             <div className="bg-img md:w-[100px] w-20 aspect-[3/4]">
                                                                 <Image
-                                                                    src={product.thumbImage[0]}
+                                                                    src={item.image_urls[0]}
                                                                     width={1000}
                                                                     height={1000}
-                                                                    alt={product.name}
-                                                                    className='w-full h-full object-cover rounded-lg'
+                                                                    alt={item.name}
+                                                                    className='w-full h-full object-cover rounded-1g'
                                                                 />
                                                             </div>
                                                             <div>
-                                                                <div className="text-title">{product.name}</div>
+                                                                <div className="text-title">{item.name}</div>
                                                                 <div className="list-select mt-3"></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="w-1/12 price flex items-center justify-center">
-                                                        <div className="text-title text-center">₹{product.price}.00</div>
-                                                    </div>
-                                                    <div className="w-1/6 flex items-center justify-center">
-                                                        <div className="quantity-block bg-surface md:p-3 p-2 flex items-center justify-between rounded-lg border border-line md:w-[100px] flex-shrink-0 w-20">
-                                                            <Icon.Minus
-                                                                onClick={() => {
-                                                                    if (product.quantity > 1) {
-                                                                        handleQuantityChange(product.id, product.quantity - 1)
-                                                                    }
-                                                                }}
-                                                                className={`text-base max-md:text-sm ${product.quantity === 1 ? 'disabled' : ''}`}
-                                                            />
-                                                            <div className="text-button quantity">{product.quantity}</div>
-                                                            <Icon.Plus
-                                                                onClick={() => handleQuantityChange(product.id, product.quantity + 1)}
-                                                                className='text-base max-md:text-sm'
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div className="w-1/6 flex total-price items-center justify-center">
-                                                        <div className="text-title text-center">₹{product.quantity * product.price}.00</div>
+                                                        <div className="text-title text-center">₹{item.original_price}</div>
                                                     </div>
                                                     <div className="w-1/12 flex items-center justify-center">
-                                                        <Icon.XCircle
-                                                            className='text-xl max-md:text-base text-red cursor-pointer hover:text-black duration-500'
-                                                            onClick={() => {
-                                                                removeFromCart(product.id)
-                                                            }}
-                                                        />
+                                                        <div className="text-title text-center"> {item.isVinimaiVerifed ? "Verified" : "Not Verified"}</div>
                                                     </div>
+                                                    <div className="w-1/12 flex items-center justify-center">
+                                                    <button
+                                                        onClick={() => removeFromCart(item.product_id)}
+                                                        className="flex items-center gap-1 text-red-500 hover:text-black transition-colors duration-300"
+                                                        aria-label="Remove item"
+                                                    >
+                                                        <Icon.Trash size={20} weight="bold" />
+                                                        <span className="hidden md:inline">Remove</span>
+                                                    </button>
+                                                    </div>
+
                                                 </div>
                                             ))
                                         )}
                                     </div>
                                 </div>
                             </div>
+                          </> */}
+                          <>
+                          <div className="list-product w-full sm:mt-7 mt-5">
+    <div className='w-full'>
+        {/* Enhanced Header */}
+        <div className="heading bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-t-2xl p-4 shadow-sm border border-gray-200 dark:border-gray-600">
+            <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Cart Items</h3>
+                <span className="text-sm text-gray-500 dark:text-gray-400">{cartItems.length} items</span>
+            </div>
+            {/* Column Headers - Hidden on mobile */}
+            <div className="hidden lg:flex mt-4 text-sm font-medium text-gray-600 dark:text-gray-300">
+                <div className="w-1/2 pl-4">Product</div>
+                <div className="w-1/6 text-center">Price</div>
+                <div className="w-1/6 text-center">Status</div>
+                <div className="w-1/6 text-center">Action</div>
+            </div>
+        </div>
+
+        <div className="list-product-main w-full bg-white dark:bg-gray-800 rounded-b-2xl shadow-lg border-x border-b border-gray-200 dark:border-gray-600 overflow-hidden">
+            {cartItems.length < 1 ? (
+                <div className="flex flex-col items-center justify-center py-16 px-4">
+                    <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+                        <Icon.ShoppingCart size={32} className="text-gray-400 dark:text-gray-500" />
+                    </div>
+                    <p className='text-lg font-medium text-gray-600 dark:text-gray-400 mb-2'>Your cart is empty</p>
+                    <p className='text-sm text-gray-500 dark:text-gray-500'>Add some products to get started</p>
+                </div>
+            ) : (
+                cartItems.map((item, index) => (
+                    <div 
+                        className={`item group hover:bg-gray-50 dark:hover:bg-gray-750 transition-all duration-300 ${
+                            index !== cartItems.length - 1 ? 'border-b border-gray-100 dark:border-gray-700' : ''
+                        }`} 
+                        key={item.id}
+                    >
+                        {/* Desktop Layout */}
+                        <div className="hidden lg:flex items-center py-6 px-4">
+                            {/* Product Info */}
+                            <div className="w-1/2">
+                                <div className="flex items-center gap-6">
+                                    <div className="relative bg-gray-100 dark:bg-gray-700 md:w-[120px] w-20 aspect-[3/4] rounded-xl overflow-hidden shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                                        <Image
+                                            src={item.image_urls[0]}
+                                            width={1000}
+                                            height={1000}
+                                            alt={item.name}
+                                            className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+                                        />
+                                        {/* Overlay on hover */}
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>
+                                    </div>
+                                    <div className="flex-1">
+                                        <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                                            {item.name}
+                                        </h4>
+                                        <div className="flex items-center gap-3">
+                                            {item.description && (
+                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-base font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                                                    {item.description}
+                                                </span>
+                                            )}
+                                            {/* {item.size && (
+                                                <span className="text-sm text-gray-500 dark:text-gray-400">
+                                                    Size: <span className="font-medium">{item.size}</span>
+                                                </span>
+                                            )} */}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Price */}
+                            <div className="w-1/6 flex flex-col items-center">
+                                <div className="text-lg font-bold text-gray-800 dark:text-gray-200">₹{item.original_price}</div>
+                                {/* {item.original_price !== item.discounted_price && (
+                                    <div className="text-sm text-gray-500 line-through">₹{item.original_price}</div>
+                                )} */}
+                            </div>
+
+                            {/* Verification Status */}
+                            <div className="w-1/6 flex items-center justify-center">
+                                <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                                    item.isVinimaiVerifed 
+                                        ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 shadow-sm' 
+                                        : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 shadow-sm'
+                                }`}>
+                                    {item.isVinimaiVerifed ? (
+                                        <>
+                                            <Icon.CheckCircle size={16} weight="fill" />
+                                            <span>Verified</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Icon.Clock size={16} weight="fill" />
+                                            <span>Awaiting</span>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Remove Button */}
+                            <div className="w-1/6 flex items-center justify-center">
+                                <button
+                                    onClick={() => removeFromCart(item.product_id)}
+                                    className="flex items-center gap-2 px-4 py-2 
+                                                text-red dark:text-red 
+                                                hover:text-white hover:bg-red 
+                                                rounded-lg border border-red 
+                                                hover:border-red 
+                                                transition-all duration-300 transform hover:scale-105 
+                                                focus:outline-none focus:ring-2 focus:ring-red focus:ring-opacity-50"                                    aria-label="Remove item"
+                                >
+                                    <Icon.Trash size={18} weight="bold" />
+                                    <span className="font-medium">Remove</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Mobile Layout */}
+                        <div className="lg:hidden p-4">
+                            <div className="flex gap-4">
+                                {/* Product Image */}
+                                <div className="relative bg-gray-100 dark:bg-gray-700 w-24 h-32 rounded-xl overflow-hidden shadow-md flex-shrink-0">
+                                    <Image
+                                        src={item.image_urls[0]}
+                                        width={1000}
+                                        height={1000}
+                                        alt={item.name}
+                                        className='w-full h-full object-cover'
+                                    />
+                                </div>
+
+                                {/* Product Details */}
+                                <div className="flex-1 min-w-0">
+                                    <h4 className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-2 line-clamp-2">
+                                        {item.name}
+                                    </h4>
+                                    
+                                    {/* Price */}
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <span className="text-lg font-bold text-gray-800 dark:text-gray-200">₹{item.discounted_price}</span>
+                                        {item.original_price !== item.discounted_price && (
+                                            <span className="text-sm text-gray-500 line-through">₹{item.original_price}</span>
+                                        )}
+                                    </div>
+
+                                    {/* Category and Size */}
+                                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                                        {item.category && (
+                                            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                                                {item.category}
+                                            </span>
+                                        )}
+                                        {item.size && (
+                                            <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-md">
+                                                Size: {item.size}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    {/* Status and Remove Button */}
+                                    <div className="flex items-center justify-between">
+                                        <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                                            item.isVinimaiVerifed 
+                                                ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' 
+                                                : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
+                                        }`}>
+                                            {item.isVinimaiVerifed ? (
+                                                <>
+                                                    <Icon.CheckCircle size={12} weight="fill" />
+                                                    <span>Verified</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Icon.Clock size={12} weight="fill" />
+                                                    <span>Pending</span>
+                                                </>
+                                            )}
+                                        </div>
+
+                                        <button
+                                            onClick={() => removeFromCart(item.product_id)}
+                                            className="flex items-center gap-1 px-3 py-1.5 text-red-600 dark:text-red-400 hover:text-white hover:bg-red-500 dark:hover:bg-red-600 rounded-md border border-red-200 dark:border-red-700 hover:border-red-500 dark:hover:border-red-600 transition-all duration-300 text-sm"
+                                            aria-label="Remove item"
+                                        >
+                                            <Icon.Trash size={14} weight="bold" />
+                                            <span>Remove</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            )}
+        </div>
+    </div>
+                            </div>
+                         </>
                             <div className="input-block discount-code w-full h-12 sm:mt-7 mt-5">
                                 <form className='w-full h-full relative'>
                                     <input type="text" placeholder='Add voucher discount' className='w-full h-full bg-surface pl-4 pr-14 rounded-lg border border-line' required />
@@ -253,7 +424,7 @@ const Cart = () => {
                                 <div className="heading5">Order Summary</div>
                                 <div className="total-block py-5 flex justify-between border-b border-line">
                                     <div className="text-title">Subtotal</div>
-                                    <div className="text-title">₹<span className="total-product">{totalCart}</span><span>.00</span></div>
+                                    <div className="text-title">₹ {cartItems.reduce((sum, item) => sum + item.original_price, 0)}</div>
                                 </div>
                                 <div className="discount-block py-5 flex justify-between border-b border-line">
                                     <div className="text-title">Discounts</div>
@@ -263,7 +434,7 @@ const Cart = () => {
                                     <div className="text-title">Shipping</div>
                                     <div className="choose-type flex gap-12">
                                         <div className="left">
-                                            <div className="type">
+                                            {/* <div className="type">
                                                 {moneyForFreeship - totalCart > 0 ?
                                                     (
                                                         <input
@@ -282,8 +453,8 @@ const Cart = () => {
                                                         />
                                                     )}
                                                 < label className="pl-1" htmlFor="shipping">Free Shipping:</label>
-                                            </div>
-                                            <div className="type mt-1">
+                                            </div> */}
+                                            {/* <div className="type mt-1">
                                                 <input
                                                     id="local"
                                                     type="radio"
@@ -293,7 +464,7 @@ const Cart = () => {
                                                     onChange={() => setShipCart(30)}
                                                 />
                                                 <label className="text-on-surface-variant1 pl-1" htmlFor="local">Local:</label>
-                                            </div>
+                                            </div> */}
                                             <div className="type mt-1">
                                                 <input
                                                     id="flat"
@@ -301,27 +472,27 @@ const Cart = () => {
                                                     name="ship"
                                                     value={40}
                                                     checked={shipCart === 40}
-                                                    onChange={() => setShipCart(40)}
+                                                    // onChange={() => setShipCart(40)}
                                                 />
                                                 <label className="text-on-surface-variant1 pl-1" htmlFor="flat">Flat Rate:</label>
                                             </div>
                                         </div>
                                         <div className="right">
-                                            <div className="ship">₹0.00</div>
-                                            <div className="local text-on-surface-variant1 mt-1">₹30.00</div>
-                                            <div className="flat text-on-surface-variant1 mt-1">₹40.00</div>
+                                            <div className="ship">₹50.00</div>
+                                            {/* <div className="local text-on-surface-variant1 mt-1">₹30.00</div>
+                                            <div className="flat text-on-surface-variant1 mt-1">₹40.00</div> */}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="total-cart-block pt-4 pb-4 flex justify-between">
                                     <div className="heading5">Total</div>
                                     <div className="heading5">₹
-                                        <span className="total-cart heading5">{totalCart - discountCart + shipCart}</span>
+                                        <span className="total-cart heading5">{cartItems.reduce((sum, item) => sum + item.original_price, 0)+50}</span>
                                         <span className='heading5'>.00</span></div>
                                 </div>
                                 <div className="block-button flex flex-col items-center gap-y-4 mt-5">
-                                    <div className="checkout-btn button-main text-center w-full" onClick={redirectToCheckout}>Process To Checkout</div>
-                                    <Link className="text-button hover-underline" href={"/shop/breadcrumb1"}>Continue shopping</Link>
+                                    <div className="checkout-btn button-main text-center w-full" onClick={redirectToCheckout}>Proceed To Checkout</div>
+                                    <Link className="text-button hover-underline" href={"/shop/filter-options"}>Continue shopping</Link>
                                 </div>
                             </div>
                         </div>
@@ -329,8 +500,10 @@ const Cart = () => {
                 </div>
             </div >
             <Footer />
-        </>
+        </ProtectedRoute>
     )
 }
 
 export default Cart
+
+

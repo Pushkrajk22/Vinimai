@@ -66,8 +66,10 @@ const Register = () => {
     // const CheckCircle = nextDynamic (() => import("@phosphor-icons/react").then(mod => mod.CheckCircle), { ssr: false });
     const [mailSent, setMailSent] = useState("false");
     const [isMailVerified, setIsMailVerified] = useState(false);
-    const [otpSent, setOTPSent] = useState(false);
-    const [otpVerified, setOTPVerified] = useState(false);
+    const [otpSent, setOTPSent] = useState(true);
+    const [otpVerified, setOTPVerified] = useState(true
+
+    );
     const [otpConfirmationResult, setOTPConfirmationResult] = useState<ConfirmationResult | null>(null);
     const [name, setName] = useState('');
     const [step, setStep] = useState("");
@@ -91,16 +93,19 @@ const Register = () => {
         if (email === '' || !emailRegex.test(email)) {
             setError("Please enter a valid email address");
             setSuccess("");
+            setLoading(false);
             return;
         }
         if (password === '' || confirmPassword === '') {
                 setError("Please fill in both password fields");
                 setSuccess("");
+                setLoading(false);
                 return;
         }
         if (password !== confirmPassword) {
             setError("Passwords do not match");
             setSuccess("");
+            setLoading(false);
             return;
         }
         // Check if user is already registered with same email
@@ -109,6 +114,7 @@ const Register = () => {
             if (data.exists) {
                 setError("Email is already registered");
                 setSuccess("");
+                setLoading(false);
                 return;
             }
         } catch {
@@ -116,6 +122,11 @@ const Register = () => {
             setSuccess("");
             return;
         }
+        finally {
+            setLoading(false);
+        }
+
+        setLoading(true); // Start loading
 
         try {
             // Step 2: Create user
@@ -137,6 +148,9 @@ const Register = () => {
             console.error("Error: ", error);
             return;
         }
+        finally {
+            setLoading(false);
+        }   
     };
 
     const verifyEmailFromLink = async () => {
@@ -162,7 +176,10 @@ const Register = () => {
             setError("Verification check failed: " + error.message);
             setSuccess("");
             console.error(error);
+        } finally {
+            setLoading(false);  
         }
+
         };
 
     const sendOTP = async () => {
@@ -171,6 +188,7 @@ const Register = () => {
         if (!/^\d{10}$/.test(phone)) {
             setError("Please enter a valid 10-digit phone number");
             setSuccess("");
+            setLoading(false);
             return;
         }
         // Check if user is already registered with same email
@@ -179,12 +197,16 @@ const Register = () => {
             if (data.exists) {
                 setError("Phone Number is already registered");
                 setSuccess("");
+
                 return;
             }
         } catch {
             setError("Error checking Phone Number availability");
             setSuccess("");
             return;
+        }
+        finally {
+            setLoading(false);
         }
 
         try {
@@ -213,6 +235,9 @@ const Register = () => {
             setError("Failed to send OTP: " + error.message);
             setSuccess("");
         }
+        finally {
+            setLoading(false);
+        }
         };
 
     const verifyOTP = async () => {
@@ -221,12 +246,14 @@ const Register = () => {
         if (!otp) {
             setError("OTP is required");
             setSuccess("");
+            setLoading(false);
             return;
         }
 
         if (!otpConfirmationResult) {
             setError("OTP session expired. Please resend.");
             setSuccess("");
+            setLoading(false);
             return;
         }
 
@@ -239,6 +266,9 @@ const Register = () => {
         } catch (error) {
             setError("Invalid OTP. Try again.");
             setSuccess("");
+        }
+        finally {
+            setLoading(false);
         }
     };
 
@@ -253,23 +283,27 @@ const Register = () => {
             setTimeout(() => setError(''), 3000);
             setPassword('');
             setConfirmPassword('');
+            setLoading(false);
             return;
         }
         
         if (!isTermsChecked) {
             setError("You must agree to the terms to register.");
             setTimeout(() => setError(''), 3000);
+            setLoading(false);
             return;
         }
 
         if (!isMailVerified) {
             setError("Please verify your email before proceeding.");
             setSuccess("");
+            setLoading(false);
             return;
         }
         if (!otpVerified) {
             setError("Please verify your phone number before proceeding.");
             setSuccess("");
+            setLoading(false);
             return;
         }
 
@@ -298,6 +332,9 @@ const Register = () => {
                     setError('An unexpected error occurred.');
                 }
                 setSuccess("");
+            }
+            finally {
+                setLoading(false);
             }
     };
 
@@ -406,7 +443,7 @@ const Register = () => {
     )}
   </div>
 </div>
-
+{/* 
 <div className="phone mt-5">
   <div className="flex items-center gap-2">
     <input
@@ -438,9 +475,9 @@ const Register = () => {
       </button>
     )}
   </div>
-</div>
+</div> */}
 
-<div className="otp mt-5">
+{/* <div className="otp mt-5">
   <div className="flex items-center gap-2">
     <input
       className="border border-line px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-success flex-grow min-w-0"
@@ -473,7 +510,7 @@ const Register = () => {
     </button>
     )}
   </div>
-</div>
+</div> */}
 
   <div id="recaptcha-container"></div>
 

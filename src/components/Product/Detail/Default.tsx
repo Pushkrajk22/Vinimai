@@ -18,6 +18,12 @@ import { useModalWishlistContext } from '@/context/ModalWishlistContext'
 import { useCompare } from '@/context/CompareContext'
 import { useModalCompareContext } from '@/context/ModalCompareContext'
 import ModalSizeguide from '@/components/Modal/ModalSizeguide'
+import axios from "axios";
+// import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import SuccessAlert from '@/components/AlertNotifications/SuccessNotification'
+import ErrorAlert from '@/components/AlertNotifications/ErrorNotification'
+import OfferButton from '@/components/OfferButton/OfferButton'
 
 SwiperCore.use([Navigation, Thumbs]);
 
@@ -27,6 +33,8 @@ interface Props {
 }
 
 const Default: React.FC<Props> = ({ data, productId }) => {
+      const router = useRouter();
+
     const swiperRef: any = useRef();
     const [photoIndex, setPhotoIndex] = useState(0)
     const [openPopupImg, setOpenPopupImg] = useState(false)
@@ -41,6 +49,10 @@ const Default: React.FC<Props> = ({ data, productId }) => {
     const { openModalWishlist } = useModalWishlistContext()
     const { addToCompare, removeFromCompare, compareState } = useCompare();
     const { openModalCompare } = useModalCompareContext()
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+
     let productMain = data.find(product => product.id === productId) as ProductType
     if (productMain === undefined) {
         productMain = data[0]
@@ -92,14 +104,34 @@ const Default: React.FC<Props> = ({ data, productId }) => {
         }
     };
 
-    const handleAddToCart = () => {
-        if (!cartState.cartArray.find(item => item.id === productMain.id)) {
-            addToCart({ ...productMain });
-            updateCart(productMain.id, productMain.quantityPurchase, activeSize, activeColor)
-        } else {
-            updateCart(productMain.id, productMain.quantityPurchase, activeSize, activeColor)
+    const handleAddToCart = async () => {
+        // const router = useRouter();
+
+        try {
+            const token = localStorage.getItem('token'); // your JWT
+            await axios.post(
+            "http://localhost:8000/api/cart/addToCart",
+            productMain.id,   // raw body (string)
+            {
+                headers: {
+                "Content-Type": "application/json",
+                "accept": "application/json",
+                "Authorization": token,
+                },
+            }
+            
+            );
+            setSuccess("Product added to cart successfully!");
+        } catch (error: any) {
+                if (error.response?.data?.detail === "Invalid or expired token") {
+                router.push("/login");
+                setError("Session expired. Please log in again.");
+                } else {
+                console.error("Error adding to cart:", error);
+                setError(`Failed to add to cart. ${error.response?.data?.detail}`);
+                }    
         }
-        openModalCart()
+
     };
 
     const handleAddToWishlist = () => {
@@ -233,6 +265,8 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                             </div>
                         </div>
                         <div className="product-infor md:w-1/2 w-full lg:pl-[15px] md:pl-2">
+                            {success && <SuccessAlert success={success} setSuccess={setSuccess} />}
+                            {error && <ErrorAlert error={error} setError={setError} />}
                             <div className="flex justify-between">
                                 <div>
                                     <div className="caption2 text-secondary font-semibold uppercase">{productMain.type}</div>
@@ -351,10 +385,11 @@ const Default: React.FC<Props> = ({ data, productId }) => {
                                     </div> */}
                                     {/* Make offer */}
                                     <div className="share flex items-center gap-3 cursor-pointer">
-                                        <div className="share-btn md:w-12 md:h-12 w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white">
+                                        {/* <div className="share-btn md:w-12 md:h-12 w-10 h-10 flex items-center justify-center border border-line cursor-pointer rounded-xl duration-300 hover:bg-black hover:text-white">
                                             <Icon.Money weight='fill' className='heading4' />
                                         </div>
-                                        <span>Make Offer</span>
+                                        <span>Make Offer</span> */}
+                                        <OfferButton/>
                                     </div>
 
                                     <div className="share flex items-center gap-3 cursor-pointer" onClick={() => {

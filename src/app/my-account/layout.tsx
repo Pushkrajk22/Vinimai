@@ -73,9 +73,17 @@ import Image from 'next/image';
                                                 <Icon.HouseLine size={20} />
                                                 <strong className="heading6">Dashboard</strong>
                                             </Link> */}
-                                            <Link href={'#!'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')}>
+                                            <Link href={'/my-account'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')}>
                                                 <Icon.Package size={20} />
-                                                <strong className="heading6">History Orders</strong>
+                                                <strong className="heading6">My Orders</strong>
+                                            </Link>
+                                            <Link href={'/my-account/proposedOffers'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
+                                                    <Icon.UploadSimple size={20} />
+                                                    <strong className="heading6">Proposed Offers</strong>
+                                            </Link>
+                                            <Link href={'/my-account/receivedOffers'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
+                                                    <Icon.DownloadSimple size={20} />
+                                                    <strong className="heading6">Received Offers</strong>
                                             </Link>
                                             <Link href={'/my-account/myAddress'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'address' ? 'active' : ''}`} onClick={() => setActiveTab('address')}>
                                                 <Icon.Tag size={20} />
@@ -88,10 +96,6 @@ import Image from 'next/image';
                                             <Link href={'/my-account/myProfile'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'setting' ? 'active' : ''}`} onClick={() => setActiveTab('setting')}>
                                                 <Icon.GearSix size={20} />
                                                 <strong className="heading6">Profile</strong>
-                                            </Link>
-                                            <Link href={'/my-account/offers'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
-                                                    <Icon.PlusSquare size={20} />
-                                                    <strong className="heading6">Offers Received</strong>
                                             </Link>
                                             <Link href={'/my-account/sellProduct'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
                                                     <Icon.PlusSquare size={20} />
