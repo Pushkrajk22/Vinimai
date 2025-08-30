@@ -22,7 +22,7 @@ export default function DefaultList() {
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
             </div>
-            <ShopSidebarList data={productData} productPerPage={4} dataType={type} />
+            {/* <ShopSidebarList data={productData} productPerPage={4} dataType={type} /> */}
             <Footer />
         </>
     )

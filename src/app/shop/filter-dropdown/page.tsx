@@ -22,7 +22,7 @@ export default function FilterDropdown() {
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
             </div>
-            <ShopFilterDropdown data={productData} productPerPage={12} dataType={type} />
+            {/* <ShopFilterDropdown data={productData} productPerPage={12} dataType={type} /> */}
             <Footer />
         </>
     )

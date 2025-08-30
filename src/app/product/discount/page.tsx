@@ -23,9 +23,9 @@ const ProductDiscount = () => {
                 <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
                 <div id="header" className='relative w-full style-discount'>
                     <MenuOne props="bg-white" />
-                    <BreadcrumbProduct data={productData} productPage='discount' productId={productId} />
+                    {/* <BreadcrumbProduct data={productData} productPage='discount' productId={productId} /> */}
                 </div>
-                <Discount data={productData} productId={productId} />
+                {/* <Discount data={productData} productId={productId} /> */}
                 <Footer />
             </>
         </Suspense>

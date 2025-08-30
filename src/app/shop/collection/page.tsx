@@ -17,7 +17,7 @@ export default function Collection() {
                 <MenuOne props="bg-transparent" />
                 <Breadcrumb heading='Shop Collection' subHeading='Collection' />
             </div>
-            <ShopCollection data={productData} />
+            {/* <ShopCollection data={productData} /> */}
             <Footer />
         </>
     )

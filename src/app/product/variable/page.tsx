@@ -25,9 +25,9 @@ const ProductVariableProduct = () => {
             <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-white" />
-                <BreadcrumbProduct data={productData} productPage='variable' productId={productId} />
+                {/* <BreadcrumbProduct data={productData} productPage='variable' productId={productId} /> */}
             </div>
-            <VariableProduct data={productData} productId={productId} />
+            {/* <VariableProduct data={productData} productId={productId} /> */}
             <Footer />
         </Suspense>
     )

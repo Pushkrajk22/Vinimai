@@ -22,7 +22,7 @@ export default function BreadCrumb2() {
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
             </div>
-            <ShopBreadCrumb2 data={productData} productPerPage={9} dataType={type} />
+            {/* <ShopBreadCrumb2 data={productData} productPerPage={9} dataType={type} /> */}
             <Footer />
         </>
     )

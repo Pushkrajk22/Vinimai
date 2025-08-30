@@ -14,8 +14,8 @@ const ProductCombinedOneClient = () => {
     }
     return (
         <>
-            <BreadcrumbProduct data={productData} productPage="variable" productId={productId} />
-            <VariableProduct data={productData} productId={productId} />
+            {/* <VariableProduct data={productData} productId={productId} /> */}
+            {/* <BreadcrumbProduct data={productData} productPage="variable" productId={productId} /> */}
         </>
     );
 };

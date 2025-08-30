@@ -18,7 +18,7 @@ export default function FilterCanvasProductTwo() {
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
             </div>
-            <ShopFilterCanvas data={productData} productPerPage={12} dataType={type} productStyle='style-2' />
+            {/* <ShopFilterCanvas data={productData} productPerPage={12} dataType={type} productStyle='style-2' /> */}
             <Footer />
         </>
     )
