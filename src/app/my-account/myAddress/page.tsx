@@ -7,7 +7,13 @@ import React, { useState, useEffect } from 'react'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import axios from "axios";
 import { ThreeCircles } from "react-loader-spinner";
-
+    
+type UserDetails = {
+            name: string;
+            email: string;
+            phone: string;
+    };
+    
 const MyAddress: React.FC = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
