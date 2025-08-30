@@ -27,4 +27,5 @@ export interface ProductType {
     description: string,
     action: string,
     slug: string
+    isVinimaiVerified: boolean
 }
