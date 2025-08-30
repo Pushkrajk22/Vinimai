@@ -28,7 +28,7 @@ export default function HomeMarketplace() {
             <BannerAbove />
             <Deal />
             <Collection />
-            <BestSeller data={productData} start={0} limit={5} />
+            {/* <BestSeller data={productData} start={0} limit={5} /> */}
             <BannerBelow />
             <TopProduct />
             <Recommend />
