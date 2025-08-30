@@ -157,6 +157,7 @@ const ProductDefault = () => {
                 action: 'add to cart',
                 slug: '',
                 new: false,
+                isVinimaiVerified: false // Default value, adjust as needed
             }
 
             setProduct(transformedProduct)
