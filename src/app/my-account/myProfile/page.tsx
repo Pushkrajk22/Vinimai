@@ -22,7 +22,7 @@ const MyAddress: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
     const [activeAddress, setActiveAddress] = useState<string | null>('billing')
     const [user, setUser] = useState<UserDetails | null>(null);
-    const [loadingButton, setLoadingButon] = useState(false);
+    const [loadingButton, setLoadingButton] = useState(false);
         const [currentPassword, setCurrentPassword] = useState('');
         const [newPassword, setNewPassword] = useState('');
         const [confirmedNewPassword, setConfirmedNewPassword] = useState('');
@@ -53,7 +53,7 @@ const MyAddress: React.FC = () => {
         const handleSubmit = async (e: React.FormEvent) => {
             e.preventDefault();
             setError('');
-            setLoadingButon(true);
+            setLoadingButton(true);
             if (newPassword !== confirmedNewPassword) {
                 setError("Passwords do not match");
                 setSuccess('');
