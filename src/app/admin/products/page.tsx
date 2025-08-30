@@ -78,7 +78,7 @@ const OrdersPage = () => {
       })) || []
 
       setProducts(transformedData)
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching products:', err)
       setError(err.message)
     } finally {
