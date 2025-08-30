@@ -65,7 +65,7 @@ const OrdersPage = () => {
       console.log('API Response:', data)
 
       // Transform data for the table
-      const transformedData = data.products?.map((product, index) => ({
+      const transformedData = data.products?.map((product:any, index: any) => ({
         id: `${index}`,
         product_id: product.product_id || 'N/A',
         name: product.name || 'Unknown Product',
