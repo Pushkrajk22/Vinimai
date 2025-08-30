@@ -6,7 +6,8 @@ import BannerTop from '@/components/Home3/BannerTop'
 import Collection from '@/components/Cosmetic1/Collection'
 import CommunityStory from '@/components/Cosmetic1/CommunityStory'
 import LookBook from '@/components/Cosmetic1/LookBook'
-import productData from '@/data/Product.json'
+// import productData from '@/data/Product.json'
+import productDataRaw from '@/data/Product.json';
 import BuyPack from '@/components/Cosmetic1/BuyPack'
 import AdsPhoto from '@/components/Cosmetic1/AdsPhoto.jsx'
 import NewArrival from '@/components/Cosmetic1/NewArrival'
@@ -17,6 +18,9 @@ import Instagram from '@/components/Cosmetic1/Instagram'
 import Brand from '@/components/Home1/Brand'
 import Footer from '@/components/Footer/Footer'
 import ModalNewsletter from '@/components/Modal/ModalNewsletter'
+import { ProductType } from '@/type/ProductType';
+
+const productData = productDataRaw as unknown as ProductType[];
 
 export default function HomeCosmeticOne() {
     return (
