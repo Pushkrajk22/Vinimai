@@ -1555,9 +1555,9 @@ const MenuCosmeticOne: React.FC<Props> = ({ props }) => {
                                                     <div className="recent-product pt-3">
                                                         <div className="text-button-uppercase pb-1">Recent Products</div>
                                                         <div className="list-product hide-product-sold  grid grid-cols-2 gap-5 mt-3">
-                                                            {productData.filter(item => item.action === 'add to cart' && item.category === 'cosmetic').slice(0, 2).map((prd, index) => (
+                                                            {/* {productData.filter(item => item.action === 'add to cart' && item.category === 'cosmetic').slice(0, 2).map((prd, index) => (
                                                                 <Product key={index} data={prd} type='grid' style='style-1' />
-                                                            ))}
+                                                            ))} */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1747,9 +1747,9 @@ const MenuCosmeticOne: React.FC<Props> = ({ props }) => {
                                                     <div className="recent-product pt-4">
                                                         <div className="text-button-uppercase pb-1">Recent Products</div>
                                                         <div className="list-product hide-product-sold  grid grid-cols-2 gap-5 mt-3">
-                                                            {productData.filter(item => item.action === 'add to cart' && item.category === 'cosmetic').slice(0, 2).map((prd, index) => (
+                                                            {/* {productData.filter(item => item.action === 'add to cart' && item.category === 'cosmetic').slice(0, 2).map((prd, index) => (
                                                                 <Product key={index} data={prd} type='grid' style='style-1' />
-                                                            ))}
+                                                            ))} */}
                                                         </div>
                                                     </div>
                                                 </div>
