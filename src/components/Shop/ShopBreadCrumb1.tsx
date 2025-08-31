@@ -169,7 +169,8 @@ const ShopBreadCrumb1: React.FC<Props> = ({ data, productPerPage, dataType, gend
             images: [],
             description: 'no-data',
             action: 'no-data',
-            slug: 'no-data'
+            slug: 'no-data',
+            isVinimaiVerified: false,
         }];
     }
 
