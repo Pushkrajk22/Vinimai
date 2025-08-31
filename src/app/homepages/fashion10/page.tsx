@@ -1,6 +1,6 @@
 import React from 'react'
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
-import MenuEight from '@/components/Header/Menu/MenuEight.disabled'
+import MenuEight from '@/components/Header/Menu/MenuEight.disbaled'
 import SliderTen from '@/components/Slider/SliderTen'
 import productData from '@/data/Product.json'
 import TabFeatures from '@/components/Home2/TabFeatures'

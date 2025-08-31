@@ -901,9 +901,9 @@ const MenuEight = () => {
                                                     <div className="recent-product pl-2.5 basis-1/3">
                                                         <div className="text-button-uppercase pb-2">Recent Products</div>
                                                         <div className="list-product hide-product-sold  grid grid-cols-2 gap-5 mt-3">
-                                                            {productData.filter(item => item.action === 'add to cart').slice(0, 2).map((prd, index) => (
+                                                            {/* {productData.filter(item => item.action === 'add to cart').slice(0, 2).map((prd, index) => (
                                                                 <Product key={index} data={prd} type='grid' style='style-1' />
-                                                            ))}
+                                                            ))} */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1081,9 +1081,9 @@ const MenuEight = () => {
                                                     <div className="recent-product pl-2.5 basis-1/3">
                                                         <div className="text-button-uppercase pb-2">Recent Products</div>
                                                         <div className="list-product hide-product-sold  grid grid-cols-2 gap-5 mt-3">
-                                                            {productData.filter(item => item.action === 'add to cart').slice(0, 2).map((prd, index) => (
+                                                            {/* {productData.filter(item => item.action === 'add to cart').slice(0, 2).map((prd, index) => (
                                                                 <Product key={index} data={prd} type='grid' style='style-1' />
-                                                            ))}
+                                                            ))} */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1869,9 +1869,9 @@ const MenuEight = () => {
                                                     <div className="recent-product pt-3">
                                                         <div className="text-button-uppercase pb-1">Recent Products</div>
                                                         <div className="list-product hide-product-sold  grid grid-cols-2 gap-5 mt-3">
-                                                            {productData.slice(0, 2).map((prd, index) => (
+                                                            {/* {productData.slice(0, 2).map((prd, index) => (
                                                                 <Product key={index} data={prd} type='grid' style='style-1' />
-                                                            ))}
+                                                            ))} */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2061,9 +2061,9 @@ const MenuEight = () => {
                                                     <div className="recent-product pt-4">
                                                         <div className="text-button-uppercase pb-1">Recent Products</div>
                                                         <div className="list-product hide-product-sold  grid grid-cols-2 gap-5 mt-3">
-                                                            {productData.slice(0, 2).map((prd, index) => (
+                                                            {/* {productData.slice(0, 2).map((prd, index) => (
                                                                 <Product key={index} data={prd} type='grid' style='style-1' />
-                                                            ))}
+                                                            ))} */}
                                                         </div>
                                                     </div>
                                                 </div>
