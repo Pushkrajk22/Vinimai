@@ -169,7 +169,8 @@ const ShopFilterCanvas: React.FC<Props> = ({ data, productPerPage, dataType, pro
             images: [],
             description: 'no-data',
             action: 'no-data',
-            slug: 'no-data'
+            slug: 'no-data',
+            isVinimaiVerified: false,
         }];
     }
 

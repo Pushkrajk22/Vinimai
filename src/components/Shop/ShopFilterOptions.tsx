@@ -159,7 +159,8 @@ const ShopFilterOptions: React.FC<Props> = ({ data, productPerPage }) => {
             images: [],
             description: 'no-data',
             action: 'no-data',
-            slug: 'no-data'
+            slug: 'no-data',
+            isVinimaiVerified: false,
         }];
     }
 
