@@ -1,6 +1,6 @@
 import React from 'react'
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
-import MenuEight from '@/components/Header/Menu/MenuEight'
+import MenuEight from '@/components/Header/Menu/MenuEight.disabled'
 import SliderEight from '@/components/Slider/SliderEight'
 import Collection from '@/components/Home8/Collection'
 import Deal from '@/components/Home7/Deal'

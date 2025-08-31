@@ -2,7 +2,7 @@
 
 import React from 'react'
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
-import MenuEight from '@/components/Header/Menu/MenuEight'
+import MenuEight from '@/components/Header/Menu/MenuEight.disabled'
 import SliderNine from '@/components/Slider/SliderNine'
 import TrendingNow from '@/components/Home9/TrendingNow'
 import Deal from '@/components/Home7/Deal'
