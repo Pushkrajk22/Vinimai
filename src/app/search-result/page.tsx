@@ -83,7 +83,7 @@ const SearchResult = () => {
     let currentProducts: ProductType[];
 
     if (filteredData.length > 0) {
-        currentProducts = filteredData.slice(offset, offset + productsPerPage);
+        // currentProducts = filteredData.slice(offset, offset + productsPerPage);
     } else {
         currentProducts = []
     }
