@@ -12,6 +12,7 @@ import { useCart } from '@/context/CartContext'
 import { countdownTime } from '@/store/countdownTime'
 import axios from 'axios'
 import ProtectedRoute from '@/components/ProtectedRoutes/ProtectedRoutes'
+import PayUFormStatic from '@/components/PayUPaymentGateway/PayUHostedCheckout'
 
 const Cart = () => {
     const router = useRouter()
@@ -89,9 +90,21 @@ const fetchCart = async () => {
         router.push(`/checkout?discount=${discountCart}&ship=${shipCart}`)
     }
 
+    //PayU Related
+    const [showForm, setShowForm] = useState(false);
+
+    const paymentData = {
+        amount: "1000",
+        firstname: "Ashish",
+        lastname: "Kumar",
+        email: "ashish@example.com",
+        phone: "9999999999",
+        productinfo: "Wireless Earbuds",
+    };
+
 
     return (
-        <ProtectedRoute>
+        <>
             <div id="header" className='relative w-full'>
                 <MenuOne props="bg-transparent" />
                 <Breadcrumb heading='Shopping cart' subHeading='Shopping cart' />
@@ -465,17 +478,17 @@ const fetchCart = async () => {
                                                 />
                                                 <label className="text-on-surface-variant1 pl-1" htmlFor="local">Local:</label>
                                             </div> */}
-                                            <div className="type mt-1">
+                                            {/* <div className="type mt-1">
                                                 <input
                                                     id="flat"
                                                     type="radio"
                                                     name="ship"
                                                     value={40}
-                                                    checked={shipCart === 40}
+                                                    checked={shipCart === 60}
                                                     // onChange={() => setShipCart(40)}
                                                 />
                                                 <label className="text-on-surface-variant1 pl-1" htmlFor="flat">Flat Rate:</label>
-                                            </div>
+                                            </div> */}
                                         </div>
                                         <div className="right">
                                             <div className="ship">₹50.00</div>
@@ -491,7 +504,13 @@ const fetchCart = async () => {
                                         <span className='heading5'>.00</span></div>
                                 </div>
                                 <div className="block-button flex flex-col items-center gap-y-4 mt-5">
-                                    <div className="checkout-btn button-main text-center w-full" onClick={redirectToCheckout}>Proceed To Checkout</div>
+                                    {/* <div className="checkout-btn button-main text-center w-full" onClick={redirectToCheckout}>Proceed To Checkout</div> */}
+                                    <div className="checkout-btn button-main text-center w-full" onClick={() => setShowForm(true)}>
+                                        Proceed To Checkout
+                                            {showForm && (
+                                                <PayUFormStatic paymentData={paymentData} autoSubmit />
+                                            )}    
+                                    </div>
                                     <Link className="text-button hover-underline" href={"/shop/filter-options"}>Continue shopping</Link>
                                 </div>
                             </div>
@@ -500,7 +519,7 @@ const fetchCart = async () => {
                 </div>
             </div >
             <Footer />
-        </ProtectedRoute>
+        </>
     )
 }
 

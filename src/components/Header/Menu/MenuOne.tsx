@@ -133,7 +133,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                     {/* <li className='h-full relative'> */}
                                         {/* <Link
                                             href="#!"
-                                            className={`text-button-uppercase duration-300 h-full flex items-center justify-center gap-1 ${pathname === '/' ? 'active' : ''}`}
+                                            className={`text-button-uppercase duration-300 h-full flex items-center justify-center gap-1 ${pathname === '/' ? 'active' : ''}`.trim()}
                                         >
                                             Demo
                                         </Link> */}
@@ -629,7 +629,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                     <li className='h-full'>
                                         <Link
                                             href="/shop/filter-options"
-                                            className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/shop/') ? 'active' : ''}`}
+                                            className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/shop/') ? 'active' : ''}`.trim()}
                                         >
                                             Shop
                                         </Link>
@@ -849,7 +849,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                     {/* <li className='h-full'> */}
                                         {/* <Link
                                             href="#!"
-                                            className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/product/') ? 'active' : ''}`}
+                                            className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/product/') ? 'active' : ''}`.trim()}
                                         >
                                             Product
                                         </Link> */}
@@ -862,7 +862,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                             <li>
                                                                 <Link
                                                                     href={'/product/default'}
-                                                                    className={`link text-secondary duration-300 ${pathname === '/product/default' ? 'active' : ''}`}
+                                                                    className={`link text-secondary duration-300 ${pathname === '/product/default' ? 'active' : ''}`.trim()}
                                                                 >
                                                                     Products Defaults
                                                                 </Link>
@@ -1065,7 +1065,7 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         </div> */}
                                     {/* </li> */}
                                     {/* <li className='h-full relative'> */}
-                                        {/* <Link href="#!" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/blog') ? 'active' : ''}`}>
+                                        {/* <Link href="#!" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/blog') ? 'active' : ''}`.trim()}>
                                             Blog
                                         </Link> */}
                                         {/* <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
@@ -1099,43 +1099,44 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         </div> */}
                                     {/* </li>  */}
                                     <li className='h-full relative'>
-                                        <Link href="#!" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages') ? 'active' : ''}`}>
+                                        <Link href="#!" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages') ? 'active' : ''}`.trim()}>
                                             Pages
                                         </Link>
                                         <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
                                             <ul className='w-full'>
                                                 <li>
-                                                    <Link href="/pages/about" className={`link text-secondary duration-300 ${pathname === '/pages/about' ? 'active' : ''}`}>
+                                                    <Link href="/pages/about" className={`link text-secondary duration-300 ${pathname === '/pages/about' ? 'active' : ''}`.trim()}>
                                                         About Us
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link href="/pages/contact" className={`link text-secondary duration-300 ${pathname === '/pages/contact' ? 'active' : ''}`}>
+                                                    <Link href="/pages/contact" className={`link text-secondary duration-300 ${pathname === '/pages/contact' ? 'active' : ''}`.trim()}>
                                                         Contact Us
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link href="/pages/store-list" className={`link text-secondary duration-300 ${pathname === '/pages/store-list' ? 'active' : ''}`}>
+                                                    <Link href="/pages/store-list" className={`link text-secondary duration-300 ${pathname === '/pages/store-list' ? 'active' : ''}`.trim()}>
                                                         Store List
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link href="/pages/page-not-found" className={`link text-secondary duration-300 ${pathname === '/pages/page-not-found' ? 'active' : ''}`}>
+                                                    <Link href="/pages/page-not-found" className={`link text-secondary duration-300 ${pathname === '/pages/page-not-found' ? 'active' : ''}`.trim()}>
                                                         404
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link href="/pages/faqs" className={`link text-secondary duration-300 ${pathname === '/pages/faqs' ? 'active' : ''}`}>
+                                                    <Link href="/pages/faqs" className={`link text-secondary duration-300 ${pathname === '/pages/faqs' ? 'active' : ''}`.trim()}>
                                                         FAQs
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link href="/pages/coming-soon" className={`link text-secondary duration-300 ${pathname === '/pages/coming-soon' ? 'active' : ''}`}>
+                                                    <Link href="/pages/coming-soon" className={`link text-secondary duration-300 ${pathname === '/pages/coming-soon' ? 'active' : ''}`.trim()}>
                                                         Coming Soon
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link href="/pages/customer-feedbacks" className={`link text-secondary duration-300 ${pathname === '/pages/customer-feedbacks' ? 'active' : ''}`}>
+                                                    <Link href="/pages/customer-feedbacks" className={`link text-secondary duration-300 ${pathname === '/pages/customer-feedbacks' ? 'active' : ''}`.trim()
+                                                }>
                                                         Customer Feedbacks
                                                     </Link>
                                                 </li>
@@ -1143,22 +1144,22 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                         </div>
                                     </li>
                                     <li className='h-full relative'>
-                                        <Link href="/pages/about" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/blog') ? 'active' : ''}`}>
+                                        <Link href="/pages/about" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/blog') ? 'active' : ''}`.trim()}>
                                             About Us
                                         </Link>
                                     </li>
                                     <li className='h-full relative'>
-                                        <Link href="/pages/contact" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages/contact') ? 'active' : ''}`}>
+                                        <Link href="/pages/contact" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages/contact') ? 'active' : ''}`.trim()}>
                                             Contact Us
                                         </Link>
                                     </li>
                                     <li className='h-full relative'>
-                                        <Link href="/pages/faqs" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages/faqs') ? 'active' : ''}`}>
+                                        <Link href="/pages/faqs" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages/faqs') ? 'active' : ''}`.trim()}>
                                             FAQs
                                         </Link>
                                     </li>  
                                     <li className='h-full relative'>
-                                        <Link href="/product/default" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages/coming-soon') ? 'active' : ''}`}>
+                                        <Link href="/product/default" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname.includes('/pages/coming-soon') ? 'active' : ''}`.trim()}>
                                             Product Details
                                         </Link>   
                                     </li>                               
@@ -1250,7 +1251,8 @@ const MenuOne: React.FC<Props> = ({ props }) => {
                                                         </Link>
                                                     </li>
                                                     <li>
-                                                        <Link href="/homepages/fashion3" className={`nav-item-mobile link text-secondary duration-300 ${pathname === '/homepages/fashion3' ? 'active' : ''}`}>
+                                                        <Link href="/homepages/fashion3" className={`nav-item-mobile 
+                                                             ${pathname === '/homepages/fashion3' ? 'active' : ''}`}>
                                                             Home Fashion 3
                                                         </Link>
                                                     </li>

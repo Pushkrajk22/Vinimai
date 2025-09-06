@@ -66,6 +66,10 @@
                                         <div className="mail heading6 font-normal normal-case text-secondary text-center mt-1">{user?.email}</div>
                                     </div>
                                     <div className="menu-tab w-full max-w-none lg:mt-10 mt-6">
+                                        <Link href={'/admin'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
+                                            <Icon.ChartLine size={20} />
+                                            <strong className="heading6">Admin Dashboard</strong>
+                                        </Link>
                                         <Link href={'/admin/products'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
                                         {/* <Link href={'/products'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}> */}
                                             <Icon.Storefront size={20} />
@@ -82,7 +86,7 @@
                                         </Link>
                                         <Link href={'/admin/users'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white`}>
                                         {/* <Link href={'/admin/product'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'setting' ? 'active' : ''}`} onClick={() => setActiveTab('setting')}> */}
-                                            <Icon.User size={20} />
+                                            <Icon.Users size={20} />
                                             <strong className="heading6">All Users</strong>
                                         </Link>
                                         {/* <Link href={'/admin/settings'} scroll={false} className={`item flex items-center gap-3 w-full px-5 py-4 rounded-lg cursor-pointer duration-300 hover:bg-white mt-1.5 ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}> */}
